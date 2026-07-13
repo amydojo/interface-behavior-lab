@@ -12,11 +12,13 @@
 
 ## V1.1 — coded laboratory
 
-- [ ] Build a small framework-agnostic web playground
-- [ ] Add Intent, Breathing, Ethical, and Reversible demos first
-- [ ] Add global Reduce Motion and input-modality controls
-- [ ] Expose state transitions and event logs
-- [ ] Add keyboard and screen-reader test scripts
+- [x] Build a React and TypeScript web playground
+- [x] Implement all six behavioral families
+- [x] Add global Light, Dark, and Spatial modes
+- [x] Add Reduce Motion and input-modality controls
+- [x] Expose state transitions and event logs
+- [x] Preserve native buttons, visible focus, and alternate input paths
+- [x] Add typecheck, production build, and deployment workflows
 
 ## V1.2 — experiments
 
@@ -24,13 +26,14 @@
 - [ ] Measure magnetic assistance against target acquisition time and error rate
 - [ ] Test whether ethical friction improves comprehension without increasing abandonment unfairly
 - [ ] Compare in-place recovery with toast-based undo
+- [ ] Add repeatable keyboard and screen-reader test scripts
 - [ ] Document failures and retire weak concepts
 
 ## Later, only if earned
 
 - Platform-specific haptic mappings
 - Spatial-computing prototypes
-- Code Connect or component package
+- Code Connect or reusable component package
 - Research write-up with participant testing
 
 The project should become more empirical before it becomes more enormous.
