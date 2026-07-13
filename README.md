@@ -6,7 +6,7 @@
 
 **A speculative, implementation-minded interaction system for interfaces that understand intention, pressure, attention, consequence, and recovery.**
 
-[Launch the coded playground](https://amydojo.github.io/interface-behavior-lab/) · [Explore the Figma system](https://www.figma.com/design/4jIfeqwhalMPugSAuVtvSi) · [Read the principles](docs/principles.md) · [See the component specifications](components/README.md)
+[Launch the coded playground](https://interface-behavior-lab.vercel.app/) · [Explore the Figma system](https://www.figma.com/design/4jIfeqwhalMPugSAuVtvSi) · [Read the principles](docs/principles.md) · [See the component specifications](components/README.md)
 
 > Independent design research by Amy Do / UNDONE by design. This is not an Apple product, is not affiliated with Apple, and does not represent a prediction of an official operating system.
 
