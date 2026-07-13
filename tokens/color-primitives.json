@@ -1,0 +1,11 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "neutral": {"0":"#FFFFFF","4":"#F7F8FA","8":"#EFF1F5","16":"#DDE1E8","32":"#B3BAC6","48":"#7D8592","72":"#3E444D","88":"#1D2025","96":"#0B0C0E","100":"#000000"},
+  "blue": {"36":"#8DB7FF","56":"#4B86FF","68":"#1F6FFF"},
+  "cyan": {"52":"#59D8FF"},
+  "green": {"52":"#38D98B"},
+  "amber": {"54":"#FFB84D"},
+  "red": {"54":"#FF5C57"},
+  "violet": {"54":"#9B7CFF"},
+  "glass": {"white88":"#FFFFFFE0","white64":"#FFFFFFA3","white40":"#FFFFFF66","white18":"#FFFFFF2E","black44":"#00000070","black22":"#00000038","black10":"#0000001A","blue24":"#4B86FF3D","red20":"#FF5C5733","green20":"#38D98B33","violet18":"#9B7CFF2E"}
+}

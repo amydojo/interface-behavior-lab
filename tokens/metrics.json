@@ -1,0 +1,8 @@
+{
+  "space": {"2":2,"4":4,"6":6,"8":8,"12":12,"16":16,"20":20,"24":24,"32":32,"40":40,"48":48,"64":64},
+  "radius": {"8":8,"12":12,"16":16,"20":20,"24":24,"full":999},
+  "size": {"controlS":36,"controlM":44,"controlL":52,"controlXL":64,"touchMin":44},
+  "stroke": {"hairline":1,"focus":2},
+  "opacity": {"quiet":0.56,"secondary":0.72,"disabled":0.36},
+  "depth": {"rest":0,"hover":2,"active":4,"commit":7}
+}

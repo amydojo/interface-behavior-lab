@@ -1,0 +1,8 @@
+{
+  "motionMs": {"instant":80,"micro":140,"standard":220,"organic":420,"attention":900,"breath":3200},
+  "pressure": {"preview":0.33,"act":0.66,"commit":1},
+  "resistance": {"low":0.15,"medium":0.45,"high":0.8},
+  "magnetismPx": {"near":12,"mid":24,"far":44},
+  "recoverySeconds": {"default":8,"attention":3},
+  "principles": {"stableTarget":true,"namedState":true,"reducedMotionEquivalent":true,"alternateInputRequired":true}
+}

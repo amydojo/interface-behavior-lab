@@ -1,0 +1,19 @@
+{
+  "surface/base": {"light":"#F7F8FA","dark":"#0B0C0E","spatial":"#0B0C0E"},
+  "surface/elevated": {"light":"#FFFFFFE0","dark":"#FFFFFF2E","spatial":"#FFFFFF2E"},
+  "surface/interactive": {"light":"#FFFFFFA3","dark":"#FFFFFF2E","spatial":"#FFFFFF2E"},
+  "surface/pressed": {"light":"#EFF1F5","dark":"#1D2025","spatial":"#FFFFFF66"},
+  "surface/ethical": {"light":"#FF5C5733","dark":"#FF5C5733","spatial":"#FF5C5733"},
+  "surface/success": {"light":"#38D98B33","dark":"#38D98B33","spatial":"#38D98B33"},
+  "surface/reversible": {"light":"#4B86FF3D","dark":"#4B86FF3D","spatial":"#4B86FF3D"},
+  "text/primary": {"light":"#0B0C0E","dark":"#FFFFFF","spatial":"#FFFFFF"},
+  "text/secondary": {"light":"#7D8592","dark":"#B3BAC6","spatial":"#FFFFFFA3"},
+  "border/subtle": {"light":"#DDE1E8","dark":"#FFFFFF2E","spatial":"#FFFFFF2E"},
+  "border/strong": {"light":"#B3BAC6","dark":"#FFFFFF66","spatial":"#FFFFFF66"},
+  "border/focus": {"light":"#4B86FF","dark":"#8DB7FF","spatial":"#59D8FF"},
+  "signal/primary": {"light":"#1F6FFF","dark":"#8DB7FF","spatial":"#59D8FF"},
+  "signal/ethical": {"light":"#FF5C57","dark":"#FF5C57","spatial":"#FF5C57"},
+  "signal/success": {"light":"#38D98B","dark":"#38D98B","spatial":"#38D98B"},
+  "signal/attention": {"light":"#FFB84D","dark":"#FFB84D","spatial":"#FFB84D"},
+  "signal/exploratory": {"light":"#9B7CFF","dark":"#9B7CFF","spatial":"#9B7CFF"}
+}
