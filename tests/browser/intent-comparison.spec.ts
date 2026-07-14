@@ -31,10 +31,14 @@ test.describe('Intent controlled comparison', () => {
     await page.getByRole('radio', { name: 'Conventional first' }).check()
     await page.getByRole('button', { name: 'Begin two-condition trial' }).click()
 
-    await expect(page.getByText('TRIAL A / 2')).toBeVisible()
-    await expect(page.getByText('Condition identity is hidden until both trials are complete.')).toBeVisible()
-    await expect(page.getByText('Conventional', { exact: true })).toHaveCount(0)
-    await expect(page.getByText('Adaptive', { exact: true })).toHaveCount(0)
+    const comparison = page.locator('.comparison-trial')
+    const inspector = page.getByLabel('Intent inspector')
+    await expect(comparison.getByText('TRIAL A / 2')).toBeVisible()
+    await expect(comparison.getByText('Condition identity is hidden until both trials are complete.')).toBeVisible()
+    await expect(comparison.getByText('Conventional', { exact: true })).toHaveCount(0)
+    await expect(comparison.getByText('Adaptive', { exact: true })).toHaveCount(0)
+    await expect(inspector.getByText('Masked during trial', { exact: true })).toBeVisible()
+    await expect(inspector.getByText('Adaptive', { exact: true })).toHaveCount(0)
 
     const firstControl = page.locator('.comparison-control-stage .adaptive-button')
     await expectMinimumTarget(firstControl)
@@ -43,7 +47,7 @@ test.describe('Intent controlled comparison', () => {
     await answerDebrief(page, 3, 'Unchanged')
 
     await page.getByRole('button', { name: 'Continue to Trial B' }).click()
-    await expect(page.getByText('TRIAL B / 2')).toBeVisible()
+    await expect(comparison.getByText('TRIAL B / 2')).toBeVisible()
     const secondControl = page.locator('.comparison-control-stage .adaptive-button')
     await secondControl.focus()
     await expect(secondControl).toHaveAccessibleName('Save to Journal. 2 changes')
@@ -51,8 +55,8 @@ test.describe('Intent controlled comparison', () => {
     await answerDebrief(page, 5, 'Clearer')
 
     await expect(page.getByRole('heading', { name: 'Raw observations, not a winner.' })).toBeVisible()
-    await expect(page.getByText('Conventional', { exact: true })).toBeVisible()
-    await expect(page.getByText('Adaptive', { exact: true })).toBeVisible()
+    await expect(comparison.getByText('Conventional', { exact: true })).toBeVisible()
+    await expect(comparison.getByText('Adaptive', { exact: true })).toBeVisible()
     await expect(page.getByText(/2 trials ·/)).toBeVisible()
     await expect(page.getByText(/order Conventional → Adaptive/i)).toBeVisible()
     await expect(page.getByText(/cannot prove superiority or statistical significance/i)).toBeVisible()
