@@ -18,7 +18,9 @@ export function PressureDemo({ onEvent }: DemoProps) {
     timers.current = []
   }
 
-  useEffect(() => clearTimers, [])
+  useEffect(() => () => {
+    timers.current.forEach(timer => window.clearTimeout(timer))
+  }, [])
 
   const selectStage = (next: number, source = 'explicit stage control') => {
     setStage(next)
