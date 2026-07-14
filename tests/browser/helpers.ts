@@ -1,7 +1,15 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
 export function specimen(page: Page, family: string): Locator {
-  return page.locator(`article.family-${family.toLowerCase()}`)
+  return page.locator(`.active-specimen-stage article.family-${family.toLowerCase()}`)
+}
+
+export async function openFamily(page: Page, family: string): Promise<Locator> {
+  const rail = page.getByRole('navigation', { name: 'Experiment families' })
+  await rail.getByRole('button', { name: new RegExp(family, 'i') }).click()
+  const active = specimen(page, family)
+  await expect(active).toBeVisible()
+  return active
 }
 
 export async function disableNonessentialMotion(page: Page) {
