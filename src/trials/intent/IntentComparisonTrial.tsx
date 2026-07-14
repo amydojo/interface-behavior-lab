@@ -4,10 +4,10 @@ import { clearStoredSession, saveSession } from '../../session/persistence'
 import { TrialSessionRecorder } from '../../session/recorder'
 import type { LabSessionV2 } from '../../session/types'
 import type { DemoProps, LabMode } from '../../types'
-import { availableMetric, unavailableMetric } from '../types'
-import type { ConditionOrderMode, TrialCondition } from '../types'
 import { intentComparisonTrial } from '../definitions/intent'
 import { resolveConditionOrder } from '../order'
+import { availableMetric, unavailableMetric } from '../types'
+import type { ConditionOrderMode, TrialCondition } from '../types'
 import './intent-comparison.css'
 
 type Phase = 'brief' | 'condition' | 'debrief' | 'between' | 'results'
@@ -58,7 +58,7 @@ export function IntentComparisonTrial({ demoProps, mode, onExit, onStateChange }
   const [clarity, setClarity] = useState<ClarityResponse | ''>('')
   const [results, setResults] = useState<ConditionResult[]>([])
   const [session, setSession] = useState<LabSessionV2 | null>(null)
-  const [storageMessage, setStorageMessage] = useState('')
+  const [storageMessage, setStorageMessage] = useState('Session remains in memory only.')
   const recorderRef = useRef<TrialSessionRecorder | null>(null)
   const revealRecordedRef = useRef(false)
 
@@ -77,20 +77,22 @@ export function IntentComparisonTrial({ demoProps, mode, onExit, onStateChange }
   }
 
   useEffect(() => {
-    if (!persistLocally) {
-      clearStoredSession(window.localStorage)
-      setStorageMessage('Session remains in memory only.')
-      return
-    }
-    if (session) {
-      const saved = saveSession(window.localStorage, session)
-      setStorageMessage(saved.ok ? 'Session saved locally for up to 24 hours.' : 'Local storage is unavailable.')
-    }
+    if (!persistLocally || !session) return
+    const saved = saveSession(window.localStorage, session)
+    setStorageMessage(saved.ok ? 'Session saved locally for up to 24 hours.' : 'Local storage is unavailable.')
   }, [persistLocally, session])
 
   useEffect(() => {
     onStateChange?.(`Comparison · ${phase}`)
   }, [onStateChange, phase])
+
+  const changePersistence = (next: boolean) => {
+    setPersistLocally(next)
+    if (!next) {
+      const cleared = clearStoredSession(window.localStorage)
+      setStorageMessage(cleared.ok ? 'Session remains in memory only.' : 'Local storage is unavailable.')
+    }
+  }
 
   const startCondition = (
     condition: TrialCondition,
@@ -286,7 +288,7 @@ export function IntentComparisonTrial({ demoProps, mode, onExit, onStateChange }
           </fieldset>
 
           <label className="comparison-retention">
-            <input type="checkbox" checked={persistLocally} onChange={event => setPersistLocally(event.target.checked)} />
+            <input type="checkbox" checked={persistLocally} onChange={event => changePersistence(event.target.checked)} />
             <span><strong>Keep this session on this device</strong><small>Optional. Local browser storage only, deleted after 24 hours.</small></span>
           </label>
 
@@ -311,41 +313,36 @@ export function IntentComparisonTrial({ demoProps, mode, onExit, onStateChange }
             <p>{intentComparisonTrial.taskPrompt}</p>
           </div>
 
-          <div className="comparison-control-stage" data-condition={activeCondition}>
+          <div className="comparison-control-stage">
             {activeCondition === 'conventional' ? (
-              <>
-                <AdaptiveButton
-                  label={conventionalComplete ? 'Saved' : 'Done'}
-                  metadata={conventionalComplete ? 'Today · just now' : 'Action available'}
-                  tone={conventionalComplete ? 'success' : 'quiet'}
-                  stateName={conventionalComplete ? 'Confirmed' : 'Ready'}
-                  signal={<span className="signal-glyph">{conventionalComplete ? '✓' : '·'}</span>}
-                  onClick={activateConventional}
-                  aria-label={conventionalComplete ? 'Saved. Today, just now' : 'Done. Action available'}
-                />
-                <p className="condition-boundary">Stable conventional control. The exact destination is not progressively disclosed by the control.</p>
-              </>
+              <AdaptiveButton
+                label={conventionalComplete ? 'Saved' : 'Done'}
+                metadata={conventionalComplete ? 'Today · just now' : 'Action available'}
+                tone={conventionalComplete ? 'success' : 'quiet'}
+                stateName={conventionalComplete ? 'Confirmed' : 'Ready'}
+                signal={<span className="signal-glyph">{conventionalComplete ? '✓' : '·'}</span>}
+                onClick={activateConventional}
+                aria-label={conventionalComplete ? 'Saved. Today, just now' : 'Done. Action available'}
+              />
             ) : (
-              <>
-                <AdaptiveButton
-                  label={adaptiveState === 'Rest' ? 'Done' : adaptiveState === 'Revealed' ? 'Save to Journal' : 'Saved'}
-                  metadata={adaptiveState === 'Rest' ? 'Action available' : adaptiveState === 'Revealed' ? '2 changes' : 'Today · just now'}
-                  tone={adaptiveState === 'Rest' ? 'quiet' : adaptiveState === 'Revealed' ? 'primary' : 'success'}
-                  stateName={adaptiveState}
-                  signal={<span className="signal-glyph">{adaptiveState === 'Rest' ? '·' : adaptiveState === 'Revealed' ? '→' : '✓'}</span>}
-                  onPointerEnter={() => recordReveal('pointer')}
-                  onPointerLeave={() => adaptiveState === 'Revealed' && setAdaptiveState('Rest')}
-                  onFocus={() => recordReveal('focus')}
-                  onBlur={() => adaptiveState === 'Revealed' && setAdaptiveState('Rest')}
-                  onClick={activateAdaptive}
-                  aria-label={`${adaptiveState === 'Rest' ? 'Done' : adaptiveState === 'Revealed' ? 'Save to Journal' : 'Saved'}. ${adaptiveState === 'Revealed' ? '2 changes' : adaptiveState === 'Confirmed' ? 'Today, just now' : 'Action available'}`}
-                />
-                <p className="condition-boundary">Adaptive disclosure may reveal destination and affected count before commitment. The target remains fixed.</p>
-              </>
+              <AdaptiveButton
+                label={adaptiveState === 'Rest' ? 'Done' : adaptiveState === 'Revealed' ? 'Save to Journal' : 'Saved'}
+                metadata={adaptiveState === 'Rest' ? 'Action available' : adaptiveState === 'Revealed' ? '2 changes' : 'Today · just now'}
+                tone={adaptiveState === 'Rest' ? 'quiet' : adaptiveState === 'Revealed' ? 'primary' : 'success'}
+                stateName={adaptiveState}
+                signal={<span className="signal-glyph">{adaptiveState === 'Rest' ? '·' : adaptiveState === 'Revealed' ? '→' : '✓'}</span>}
+                onPointerEnter={() => recordReveal('pointer')}
+                onPointerLeave={() => adaptiveState === 'Revealed' && setAdaptiveState('Rest')}
+                onFocus={() => recordReveal('focus')}
+                onBlur={() => adaptiveState === 'Revealed' && setAdaptiveState('Rest')}
+                onClick={activateAdaptive}
+                aria-label={`${adaptiveState === 'Rest' ? 'Done' : adaptiveState === 'Revealed' ? 'Save to Journal' : 'Saved'}. ${adaptiveState === 'Revealed' ? '2 changes' : adaptiveState === 'Confirmed' ? 'Today, just now' : 'Action available'}`}
+              />
             )}
+            <p className="condition-boundary">Use the control naturally. Target size and task facts are held constant.</p>
           </div>
 
-          <p className="comparison-disclaimer">Use the control naturally. The condition label will be disclosed only after both trials.</p>
+          <p className="comparison-disclaimer">The condition label will be disclosed only after both trials.</p>
         </div>
       )}
 
@@ -364,7 +361,7 @@ export function IntentComparisonTrial({ demoProps, mode, onExit, onStateChange }
             <legend>How confident were you in that prediction?</legend>
             <div className="confidence-scale">
               {[1, 2, 3, 4, 5].map(value => (
-                <label key={value}><input type="radio" name="confidence" checked={confidence === value} onChange={() => setConfidence(value)} /><span>{value}</span></label>
+                <label key={value}><input type="radio" name="confidence" aria-label={`Confidence ${value} of 5`} checked={confidence === value} onChange={() => setConfidence(value)} /><span>{value}</span></label>
               ))}
             </div>
             <div className="scale-labels"><span>Not confident</span><span>Very confident</span></div>
@@ -417,7 +414,7 @@ export function IntentComparisonTrial({ demoProps, mode, onExit, onStateChange }
           <div className="comparison-session-note">
             <span>SESSION RECORD</span>
             <p>{session?.trials.length ?? 0} trials · {session?.events.length ?? 0} semantic events · order {conditionOrder.map(conditionName).join(' → ')}</p>
-            <small>{storageMessage || 'Session remained in memory only.'}</small>
+            <small>{storageMessage}</small>
           </div>
 
           <div className="comparison-result-actions">
