@@ -80,6 +80,7 @@ function transition(
 export const reversibleExperiment = {
   id: 'reversible',
   family: 'Reversible',
+  displayName: 'Reversible',
   order: 6,
   lifecycleOrder: 6,
   lifecycleStage: 'RECOVER',
