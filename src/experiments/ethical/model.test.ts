@@ -12,7 +12,10 @@ const states: EthicalState[] = [
 describe('ethicalExperiment', () => {
   it('starts and resets to Notice from every state', () => {
     expect(ethicalExperiment.initialState).toEqual(states[0])
-    for (const _state of states) expect(ethicalExperiment.reset()).toEqual(states[0])
+    for (const state of states) {
+      expect(ethicalExperiment.getPresentation(state).stateName).toBe(state.id)
+      expect(ethicalExperiment.reset()).toEqual(states[0])
+    }
   })
 
   it('requires consequence disclosure before commitment', () => {
