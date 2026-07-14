@@ -19,6 +19,7 @@ describe('App active workspace', () => {
     expect(screen.getByRole('heading', { name: 'One behavior. Its evidence beside it.' })).toBeInTheDocument()
     expect(screen.getByLabelText('Intent inspector')).toBeInTheDocument()
     expect(container.querySelectorAll('.active-specimen-stage .demo-card')).toHaveLength(1)
+    expect(screen.getByRole('button', { name: 'Run controlled comparison' })).toBeInTheDocument()
 
     for (const family of ['Intent', 'Pressure', 'Breathing', 'Magnetic', 'Ethical', 'Reversible']) {
       expect(familyButton(family)).toBeInTheDocument()
@@ -107,6 +108,20 @@ describe('App active workspace', () => {
     expect(screen.getByText('State: Rest')).toBeInTheDocument()
     expect(screen.getByText('laboratory reset')).toBeInTheDocument()
     expect(screen.getByText(/Active trial, session events, and pending timers returned to default/i)).toBeInTheDocument()
+  })
+
+  it('globally resets and exits an active comparison session', () => {
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Run controlled comparison' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Begin two-condition trial' }))
+    expect(screen.getByText('TRIAL A / 2')).toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Reset laboratory' }))
+
+    expect(screen.queryByText('TRIAL A / 2')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Run controlled comparison' })).toBeInTheDocument()
+    expect(screen.getByText('State: Rest')).toBeInTheDocument()
   })
 
   it('keeps external links isolated from the opener context', () => {
