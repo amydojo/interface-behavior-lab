@@ -2,6 +2,30 @@
   gap: 20px;
 }
 
+.ethical-comparison .comparison-trial-header > button,
+.ethical-comparison .comparison-primary-action {
+  min-height: 48px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface-interactive);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ethical-comparison .comparison-trial-header > button:focus-visible,
+.ethical-comparison .comparison-primary-action:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 64%, transparent);
+  outline-offset: 4px;
+}
+
+.ethical-comparison .comparison-primary-action:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
 .ethical-fact-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -200,9 +224,15 @@
     padding: 22px 14px;
   }
 
+  .ethical-comparison .comparison-trial-header > button,
+  .ethical-comparison .comparison-primary-action,
   .ethical-dialog-actions,
   .ethical-alternative-actions {
     width: 100%;
+  }
+
+  .ethical-dialog-actions,
+  .ethical-alternative-actions {
     flex-direction: column;
   }
 
