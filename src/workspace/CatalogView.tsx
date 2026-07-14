@@ -13,7 +13,7 @@ export function CatalogView({ activeId, completedIds, onOpenWorkspace }: Props) 
       <header className="catalog-heading">
         <div>
           <span>SPECIMEN CATALOG</span>
-          <h2 id="catalog-title">All six behaviors, without the wall.</h2>
+          <h2 id="catalog-title" tabIndex={-1}>All six behaviors, without the wall.</h2>
         </div>
         <p>Browse the system, then open one experiment in the focused laboratory workspace.</p>
       </header>
