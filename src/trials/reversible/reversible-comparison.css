@@ -63,6 +63,7 @@
 .reversible-condition-stage {
   position: relative;
   display: grid;
+  grid-template-rows: auto 76px 92px auto;
   min-height: 500px;
   place-items: center;
   align-content: center;
@@ -75,6 +76,7 @@
 }
 
 .reversible-message-card {
+  grid-row: 1;
   display: grid;
   width: min(100%, 520px);
   gap: 7px;
@@ -95,6 +97,7 @@
 }
 
 .reversible-origin-slot {
+  grid-row: 2;
   display: grid;
   width: min(100%, 260px);
   min-height: 76px;
@@ -158,8 +161,12 @@
 }
 
 .reversible-request {
+  grid-row: 3;
+  align-self: stretch;
   display: grid;
   width: min(100%, 520px);
+  min-height: 92px;
+  align-content: center;
   gap: 6px;
   padding: 14px 16px;
   border: 1px solid var(--border-strong);
@@ -229,6 +236,7 @@
 }
 
 .reversible-location-note {
+  grid-row: 4;
   max-width: 520px;
   margin: 0;
   color: var(--text-primary);
