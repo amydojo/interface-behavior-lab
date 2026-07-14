@@ -115,7 +115,7 @@ export const ethicalExperiment = {
   supportedInputContexts: ['hold', 'voice', 'switch'],
   requiredAlternativePaths: ['Confirm without holding', 'Cancel'],
   scenarioIds: [publicPublishScenario.id],
-  conventionalComparisonAvailable: false,
+  conventionalComparisonAvailable: true,
   documentationPath: 'docs/experiments/README.md#ethical',
   implementationNote: 'A non-hold confirmation remains available for motor and switch access. Friction is never used to improve conversion.',
   states: [

@@ -1,0 +1,256 @@
+.ethical-comparison {
+  gap: 20px;
+}
+
+.ethical-comparison .comparison-trial-header > button,
+.ethical-comparison .comparison-primary-action {
+  min-height: 48px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface-interactive);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ethical-comparison .comparison-trial-header > button:focus-visible,
+.ethical-comparison .comparison-primary-action:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 64%, transparent);
+  outline-offset: 4px;
+}
+
+.ethical-comparison .comparison-primary-action:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.ethical-fact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ethical-fact-grid article {
+  display: grid;
+  min-height: 112px;
+  align-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  background: var(--surface-stage);
+}
+
+.ethical-fact-grid span,
+.ethical-confirmation-dialog > span,
+.ethical-outcome-summary + span {
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+
+.ethical-consequence-card > span {
+  color: var(--text-primary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+
+.ethical-fact-grid strong {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.ethical-condition-stage {
+  display: grid;
+  min-height: 390px;
+  place-items: center;
+  gap: 20px;
+  padding: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: 24px;
+  background: var(--surface-stage);
+}
+
+.ethical-publish-trigger,
+.ethical-hold-target {
+  position: relative;
+  display: grid;
+  width: min(240px, 100%);
+  min-height: 72px;
+  place-items: center;
+  gap: 4px;
+  overflow: hidden;
+  padding: 12px 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: 18px;
+  background: var(--surface-interactive);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ethical-publish-trigger strong,
+.ethical-hold-target strong {
+  position: relative;
+  z-index: 2;
+  font-size: 15px;
+}
+
+.ethical-publish-trigger small,
+.ethical-hold-target small {
+  position: relative;
+  z-index: 2;
+  color: var(--text-primary);
+  font-size: 11px;
+}
+
+.ethical-publish-trigger:focus-visible,
+.ethical-hold-target:focus-visible,
+.ethical-dialog-actions button:focus-visible,
+.ethical-alternative-actions button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 64%, transparent);
+  outline-offset: 4px;
+}
+
+.ethical-confirmation-dialog {
+  display: grid;
+  width: min(460px, 100%);
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: 20px;
+  background: var(--surface-panel);
+  box-shadow: 0 24px 70px color-mix(in srgb, #000 18%, transparent);
+}
+
+.ethical-confirmation-dialog h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 22px;
+}
+
+.ethical-consequence-card {
+  display: grid;
+  gap: 7px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: var(--surface-interactive);
+}
+
+.ethical-consequence-card strong {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.ethical-consequence-card p,
+.ethical-simulation-boundary,
+.ethical-outcome-summary p {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.ethical-dialog-actions,
+.ethical-alternative-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ethical-dialog-actions button,
+.ethical-alternative-actions button {
+  min-height: 48px;
+  flex: 1 1 160px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface-interactive);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ethical-condition-stage.is-adaptive {
+  grid-template-rows: auto auto auto auto;
+}
+
+.ethical-hold-progress {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--signal-primary) 24%, transparent) var(--hold-progress), transparent var(--hold-progress));
+  transition: background 32ms linear;
+}
+
+.ethical-condition-stage[data-reduced-motion="true"] .ethical-hold-progress {
+  transition: none;
+}
+
+.ethical-simulation-boundary {
+  max-width: 520px;
+  text-align: center;
+}
+
+.ethical-outcome-summary {
+  display: grid;
+  gap: 5px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  background: var(--surface-stage);
+}
+
+.ethical-outcome-summary strong {
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.ethical-result-grid article dd {
+  text-transform: none;
+}
+
+@media (max-width: 720px) {
+  .ethical-fact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ethical-fact-grid article {
+    min-height: 0;
+  }
+
+  .ethical-condition-stage {
+    min-height: 430px;
+    padding: 22px 14px;
+  }
+
+  .ethical-comparison .comparison-trial-header > button,
+  .ethical-comparison .comparison-primary-action,
+  .ethical-dialog-actions,
+  .ethical-alternative-actions {
+    width: 100%;
+  }
+
+  .ethical-dialog-actions,
+  .ethical-alternative-actions {
+    flex-direction: column;
+  }
+
+  .ethical-dialog-actions button,
+  .ethical-alternative-actions button {
+    width: 100%;
+    flex-basis: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ethical-hold-progress {
+    transition: none !important;
+  }
+}
