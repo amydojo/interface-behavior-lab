@@ -61,6 +61,7 @@ export type ExperimentPresentation = {
 export type ExperimentMetadata = {
   id: ExperimentId
   family: ExperimentFamily
+  displayName: string
   order: number
   lifecycleOrder: number
   lifecycleStage: string
