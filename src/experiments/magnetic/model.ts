@@ -90,7 +90,7 @@ export const magneticExperiment = {
   scenarioIds: [messageSendScenario.id],
   conventionalComparisonAvailable: false,
   documentationPath: 'docs/experiments/README.md#magnetic',
-  implementationNote: 'Assistance strength is supplied by the laboratory. The button never moves, chases, or captures the pointer.',
+  implementationNote: 'Assistance strength is {assistance}%. The button never moves, chases, or captures the pointer.',
   states: [
     { id: 'Far', label: 'Far', description: 'The pointer is outside the assistance field.' },
     { id: 'Near', label: 'Near', description: 'The pointer is within the outer assistance field.' },
@@ -107,3 +107,7 @@ export const magneticExperiment = {
     Released: { label: messageSendScenario.successResult, metadata: 'Delivered', tone: 'success' as const, stateName: 'Released' },
   })[state.id],
 } as const satisfies ExperimentDefinition<MagneticState, MagneticAction>
+
+export function getMagneticImplementationNote(assistance: number) {
+  return magneticExperiment.implementationNote.replace('{assistance}', String(boundedAssistance(assistance)))
+}
