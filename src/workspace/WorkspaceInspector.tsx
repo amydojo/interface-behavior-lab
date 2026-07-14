@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useRef, type ReactNode } from 'react'
 import { experimentRegistry } from '../experiments/registry'
 import type { InputModality, LabEvent } from '../types'
 
@@ -23,12 +23,18 @@ function InspectorDisclosure({
   open?: boolean
   onExpand: (section: string) => void
 }) {
+  const initialTogglePending = useRef(open)
+
   return (
     <details
       className="inspector-disclosure"
       open={open}
       onToggle={event => {
-        if (event.currentTarget.open && event.nativeEvent.isTrusted) onExpand(label)
+        if (initialTogglePending.current) {
+          initialTogglePending.current = false
+          return
+        }
+        if (event.currentTarget.open) onExpand(label)
       }}
     >
       <summary>{label}</summary>
