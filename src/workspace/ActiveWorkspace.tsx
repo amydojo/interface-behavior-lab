@@ -4,6 +4,7 @@ import { SpecimenBoundary } from '../components/SpecimenBoundary'
 import { experimentRegistry } from '../experiments/registry'
 import type { ExperimentId } from '../experiments/types'
 import { scenarioRegistry } from '../scenarios/registry'
+import { BreathingComparisonTrial } from '../trials/breathing/BreathingComparisonTrial'
 import { IntentComparisonTrial } from '../trials/intent/IntentComparisonTrial'
 import '../trials/intent/intent-launch.css'
 import { PressureComparisonTrial } from '../trials/pressure/PressureComparisonTrial'
@@ -49,7 +50,7 @@ export function ActiveWorkspace({
   const activeIndex = experimentRegistry.findIndex(item => item.id === experiment.id)
   const previous = experimentRegistry[(activeIndex - 1 + experimentRegistry.length) % experimentRegistry.length]
   const next = experimentRegistry[(activeIndex + 1) % experimentRegistry.length]
-  const comparisonAvailable = experiment.id === 'intent' || experiment.id === 'pressure'
+  const comparisonAvailable = experiment.id === 'intent' || experiment.id === 'pressure' || experiment.id === 'breathing'
 
   useEffect(() => {
     setComparisonActive(false)
@@ -125,6 +126,13 @@ export function ActiveWorkspace({
             />
           ) : comparisonActive && experiment.id === 'pressure' ? (
             <PressureComparisonTrial
+              demoProps={demoProps}
+              mode={mode}
+              onExit={exitComparison}
+              onStateChange={demoProps.onStateChange}
+            />
+          ) : comparisonActive && experiment.id === 'breathing' ? (
+            <BreathingComparisonTrial
               demoProps={demoProps}
               mode={mode}
               onExit={exitComparison}
