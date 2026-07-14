@@ -4,9 +4,13 @@ export function specimen(page: Page, family: string): Locator {
   return page.locator(`.active-specimen-stage article.family-${family.toLowerCase()}`)
 }
 
+export function familyRailButton(page: Page, family: string): Locator {
+  return page.getByRole('navigation', { name: 'Experiment families' })
+    .getByRole('button', { name: new RegExp(`^\\d{2} ${family}\\b`, 'i') })
+}
+
 export async function openFamily(page: Page, family: string): Promise<Locator> {
-  const rail = page.getByRole('navigation', { name: 'Experiment families' })
-  await rail.getByRole('button', { name: new RegExp(family, 'i') }).click()
+  await familyRailButton(page, family).click()
   const active = specimen(page, family)
   await expect(active).toBeVisible()
   return active
