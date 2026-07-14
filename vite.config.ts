@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.GITHUB_ACTIONS ? '/interface-behavior-lab/' : '/',
+  base: process.env.GITHUB_PAGES ? '/interface-behavior-lab/' : '/',
 })
