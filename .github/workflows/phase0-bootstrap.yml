@@ -6,27 +6,28 @@ on:
       - quality/v1-2-release-hardening
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  snapshot:
+  lockfile:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: quality/v1-2-release-hardening
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: package.json
       - name: Generate deterministic lockfile
         run: npm install --package-lock-only --ignore-scripts
-      - name: Create repository snapshot
-        run: git archive --format=zip --output=repository-snapshot.zip HEAD
-      - uses: actions/upload-artifact@v4
-        with:
-          name: phase0-bootstrap
-          path: |
-            repository-snapshot.zip
-            package-lock.json
-          if-no-files-found: error
-          retention-days: 1
+      - name: Commit lockfile
+        run: |
+          if git diff --quiet -- package-lock.json && git ls-files --error-unmatch package-lock.json >/dev/null 2>&1; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "chore: add deterministic npm lockfile"
+          git push origin HEAD:quality/v1-2-release-hardening
