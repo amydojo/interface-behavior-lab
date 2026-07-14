@@ -29,6 +29,7 @@ function transition(
 export const breathingExperiment = {
   id: 'breathing',
   family: 'Breathing',
+  displayName: 'Breathing',
   order: 3,
   lifecycleOrder: 5,
   lifecycleStage: 'RESOLVE',
