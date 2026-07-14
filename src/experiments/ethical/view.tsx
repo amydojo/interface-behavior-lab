@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { DemoProps } from '../../types'
 import { AdaptiveButton, MeterBars } from '../../components/ControlPrimitives'
+import { publicPublishScenario } from '../../scenarios/public-publish'
 import { ExperimentCard } from '../ExperimentCard'
 import { useExperimentController } from '../runtime'
 import { ethicalExperiment } from './model'
@@ -13,8 +14,8 @@ export function EthicalDemo(props: DemoProps) {
     <ExperimentCard definition={ethicalExperiment}>
       {state.id !== 'Notice' && state.id !== 'Confirmed' && (
         <div className="consequence-card" role="note">
-          <strong>This will be visible to 384 people.</strong>
-          <span>Your location and tagged people will also be included.</span>
+          <strong>{publicPublishScenario.audienceDisclosure}</strong>
+          <span>{publicPublishScenario.includedContextDisclosure}</span>
         </div>
       )}
       <AdaptiveButton
