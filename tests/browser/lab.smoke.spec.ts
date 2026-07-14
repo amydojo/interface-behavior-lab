@@ -18,9 +18,10 @@ test.describe('V1.1 laboratory smoke @smoke', () => {
     await page.goto('/')
 
     const intent = specimen(page, 'Intent')
-    await intent.getByRole('button', { name: /Done/i }).click()
+    const intentButton = intent.locator('.adaptive-button')
+    await intentButton.hover()
     await expect(intent.getByText('State: Revealed')).toBeVisible()
-    await intent.getByRole('button', { name: /Save to Journal/i }).click()
+    await intentButton.click()
     await expect(intent.getByText('State: Confirmed')).toBeVisible()
 
     const pressure = specimen(page, 'Pressure')
@@ -34,7 +35,7 @@ test.describe('V1.1 laboratory smoke @smoke', () => {
     await expect(breathing.getByText('State: Processing')).toBeVisible()
 
     const magnetic = specimen(page, 'Magnetic')
-    const send = magnetic.getByRole('button', { name: /Send/i })
+    const send = magnetic.locator('.adaptive-button')
     await send.focus()
     await expect(magnetic.getByText('State: Aligned')).toBeVisible()
     await send.click()
@@ -66,7 +67,7 @@ test.describe('V1.1 laboratory smoke @smoke', () => {
     await expect(shell).toHaveAttribute('data-reduced-motion', 'true')
 
     const intent = specimen(page, 'Intent')
-    await intent.getByRole('button', { name: /Done/i }).click()
+    await intent.locator('.adaptive-button').hover()
     await expect(intent.getByText('State: Revealed')).toBeVisible()
     await page.getByRole('button', { name: 'Reset laboratory' }).click()
     await expect(specimen(page, 'Intent').getByText('State: Rest')).toBeVisible()
@@ -75,12 +76,14 @@ test.describe('V1.1 laboratory smoke @smoke', () => {
 
   test('supports keyboard activation and visible focus', async ({ page }) => {
     await page.goto('/')
-    const intentButton = specimen(page, 'Intent').getByRole('button', { name: /Done/i })
+    const intent = specimen(page, 'Intent')
+    const intentButton = intent.locator('.adaptive-button')
     await intentButton.focus()
     await expect(intentButton).toBeFocused()
     await expect(intentButton).toHaveCSS('outline-style', 'solid')
+    await expect(intent.getByText('State: Revealed')).toBeVisible()
     await page.keyboard.press('Enter')
-    await expect(specimen(page, 'Intent').getByText('State: Confirmed')).toBeVisible()
+    await expect(intent.getByText('State: Confirmed')).toBeVisible()
   })
 
   test('keeps stable primary targets at or above 44 CSS pixels', async ({ page }) => {
