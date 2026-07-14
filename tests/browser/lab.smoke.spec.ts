@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { expectMinimumTarget, expectNoHorizontalOverflow, openFamily, specimen } from './helpers'
+import { expectMinimumTarget, expectNoHorizontalOverflow, familyRailButton, openFamily, specimen } from './helpers'
 
 const families = ['Intent', 'Pressure', 'Breathing', 'Magnetic', 'Ethical', 'Reversible'] as const
 const familyIds = ['intent', 'pressure', 'breathing', 'magnetic', 'ethical', 'reversible'] as const
@@ -14,9 +14,8 @@ test.describe('V1.2 active laboratory workspace @smoke', () => {
     await expect(page.getByRole('heading', { name: 'Intent', exact: true })).toBeVisible()
     await expect(page.getByLabel('Intent inspector')).toBeVisible()
 
-    const rail = page.getByRole('navigation', { name: 'Experiment families' })
     for (const family of families) {
-      await expect(rail.getByRole('button', { name: new RegExp(family, 'i') })).toBeVisible()
+      await expect(familyRailButton(page, family)).toBeVisible()
     }
 
     await expect(page.locator('.active-specimen-stage .demo-card')).toHaveCount(1)
@@ -110,13 +109,12 @@ test.describe('V1.2 active laboratory workspace @smoke', () => {
     await page.getByRole('checkbox', { name: /Reduce Motion/i }).check()
     await expect(shell).toHaveAttribute('data-reduced-motion', 'true')
 
-    const intent = specimen(page, 'Intent')
-    await intent.locator('.adaptive-button').hover()
-    await expect(intent.getByText('State: Revealed')).toBeVisible()
+    await specimen(page, 'Intent').locator('.adaptive-button').hover()
+    await expect(specimen(page, 'Intent').getByText('State: Revealed')).toBeVisible()
     await page.getByRole('button', { name: 'Reset specimen' }).click()
     await expect(specimen(page, 'Intent').getByText('State: Rest')).toBeVisible()
 
-    await intent.locator('.adaptive-button').hover()
+    await specimen(page, 'Intent').locator('.adaptive-button').hover()
     await page.getByRole('button', { name: 'Reset laboratory' }).click()
     await expect(specimen(page, 'Intent').getByText('State: Rest')).toBeVisible()
     await expect(page.getByText('laboratory reset')).toBeVisible()
@@ -124,8 +122,7 @@ test.describe('V1.2 active laboratory workspace @smoke', () => {
 
   test('supports keyboard family selection and visible focus', async ({ page }) => {
     await page.goto('/#lab/intent')
-    const pressure = page.getByRole('navigation', { name: 'Experiment families' })
-      .getByRole('button', { name: /Pressure/i })
+    const pressure = familyRailButton(page, 'Pressure')
     await pressure.focus()
     await expect(pressure).toBeFocused()
     await expect(pressure).toHaveCSS('outline-style', 'solid')
@@ -139,6 +136,7 @@ test.describe('V1.2 active laboratory workspace @smoke', () => {
   test('keeps the active primary target stable and at least 44 CSS pixels', async ({ page }) => {
     await page.goto('/#lab/intent')
     const intentButton = specimen(page, 'Intent').locator('.adaptive-button')
+    await intentButton.scrollIntoViewIfNeeded()
     const before = await intentButton.boundingBox()
     await intentButton.hover()
     const after = await intentButton.boundingBox()
@@ -155,8 +153,10 @@ test.describe('V1.2 active laboratory workspace @smoke', () => {
     await page.clock.install()
     await page.goto('/#lab/intent')
     const intent = specimen(page, 'Intent')
-    await intent.getByRole('button', { name: /Done/i }).click()
-    await intent.getByRole('button', { name: /Save to Journal/i }).click()
+    const intentButton = intent.locator('.adaptive-button')
+    await intentButton.focus()
+    await expect(intent.getByText('State: Revealed')).toBeVisible()
+    await intentButton.click()
     await expect(intent.getByText('State: Confirmed')).toBeVisible()
 
     const pressure = await openFamily(page, 'Pressure')
