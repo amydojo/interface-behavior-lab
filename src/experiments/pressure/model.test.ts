@@ -20,13 +20,31 @@ describe('pressureExperiment', () => {
     }
   })
 
-  it('keeps explicit stage transitions and deterministic hold thresholds', () => {
+  it('supports explicit stage selection independently of simulated hold', () => {
+    const selected = pressureExperiment.transition(
+      states[0],
+      { type: 'selectStage', stage: 'Commit' },
+      transitionContext(),
+    )
+    expect(selected.state).toEqual(states[2])
+    expect(selected.effects).toContainEqual({
+      type: 'emit',
+      action: 'threshold selected',
+      detail: 'Commit via explicit stage control',
+    })
+  })
+
+  it('keeps deterministic hold thresholds and declares replacement effects on repeated starts', () => {
     const started = pressureExperiment.transition(states[0], { type: 'holdStarted' }, transitionContext())
-    const scheduled = started.effects.filter(effect => effect.type === 'schedule')
-    expect(scheduled).toEqual(expect.arrayContaining([
-      expect.objectContaining({ delayMs: 450, action: { type: 'actThresholdReached' } }),
-      expect.objectContaining({ delayMs: 1200, action: { type: 'commitThresholdReached' } }),
-    ]))
+    const repeated = pressureExperiment.transition(started.state, { type: 'holdStarted' }, transitionContext())
+    for (const result of [started, repeated]) {
+      const scheduled = result.effects.filter(effect => effect.type === 'schedule')
+      expect(scheduled).toEqual(expect.arrayContaining([
+        expect.objectContaining({ timerId: 'pressure-act-threshold', delayMs: 450, action: { type: 'actThresholdReached' } }),
+        expect.objectContaining({ timerId: 'pressure-commit-threshold', delayMs: 1200, action: { type: 'commitThresholdReached' } }),
+      ]))
+      expect(result.effects.filter(effect => effect.type === 'cancel')).toHaveLength(2)
+    }
 
     expect(pressureExperiment.transition(states[0], { type: 'actThresholdReached' }, transitionContext()).state.stage).toBe('Act')
     expect(pressureExperiment.transition(states[0], { type: 'commitThresholdReached' }, transitionContext()).state.stage).toBe('Commit')
@@ -46,9 +64,9 @@ describe('pressureExperiment', () => {
     expect(permanent.effects.some(effect => effect.type === 'emit' && effect.detail === 'Deleted permanently')).toBe(true)
   })
 
-  it('clears transient results without changing the selected stage', () => {
+  it('clears transient results without changing the selected stage and ignores stale result expiry', () => {
     const result = pressureExperiment.transition(states[1], { type: 'activate' }, transitionContext()).state
     expect(pressureExperiment.transition(result, { type: 'resultElapsed' }, transitionContext()).state).toEqual(states[1])
-    expect(pressureExperiment.transition(states[0], { type: 'resultElapsed' }, transitionContext()).state).toEqual(states[0])
+    expect(pressureExperiment.transition(states[0], { type: 'resultElapsed' }, transitionContext())).toEqual({ state: states[0], effects: [] })
   })
 })
