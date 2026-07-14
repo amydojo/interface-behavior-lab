@@ -22,7 +22,7 @@ class MemoryStorage {
 function createSession() {
   return new TrialSessionRecorder({
     settings: {
-      inputContext: 'keyboard' as never,
+      inputContext: 'switch',
       materialMode: 'light',
       reducedMotion: true,
       assistance: 0,
