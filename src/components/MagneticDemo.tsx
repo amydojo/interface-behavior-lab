@@ -15,7 +15,9 @@ export function MagneticDemo({ assistance, onEvent }: DemoProps) {
     resetTimer.current = null
   }
 
-  useEffect(() => clearResetTimer, [])
+  useEffect(() => () => {
+    if (resetTimer.current !== null) window.clearTimeout(resetTimer.current)
+  }, [])
 
   const updateDistance = (clientX: number, clientY: number) => {
     if (!buttonRef.current || state === 'Released') return
