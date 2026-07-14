@@ -9,7 +9,7 @@ async function answerDebrief(
   accidental: 'No' | 'Yes' = 'No',
 ) {
   await page.getByRole('radio', { name: '384 people, location, and tagged people' }).check()
-  await page.getByRole('radio', { name: accidental }).check()
+  await page.getByRole('radio', { name: accidental, exact: true }).check()
   await page.getByRole('radio', { name: `Outcome confidence ${confidence} of 5` }).check()
   await page.getByRole('radio', { name: `Coercion ${coercion} of 5` }).check()
   await page.getByRole('button', { name: 'Record trial observation' }).click()
