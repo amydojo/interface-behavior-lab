@@ -34,13 +34,23 @@ describe('magneticExperiment', () => {
     expect(magneticExperiment.transition(states[2], { type: 'leave' }, transitionContext()).state).toEqual(states[0])
   })
 
-  it('releases once, schedules one reset, and ignores pointer drift while released', () => {
+  it('releases once, schedules one reset, and ignores invalid released-state actions', () => {
     const released = magneticExperiment.transition(states[2], { type: 'activate' }, transitionContext())
     expect(released.state.id).toBe('Released')
     expect(released.effects.filter(effect => effect.type === 'schedule')).toHaveLength(1)
 
-    const drift = magneticExperiment.transition(released.state, { type: 'pointerDistance', distance: 500 }, transitionContext())
-    expect(drift.state).toEqual(released.state)
+    for (const action of [
+      { type: 'pointerDistance', distance: 500 } as const,
+      { type: 'focus' } as const,
+      { type: 'leave' } as const,
+    ]) {
+      expect(magneticExperiment.transition(released.state, action, transitionContext())).toEqual({
+        state: released.state,
+        effects: [],
+      })
+    }
+
     expect(magneticExperiment.transition(released.state, { type: 'releaseElapsed' }, transitionContext()).state).toEqual(states[0])
+    expect(magneticExperiment.transition(states[0], { type: 'releaseElapsed' }, transitionContext())).toEqual({ state: states[0], effects: [] })
   })
 })
