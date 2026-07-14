@@ -42,7 +42,9 @@ test.describe('V1.2 active workspace visual contract @visual', () => {
     await page.getByRole('button', { name: 'light', exact: true }).click()
     await specimen(page, 'Ethical').getByRole('button', { name: /^Publish/i }).click()
     await disableNonessentialMotion(page)
-    await expectVisual(page.locator('.workspace-shell'), 'workspace-ethical-desktop-light', testInfo)
+    await expectVisual(page.locator('.workspace-shell'), 'workspace-ethical-desktop-light', testInfo, {
+      mask: [page.locator('.inspector-history time')],
+    })
   })
 
   test('tablet dark mode, Magnetic aligned', async ({ page }, testInfo) => {
@@ -51,7 +53,9 @@ test.describe('V1.2 active workspace visual contract @visual', () => {
     await page.getByRole('button', { name: 'dark', exact: true }).click()
     await specimen(page, 'Magnetic').locator('.adaptive-button').focus()
     await disableNonessentialMotion(page)
-    await expectVisual(page.locator('.workspace-shell'), 'workspace-magnetic-tablet-dark', testInfo)
+    await expectVisual(page.locator('.workspace-shell'), 'workspace-magnetic-tablet-dark', testInfo, {
+      mask: [page.locator('.inspector-history time')],
+    })
   })
 
   test('mobile spatial mode, Reversible expiring', async ({ page }, testInfo) => {
@@ -63,7 +67,7 @@ test.describe('V1.2 active workspace visual contract @visual', () => {
     await page.clock.fastForward(6100)
     await disableNonessentialMotion(page)
     await expectVisual(page.locator('.workspace-shell'), 'workspace-reversible-mobile-expiring', testInfo, {
-      mask: [card.locator('.adaptive-meta')],
+      mask: [card.locator('.adaptive-meta'), page.locator('.inspector-history time')],
     })
   })
 
@@ -72,6 +76,8 @@ test.describe('V1.2 active workspace visual contract @visual', () => {
     await page.goto('/#lab/ethical')
     await page.getByText('Success signal', { exact: true }).click()
     await disableNonessentialMotion(page)
-    await expectVisual(page.locator('.workspace-inspector'), 'workspace-inspector-mobile-expanded', testInfo)
+    await expectVisual(page.locator('.workspace-inspector'), 'workspace-inspector-mobile-expanded', testInfo, {
+      mask: [page.locator('.inspector-history time')],
+    })
   })
 })
