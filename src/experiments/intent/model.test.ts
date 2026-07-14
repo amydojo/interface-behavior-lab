@@ -33,10 +33,23 @@ describe('intentExperiment', () => {
 
   it('handles hide, repeated reveal, and confirmation expiry deterministically', () => {
     const revealed = intentExperiment.transition(intentExperiment.reset(), { type: 'reveal' }, transitionContext()).state
-    expect(intentExperiment.transition(revealed, { type: 'reveal' }, transitionContext()).state).toEqual(revealed)
+    expect(intentExperiment.transition(revealed, { type: 'reveal' }, transitionContext())).toEqual({ state: revealed, effects: [] })
     expect(intentExperiment.transition(revealed, { type: 'hide' }, transitionContext()).state.id).toBe('Rest')
 
     const confirmed = intentExperiment.transition(revealed, { type: 'activate' }, transitionContext()).state
     expect(intentExperiment.transition(confirmed, { type: 'confirmationElapsed' }, transitionContext()).state.id).toBe('Rest')
+  })
+
+  it('ignores actions that are invalid for the current state', () => {
+    const rest = intentExperiment.reset()
+    expect(intentExperiment.transition(rest, { type: 'hide' }, transitionContext())).toEqual({ state: rest, effects: [] })
+    expect(intentExperiment.transition(rest, { type: 'confirmationElapsed' }, transitionContext())).toEqual({ state: rest, effects: [] })
+
+    const revealed = { id: 'Revealed' as const }
+    expect(intentExperiment.transition(revealed, { type: 'confirmationElapsed' }, transitionContext())).toEqual({ state: revealed, effects: [] })
+
+    const confirmed = { id: 'Confirmed' as const }
+    expect(intentExperiment.transition(confirmed, { type: 'reveal' }, transitionContext())).toEqual({ state: confirmed, effects: [] })
+    expect(intentExperiment.transition(confirmed, { type: 'hide' }, transitionContext())).toEqual({ state: confirmed, effects: [] })
   })
 })
