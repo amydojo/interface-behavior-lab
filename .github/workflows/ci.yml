@@ -25,19 +25,24 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run typecheck
+      - name: Run typecheck
+        run: |
+          set -o pipefail
+          npm run typecheck 2>&1 | tee typecheck.log
       - run: npm run lint
       - name: Verify diff integrity
         run: git diff --check origin/main...HEAD
       - name: Run unit and component tests
         run: npm run test -- --reporter=verbose 2>&1 | tee unit-test.log
-      - name: Upload unit-test diagnostics
+      - name: Upload quality diagnostics
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: unit-test-diagnostics
-          path: unit-test.log
-          if-no-files-found: error
+          name: quality-diagnostics
+          path: |
+            typecheck.log
+            unit-test.log
+          if-no-files-found: ignore
           retention-days: 7
 
   build:
