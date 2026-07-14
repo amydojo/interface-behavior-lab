@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './styles.css'
+import './hardening.css'
 import type { Family, InputModality, LabEvent, LabMode } from './types'
 import { LabControls } from './components/LabControls'
 import { EventLog } from './components/EventLog'
