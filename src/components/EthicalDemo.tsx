@@ -9,21 +9,32 @@ export function EthicalDemo({ onEvent }: DemoProps) {
   const [state, setState] = useState<EthicalState>('Notice')
   const [progress, setProgress] = useState(0)
   const interval = useRef<number | null>(null)
+  const resetTimer = useRef<number | null>(null)
   const startedAt = useRef(0)
 
-  const stopTimer = () => {
-    if (interval.current) window.clearInterval(interval.current)
+  const stopHoldTimer = () => {
+    if (interval.current !== null) window.clearInterval(interval.current)
     interval.current = null
   }
 
-  useEffect(() => () => stopTimer(), [])
+  const stopResetTimer = () => {
+    if (resetTimer.current !== null) window.clearTimeout(resetTimer.current)
+    resetTimer.current = null
+  }
+
+  useEffect(() => () => {
+    if (interval.current !== null) window.clearInterval(interval.current)
+    if (resetTimer.current !== null) window.clearTimeout(resetTimer.current)
+  }, [])
 
   const confirm = (method: string) => {
-    stopTimer()
+    stopHoldTimer()
+    stopResetTimer()
     setProgress(100)
     setState('Confirmed')
     onEvent('Ethical', 'action committed', `Published to 384 people via ${method}`)
-    window.setTimeout(() => {
+    resetTimer.current = window.setTimeout(() => {
+      resetTimer.current = null
       setState('Notice')
       setProgress(0)
     }, 2200)
@@ -34,7 +45,7 @@ export function EthicalDemo({ onEvent }: DemoProps) {
     setState('Hold')
     startedAt.current = performance.now()
     onEvent('Ethical', 'deliberate hold started', 'One breath · 1.5 seconds')
-    stopTimer()
+    stopHoldTimer()
     interval.current = window.setInterval(() => {
       const next = Math.min(100, ((performance.now() - startedAt.current) / HOLD_MS) * 100)
       setProgress(next)
@@ -44,7 +55,7 @@ export function EthicalDemo({ onEvent }: DemoProps) {
 
   const cancelHold = () => {
     if (state === 'Hold' && progress < 100) {
-      stopTimer()
+      stopHoldTimer()
       setProgress(0)
       setState('Resist')
       onEvent('Ethical', 'hold cancelled', 'Commitment threshold not reached')
@@ -112,7 +123,8 @@ export function EthicalDemo({ onEvent }: DemoProps) {
         <div className="ethical-alternatives">
           <button type="button" onClick={() => confirm('accessible confirm action')}>Confirm without holding</button>
           <button type="button" onClick={() => {
-            stopTimer()
+            stopHoldTimer()
+            stopResetTimer()
             setState('Notice')
             setProgress(0)
             onEvent('Ethical', 'action cancelled', 'Returned to notice state')
