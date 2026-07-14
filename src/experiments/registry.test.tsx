@@ -59,6 +59,7 @@ describe('experimentRegistry', () => {
       expect(experiment.requiredAlternativePaths.length).toBeGreaterThan(0)
       expect(experiment.documentationPath).toMatch(/^docs\/experiments\//)
       expect(experiment.states.length).toBeGreaterThan(0)
+      expect(JSON.parse(JSON.stringify(experiment.reset()))).toEqual(experiment.reset())
       for (const scenarioId of experiment.scenarioIds) expect(scenarioRegistry[scenarioId]).toBeDefined()
     }
   })
