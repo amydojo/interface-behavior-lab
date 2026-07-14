@@ -38,9 +38,15 @@ describe('ethicalExperiment', () => {
     expect(cancelled.effects.some(effect => effect.type === 'emit' && effect.action === 'action cancelled')).toBe(true)
   })
 
-  it('uses deterministic hold boundaries and an explicit cancellation path', () => {
+  it('uses deterministic hold boundaries and replaces repeated hold effects by timer ID', () => {
     const started = ethicalExperiment.transition(states[1], { type: 'beginHold' }, transitionContext({ now: 100 }))
     expect(started.state).toEqual({ id: 'Hold', progress: 0, holdStartedAt: 100 })
+    const repeated = ethicalExperiment.transition(started.state, { type: 'beginHold' }, transitionContext({ now: 200 }))
+    expect(repeated.state).toEqual({ id: 'Hold', progress: 0, holdStartedAt: 200 })
+    expect(repeated.effects).toEqual(expect.arrayContaining([
+      { type: 'cancel', timerId: 'ethical-hold-progress' },
+      expect.objectContaining({ type: 'repeat', timerId: 'ethical-hold-progress', intervalMs: 32 }),
+    ]))
 
     const before = ethicalExperiment.transition(started.state, { type: 'holdTick' }, transitionContext({ now: 100 + ETHICAL_HOLD_MS - 1 }))
     expect(before.state.id).toBe('Hold')
@@ -51,5 +57,20 @@ describe('ethicalExperiment', () => {
 
     const cancelled = ethicalExperiment.transition(started.state, { type: 'cancelHold' }, transitionContext())
     expect(cancelled.state.id).toBe('Resist')
+  })
+
+  it('ignores actions that are invalid for the current state and expires confirmation once', () => {
+    for (const action of [
+      { type: 'beginHold' } as const,
+      { type: 'holdTick' } as const,
+      { type: 'cancelHold' } as const,
+      { type: 'cancel' } as const,
+      { type: 'confirmationElapsed' } as const,
+    ]) {
+      expect(ethicalExperiment.transition(states[0], action, transitionContext())).toEqual({ state: states[0], effects: [] })
+    }
+
+    expect(ethicalExperiment.transition(states[3], { type: 'confirmationElapsed' }, transitionContext()).state).toEqual(states[0])
+    expect(ethicalExperiment.transition(states[3], { type: 'activate' }, transitionContext())).toEqual({ state: states[3], effects: [] })
   })
 })
