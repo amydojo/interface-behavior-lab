@@ -94,6 +94,12 @@ export type ExperimentRegistryEntry = ExperimentMetadata & {
   Renderer: ComponentType<DemoProps>
 }
 
+export type WorkspaceExperimentEntry = ExperimentRegistryEntry & {
+  states: readonly ExperimentStateDescriptor[]
+  initialState: ExperimentState
+  reset: () => ExperimentState
+}
+
 export function registerExperiment<
   S extends ExperimentState,
   A extends ExperimentAction,

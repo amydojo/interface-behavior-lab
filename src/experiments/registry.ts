@@ -11,7 +11,7 @@ import { PressureDemo } from './pressure/view'
 import { reversibleExperiment } from './reversible/model'
 import { ReversibleDemo } from './reversible/view'
 import { registerExperiment } from './types'
-import type { ExperimentId, ExperimentRegistryEntry } from './types'
+import type { ExperimentId, WorkspaceExperimentEntry } from './types'
 
 const intent = registerExperiment(intentExperiment, IntentDemo)
 const pressure = registerExperiment(pressureExperiment, PressureDemo)
@@ -20,20 +20,20 @@ const magnetic = registerExperiment(magneticExperiment, MagneticDemo)
 const ethical = registerExperiment(ethicalExperiment, EthicalDemo)
 const reversible = registerExperiment(reversibleExperiment, ReversibleDemo)
 
-export const experimentRegistry = [
+export const experimentRegistry: readonly WorkspaceExperimentEntry[] = [
   intent,
   pressure,
   breathing,
   magnetic,
   ethical,
   reversible,
-] as const satisfies readonly ExperimentRegistryEntry[]
+]
 
-export const experimentById = {
+export const experimentById: Record<ExperimentId, WorkspaceExperimentEntry> = {
   intent,
   pressure,
   breathing,
   magnetic,
   ethical,
   reversible,
-} satisfies Record<ExperimentId, ExperimentRegistryEntry>
+}

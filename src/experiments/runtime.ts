@@ -45,6 +45,10 @@ export function useExperimentController<
   propsRef.current = props
   clockRef.current = clock
 
+  const notifyState = useCallback((next: S) => {
+    propsRef.current.onStateChange?.(next.id)
+  }, [])
+
   const cancelTimer = useCallback((timerId: string) => {
     const timer = timersRef.current.get(timerId)
     if (!timer) return
@@ -100,8 +104,9 @@ export function useExperimentController<
     })
     stateRef.current = result.state
     setState(result.state)
+    notifyState(result.state)
     processEffects(result.effects)
-  }, [processEffects])
+  }, [notifyState, processEffects])
 
   dispatchRef.current = dispatch
 
@@ -111,16 +116,18 @@ export function useExperimentController<
     const next = definitionRef.current.reset()
     stateRef.current = next
     setState(next)
-  }, [cancelAllTimers])
+    notifyState(next)
+  }, [cancelAllTimers, notifyState])
 
   useEffect(() => {
     mountedRef.current = true
+    notifyState(stateRef.current)
     return () => {
       mountedRef.current = false
       generationRef.current += 1
       cancelAllTimers()
     }
-  }, [cancelAllTimers])
+  }, [cancelAllTimers, notifyState])
 
   return { state, dispatch, reset }
 }

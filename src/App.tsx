@@ -1,11 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './styles.css'
 import './hardening.css'
 import type { Family, InputModality, LabEvent, LabMode } from './types'
 import { LabControls } from './components/LabControls'
-import { EventLog } from './components/EventLog'
-import { SpecimenBoundary } from './components/SpecimenBoundary'
-import { experimentRegistry } from './experiments/registry'
+import { experimentById, experimentRegistry } from './experiments/registry'
+import type { ExperimentId } from './experiments/types'
+import { ActiveWorkspace } from './workspace/ActiveWorkspace'
+import { CatalogView } from './workspace/CatalogView'
+import {
+  defaultExperimentId,
+  parseWorkspaceHash,
+  workspaceHash,
+  type WorkspaceLocation,
+} from './workspace/location'
 
 function timeLabel() {
   return new Intl.DateTimeFormat(undefined, {
@@ -13,16 +20,28 @@ function timeLabel() {
   }).format(new Date())
 }
 
-const lifecycleExperiments = [...experimentRegistry].sort((left, right) => left.lifecycleOrder - right.lifecycleOrder)
+function readInitialLocation(): WorkspaceLocation {
+  if (typeof window === 'undefined') return { view: 'workspace', experimentId: defaultExperimentId }
+  return parseWorkspaceHash(window.location.hash).location
+}
 
 export default function App() {
+  const initialLocation = useMemo(readInitialLocation, [])
   const [mode, setMode] = useState<LabMode>('spatial')
   const [modality, setModality] = useState<InputModality>('pointer')
   const [reducedMotion, setReducedMotion] = useState(false)
   const [lowEffects, setLowEffects] = useState(false)
   const [assistance, setAssistance] = useState(62)
   const [events, setEvents] = useState<LabEvent[]>([])
-  const [session, setSession] = useState(1)
+  const [location, setLocation] = useState<WorkspaceLocation>(initialLocation)
+  const [activeState, setActiveState] = useState(() => experimentById[initialLocation.experimentId].initialState.id)
+  const [completedIds, setCompletedIds] = useState<Set<ExperimentId>>(() => new Set())
+  const [specimenEpoch, setSpecimenEpoch] = useState(0)
+  const locationRef = useRef(location)
+  const activeHeadingRef = useRef<HTMLHeadingElement>(null)
+
+  locationRef.current = location
+  const activeExperiment = experimentById[location.experimentId]
 
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -32,6 +51,13 @@ export default function App() {
   }, [])
 
   const onEvent = useCallback((family: Family, action: string, detail?: string) => {
+    if (family !== 'System') {
+      const experiment = experimentRegistry.find(item => item.family === family)
+      if (experiment) {
+        setCompletedIds(current => current.has(experiment.id) ? current : new Set([...current, experiment.id]))
+      }
+    }
+
     setEvents(current => [{
       id: Date.now() + Math.random(),
       at: timeLabel(),
@@ -39,16 +65,93 @@ export default function App() {
       action,
       detail,
       modality,
-    }, ...current].slice(0, 32))
+    }, ...current].slice(0, 48))
   }, [modality])
 
-  const demoProps = useMemo(() => ({ reducedMotion, modality, assistance, onEvent }), [reducedMotion, modality, assistance, onEvent])
+  const applyLocation = useCallback((next: WorkspaceLocation, focusTarget = false) => {
+    const current = locationRef.current
+    if (current.view === next.view && current.experimentId === next.experimentId) return false
 
-  const reset = () => {
-    setSession(value => value + 1)
-    setEvents([])
-    onEvent('System', 'laboratory reset', 'All component state returned to default')
-  }
+    locationRef.current = next
+    setLocation(next)
+    setActiveState(experimentById[next.experimentId].initialState.id)
+    setSpecimenEpoch(value => value + 1)
+
+    if (focusTarget) {
+      window.requestAnimationFrame(() => {
+        if (next.view === 'workspace') activeHeadingRef.current?.focus()
+        else document.getElementById('catalog-title')?.focus()
+      })
+    }
+
+    return true
+  }, [])
+
+  useEffect(() => {
+    const parsed = parseWorkspaceHash(window.location.hash)
+    if (!parsed.valid) window.history.replaceState(null, '', workspaceHash(parsed.location))
+
+    const syncLocation = () => {
+      const next = parseWorkspaceHash(window.location.hash)
+      if (!next.valid) window.history.replaceState(null, '', workspaceHash(next.location))
+      applyLocation(next.location)
+    }
+
+    window.addEventListener('popstate', syncLocation)
+    window.addEventListener('hashchange', syncLocation)
+    return () => {
+      window.removeEventListener('popstate', syncLocation)
+      window.removeEventListener('hashchange', syncLocation)
+    }
+  }, [applyLocation])
+
+  const selectFamily = useCallback((experimentId: ExperimentId, source: 'keyboard' | 'pointer') => {
+    const previous = locationRef.current
+    const next: WorkspaceLocation = { view: 'workspace', experimentId }
+    if (previous.view === next.view && previous.experimentId === next.experimentId) return
+
+    window.history.pushState(null, '', workspaceHash(next))
+    applyLocation(next, source === 'keyboard')
+    onEvent('System', 'family selected', `${previous.experimentId} → ${experimentId}`)
+    if (previous.view === 'catalog') onEvent('System', 'workspace opened', experimentById[experimentId].displayName)
+  }, [applyLocation, onEvent])
+
+  const openCatalog = useCallback((source: 'keyboard' | 'pointer') => {
+    const current = locationRef.current
+    if (current.view === 'catalog') return
+    const next: WorkspaceLocation = { view: 'catalog', experimentId: current.experimentId }
+    window.history.pushState(null, '', workspaceHash(next))
+    applyLocation(next, source === 'keyboard')
+    onEvent('System', 'catalog opened', current.experimentId)
+  }, [applyLocation, onEvent])
+
+  const resetLaboratory = useCallback(() => {
+    setSpecimenEpoch(value => value + 1)
+    setActiveState(activeExperiment.initialState.id)
+    setCompletedIds(new Set())
+    setEvents([{
+      id: Date.now() + Math.random(),
+      at: timeLabel(),
+      family: 'System',
+      action: 'laboratory reset',
+      detail: 'Active trial, session events, and pending timers returned to default',
+      modality,
+    }])
+  }, [activeExperiment.initialState.id, modality])
+
+  const resetSpecimen = useCallback(() => {
+    setSpecimenEpoch(value => value + 1)
+    setActiveState(activeExperiment.initialState.id)
+    onEvent(activeExperiment.family, 'specimen reset', `Returned to ${activeExperiment.initialState.id}`)
+  }, [activeExperiment, onEvent])
+
+  const demoProps = useMemo(() => ({
+    reducedMotion,
+    modality,
+    assistance,
+    onEvent,
+    onStateChange: setActiveState,
+  }), [reducedMotion, modality, assistance, onEvent])
 
   return (
     <div
@@ -56,6 +159,7 @@ export default function App() {
       data-mode={mode}
       data-reduced-motion={reducedMotion ? 'true' : 'false'}
       data-low-effects={lowEffects ? 'true' : 'false'}
+      data-workspace-view={location.view}
     >
       <div className="ambient-field" aria-hidden="true"><i /><i /></div>
       <header className="site-header">
@@ -76,8 +180,17 @@ export default function App() {
             <h1>Adaptive<br />Controls</h1>
             <p>A coded interaction laboratory for controls that understand intention, pressure, attention, consequence, and recovery.</p>
             <div className="hero-actions">
-              <a href="#laboratory">Enter laboratory</a>
-              <span>V1.1 · 6 live behaviors</span>
+              <a
+                href={workspaceHash({ view: 'workspace', experimentId: location.experimentId })}
+                onClick={event => {
+                  event.preventDefault()
+                  if (location.view === 'catalog') selectFamily(location.experimentId, 'pointer')
+                  else document.getElementById('laboratory')?.scrollIntoView({ block: 'start' })
+                }}
+              >
+                Enter laboratory
+              </a>
+              <span>V1.2 · FOCUSED WORKSPACE</span>
             </div>
           </div>
           <div className="hero-object" aria-hidden="true">
@@ -114,41 +227,31 @@ export default function App() {
           }}
           assistance={assistance}
           onAssistanceChange={next => setAssistance(next)}
-          onReset={reset}
+          onReset={resetLaboratory}
         />
 
-        <section id="laboratory" className="laboratory" aria-labelledby="lab-title">
-          <header className="section-heading">
-            <span>LIVE COMPONENTS</span>
-            <h2 id="lab-title">Six behaviors. One action language.</h2>
-            <p>Each specimen uses a native button, a stable target, named states, and a non-novel path when the enhanced input is unavailable.</p>
-          </header>
-          <div className="demo-grid" key={session}>
-            {experimentRegistry.map(experiment => (
-              <SpecimenBoundary name={experiment.family} key={experiment.id}>
-                <experiment.Renderer {...demoProps} />
-              </SpecimenBoundary>
-            ))}
-          </div>
-        </section>
-
-        <section className="lower-grid">
-          <div className="lifecycle-panel">
-            <span>ACTION LIFECYCLE</span>
-            <h2>One action can move through several behaviors without becoming several interfaces.</h2>
-            <div className="lifecycle-steps">
-              {lifecycleExperiments.map(experiment => (
-                <article key={experiment.id}>
-                  <small>{String(experiment.lifecycleOrder).padStart(2, '0')}</small>
-                  <span>{experiment.lifecycleStage}</span>
-                  <strong>{experiment.family}</strong>
-                  <em>{experiment.lifecycleVerb}</em>
-                </article>
-              ))}
-            </div>
-          </div>
-          <EventLog events={events} />
-        </section>
+        {location.view === 'workspace' ? (
+          <ActiveWorkspace
+            experiment={activeExperiment}
+            currentState={activeState}
+            completedIds={completedIds}
+            events={events}
+            modality={modality}
+            demoProps={demoProps}
+            specimenKey={`${activeExperiment.id}-${specimenEpoch}`}
+            headingRef={activeHeadingRef}
+            onSelectFamily={selectFamily}
+            onOpenCatalog={openCatalog}
+            onResetSpecimen={resetSpecimen}
+            onInspectorExpand={section => onEvent('System', 'inspector section expanded', section)}
+          />
+        ) : (
+          <CatalogView
+            activeId={location.experimentId}
+            completedIds={completedIds}
+            onOpenWorkspace={selectFamily}
+          />
+        )}
 
         <section className="system-note">
           <span>SYSTEM NOTE</span>

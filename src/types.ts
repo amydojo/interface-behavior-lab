@@ -16,4 +16,5 @@ export type DemoProps = {
   modality: InputModality
   assistance: number
   onEvent: (family: Family, action: string, detail?: string) => void
+  onStateChange?: (stateId: string) => void
 }
