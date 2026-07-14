@@ -12,7 +12,7 @@ export function ExperimentCard({ definition, children, footer = definition.imple
   return (
     <DemoCard
       number={String(definition.order).padStart(2, '0')}
-      family={definition.family}
+      family={definition.displayName}
       value={definition.value}
       description={definition.description}
       modalities={definition.supportedInputContexts.map(context => context.toUpperCase())}
