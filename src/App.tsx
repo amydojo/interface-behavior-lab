@@ -237,6 +237,7 @@ export default function App() {
             completedIds={completedIds}
             events={events}
             modality={modality}
+            mode={mode}
             demoProps={demoProps}
             specimenKey={`${activeExperiment.id}-${specimenEpoch}`}
             headingRef={activeHeadingRef}
