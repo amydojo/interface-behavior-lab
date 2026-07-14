@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { transitionContext } from '../../test/experiment'
-import { intentExperiment, type IntentState } from './model'
+import { intentExperiment } from './model'
 
 describe('intentExperiment', () => {
   it('starts and resets to Rest from every documented state', () => {
     expect(intentExperiment.initialState).toEqual({ id: 'Rest' })
     for (const descriptor of intentExperiment.states) {
-      const _state: IntentState = { id: descriptor.id }
+      const state = { id: descriptor.id }
+      expect(intentExperiment.getPresentation(state).stateName).toBe(state.id)
       expect(intentExperiment.reset()).toEqual({ id: 'Rest' })
     }
   })
