@@ -15,7 +15,7 @@ describe('App active workspace', () => {
   it('renders one active experiment with all six families directly reachable', () => {
     const { container } = render(<App />)
 
-    expect(screen.getByRole('heading', { name: 'Intent', exact: true })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /^Intent$/ })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'One behavior. Its evidence beside it.' })).toBeInTheDocument()
     expect(screen.getByLabelText('Intent inspector')).toBeInTheDocument()
     expect(container.querySelectorAll('.active-specimen-stage .demo-card')).toHaveLength(1)
@@ -31,14 +31,14 @@ describe('App active workspace', () => {
   it('hydrates a valid deep link and repairs an invalid family safely', async () => {
     window.history.replaceState(null, '', '#lab/ethical')
     const view = render(<App />)
-    expect(screen.getByRole('heading', { name: 'Ethical', exact: true })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /^Ethical$/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /^Publish/i })).toBeInTheDocument()
 
     view.unmount()
     window.history.replaceState(null, '', '#lab/not-a-family')
     render(<App />)
 
-    expect(screen.getByRole('heading', { name: 'Intent', exact: true })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /^Intent$/ })).toBeInTheDocument()
     await waitFor(() => expect(window.location.hash).toBe('#lab/intent'))
   })
 
@@ -47,10 +47,10 @@ describe('App active workspace', () => {
 
     fireEvent.click(familyButton('Pressure'), { detail: 0 })
 
-    const heading = await screen.findByRole('heading', { name: 'Pressure', exact: true })
+    const heading = await screen.findByRole('heading', { name: /^Pressure$/ })
     expect(window.location.hash).toBe('#lab/pressure')
     await waitFor(() => expect(heading).toHaveFocus())
-    expect(screen.getByText('Preview, Act, and Commit remain explicit stages.')).toBeInTheDocument()
+    expect(screen.getByText('Stage: Preview')).toBeInTheDocument()
   })
 
   it('opens the catalog and returns through a specimen card', async () => {
@@ -62,7 +62,7 @@ describe('App active workspace', () => {
     expect(screen.getAllByRole('button', { name: /Open / })).toHaveLength(6)
 
     fireEvent.click(screen.getByRole('button', { name: 'Open Magnetic' }), { detail: 0 })
-    const heading = await screen.findByRole('heading', { name: 'Magnetic', exact: true })
+    const heading = await screen.findByRole('heading', { name: /^Magnetic$/ })
     expect(window.location.hash).toBe('#lab/magnetic')
     await waitFor(() => expect(heading).toHaveFocus())
   })
@@ -74,7 +74,7 @@ describe('App active workspace', () => {
     expect(screen.getByText('State: Revealed')).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Reset specimen' }))
 
-    expect(screen.getByRole('heading', { name: 'Intent', exact: true })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /^Intent$/ })).toBeInTheDocument()
     expect(screen.getByText('State: Rest')).toBeInTheDocument()
     expect(window.location.hash).toBe('#lab/intent')
   })
