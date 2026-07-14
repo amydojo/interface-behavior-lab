@@ -86,6 +86,7 @@ test.describe('V1.1 laboratory smoke @smoke', () => {
   test('keeps stable primary targets at or above 44 CSS pixels', async ({ page }) => {
     await page.goto('/')
     const intentButton = specimen(page, 'Intent').locator('.adaptive-button')
+    await intentButton.scrollIntoViewIfNeeded()
     const before = await intentButton.boundingBox()
     await intentButton.hover()
     const after = await intentButton.boundingBox()
