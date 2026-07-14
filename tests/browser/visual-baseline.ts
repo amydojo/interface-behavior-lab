@@ -12,6 +12,6 @@ export const visualBaseline: Record<string, string> = {
   'breathing-comparison-results': 'e05d919d9590a03c59802b6290ea1c0a6ab125ef81cf89826d7ce07886db7ead',
   'magnetic-comparison-brief': '15da3db84a94529d903df66eb1b9f356ab2d153e252d7d64cc7b883ce07ac2f5',
   'magnetic-comparison-results': 'df9cfefd038cbc868d879c1a16f0fc5d64378129f7b33a985c8cc3b6b3d5fcd5',
-  'ethical-comparison-brief': 'e08264e132d3023f2317d9d6fb103acb5219b51c619fc2e50b9cefb71a359da0',
-  'ethical-comparison-results': 'ad645f5646966c389382625d32e0db4b9ac28a35612ef2e3f51f008027da7dc1',
+  'ethical-comparison-brief': '2d26a64c376a6e343e455b2b0aeffc2eccd414a2949d017d055cd1a9962ec95d',
+  'ethical-comparison-results': '55256c69cb4cd00b5c6bedba579232da5034453ed0082f912bf8baa35def6512',
 }
