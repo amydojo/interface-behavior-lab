@@ -7,6 +7,10 @@
   gap: 24px;
 }
 
+.breathing-comparison .condition-boundary {
+  color: var(--text-primary);
+}
+
 .breathing-state-display {
   display: grid;
   grid-template-columns: 112px minmax(0, 1fr);
