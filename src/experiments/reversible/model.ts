@@ -93,7 +93,7 @@ export const reversibleExperiment = {
   supportedInputContexts: ['touch', 'pointer', 'voice'],
   requiredAlternativePaths: ['native Undo activation', 'post-expiry location explanation'],
   scenarioIds: [archiveRecoveryScenario.id],
-  conventionalComparisonAvailable: false,
+  conventionalComparisonAvailable: true,
   documentationPath: 'docs/experiments/README.md#reversible',
   implementationNote: 'The countdown is visual and textual. When it closes, the interface explains where the archived item still lives.',
   states: [
