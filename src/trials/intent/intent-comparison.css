@@ -148,8 +148,15 @@
   align-items: flex-start;
   gap: 10px;
   min-height: 32px;
-  color: var(--text-secondary);
   font-size: 14px;
+}
+
+.condition-order-picker label {
+  color: var(--text-secondary);
+}
+
+.comparison-debrief fieldset > label {
+  color: var(--text-primary);
 }
 
 .condition-order-picker input,
