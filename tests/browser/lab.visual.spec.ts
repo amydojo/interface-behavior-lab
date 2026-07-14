@@ -28,60 +28,50 @@ async function expectVisual(
   expect(hash, `${name} visual fingerprint`).toBe(expected)
 }
 
-test.describe('V1.1 visual contract @visual', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/')
+test.describe('V1.2 active workspace visual contract @visual', () => {
+  test('desktop spatial mode, Intent', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1440, height: 1100 })
+    await page.goto('/#lab/intent')
     await disableNonessentialMotion(page)
+    await expectVisual(page.locator('.workspace-shell'), 'workspace-intent-desktop-spatial', testInfo)
   })
 
-  test('hero and laboratory controls', async ({ page }, testInfo) => {
-    await expectVisual(page.locator('.hero'), 'hero-spatial', testInfo)
-    await expectVisual(page.locator('.lab-controls'), 'laboratory-controls', testInfo)
+  test('desktop light mode, Ethical consequence', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1440, height: 1100 })
+    await page.goto('/#lab/ethical')
+    await page.getByRole('button', { name: 'light', exact: true }).click()
+    await specimen(page, 'Ethical').getByRole('button', { name: /^Publish/i }).click()
+    await disableNonessentialMotion(page)
+    await expectVisual(page.locator('.workspace-shell'), 'workspace-ethical-desktop-light', testInfo)
   })
 
-  test('Intent revealed', async ({ page }, testInfo) => {
-    const card = specimen(page, 'Intent')
-    await card.locator('.adaptive-button').hover()
-    await expectVisual(card, 'intent-revealed', testInfo)
+  test('tablet dark mode, Magnetic aligned', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1024, height: 1000 })
+    await page.goto('/#lab/magnetic')
+    await page.getByRole('button', { name: 'dark', exact: true }).click()
+    await specimen(page, 'Magnetic').locator('.adaptive-button').focus()
+    await disableNonessentialMotion(page)
+    await expectVisual(page.locator('.workspace-shell'), 'workspace-magnetic-tablet-dark', testInfo)
   })
 
-  test('Pressure permanent stage', async ({ page }, testInfo) => {
-    const card = specimen(page, 'Pressure')
-    await card.getByRole('button', { name: /Commit/i }).click()
-    await expectVisual(card, 'pressure-commit', testInfo)
-  })
-
-  test('Breathing processing', async ({ page }, testInfo) => {
-    const card = specimen(page, 'Breathing')
-    await card.getByRole('button', { name: /Ask anything/i }).click()
-    await card.getByRole('button', { name: /Listening/i }).click()
-    await expectVisual(card, 'breathing-processing', testInfo)
-  })
-
-  test('Magnetic aligned', async ({ page }, testInfo) => {
-    const card = specimen(page, 'Magnetic')
-    await card.locator('.adaptive-button').focus()
-    await expectVisual(card, 'magnetic-aligned', testInfo)
-  })
-
-  test('Ethical consequence', async ({ page }, testInfo) => {
-    const card = specimen(page, 'Ethical')
-    await card.getByRole('button', { name: /^Publish/i }).click()
-    await expectVisual(card, 'ethical-consequence', testInfo)
-  })
-
-  test('Reversible recovery', async ({ page }, testInfo) => {
+  test('mobile spatial mode, Reversible expiring', async ({ page }, testInfo) => {
+    await page.clock.install()
+    await page.setViewportSize({ width: 320, height: 800 })
+    await page.goto('/#lab/reversible')
     const card = specimen(page, 'Reversible')
     await card.getByRole('button', { name: /^Archive/i }).click()
-    await expectVisual(card, 'reversible-recovery', testInfo, {
+    await page.clock.fastForward(6100)
+    await disableNonessentialMotion(page)
+    await expectVisual(page.locator('.workspace-shell'), 'workspace-reversible-mobile-expiring', testInfo, {
       mask: [card.locator('.adaptive-meta')],
     })
   })
 
-  test('320px mobile laboratory', async ({ page }, testInfo) => {
+  test('mobile inspector expanded', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 320, height: 800 })
-    await page.reload()
+    await page.goto('/#lab/ethical')
+    await page.getByText('Success signal', { exact: true }).click()
     await disableNonessentialMotion(page)
-    await expectVisual(page.locator('.laboratory'), 'laboratory-mobile-320', testInfo)
+    await expectVisual(page.locator('.workspace-inspector'), 'workspace-inspector-mobile-expanded', testInfo)
   })
 })
