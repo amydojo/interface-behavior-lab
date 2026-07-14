@@ -1,7 +1,7 @@
 export const visualBaseline: Record<string, string> = {
   'workspace-intent-desktop-spatial': '299b6661c27b181c669c69a48806f7079207e742ef7358ea7b695430fa74308e',
   'workspace-ethical-desktop-light': 'afe109605a5fa4276c761c7e6261c23537d88c044b1e76c1effd9a208ada8fee',
-  'workspace-magnetic-tablet-dark': 'c1a0509b7e745d8b7da288dbd06a681dc13ab5f9bf3d73f3425a1030bcf28ce3',
+  'workspace-magnetic-tablet-dark': '99afc7147ba50e7d49a0fabe6bd9d7b20e47e327c3b94b6ed49063e967e6394b',
   'workspace-reversible-mobile-expiring': 'f0dc2ad73de62090d4fe05bd501b5fa09c6472c70b4c3b3e3f75d9995abf4274',
   'workspace-inspector-mobile-expanded': 'eeaf03943e5ea70757eff19d9107d5b1254e4ca8c38f46288101a0c88833489b',
   'intent-comparison-brief': 'ac11775e1cdc9edf526080e28e5b98be6c38cb0347f413a719298bd6704cfddd',
@@ -10,4 +10,6 @@ export const visualBaseline: Record<string, string> = {
   'pressure-comparison-results': '0e0aa05a9d32136f4ac50de43e9144046cadc2cc9d07366296e6db8a8f34224d',
   'breathing-comparison-brief': 'c07a6fbf152a19ee726af1f938944da8af47f2da875ab9b7a600b555f31156d6',
   'breathing-comparison-results': 'e05d919d9590a03c59802b6290ea1c0a6ab125ef81cf89826d7ce07886db7ead',
+  'magnetic-comparison-brief': '15da3db84a94529d903df66eb1b9f356ab2d153e252d7d64cc7b883ce07ac2f5',
+  'magnetic-comparison-results': 'df9cfefd038cbc868d879c1a16f0fc5d64378129f7b33a985c8cc3b6b3d5fcd5',
 }

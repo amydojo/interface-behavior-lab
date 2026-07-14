@@ -92,7 +92,7 @@ export const magneticExperiment = {
   supportedInputContexts: ['pointer', 'gaze', 'touch'],
   requiredAlternativePaths: ['keyboard focus alignment', 'native button activation'],
   scenarioIds: [messageSendScenario.id],
-  conventionalComparisonAvailable: false,
+  conventionalComparisonAvailable: true,
   documentationPath: 'docs/experiments/README.md#magnetic',
   implementationNote: 'Assistance strength is {assistance}%. The button never moves, chases, or captures the pointer.',
   states: [
