@@ -8,9 +8,12 @@ export function IntentDemo({ onEvent }: DemoProps) {
   const [state, setState] = useState<IntentState>('Rest')
   const timer = useRef<number | null>(null)
 
-  useEffect(() => () => {
-    if (timer.current) window.clearTimeout(timer.current)
-  }, [])
+  const clearResetTimer = () => {
+    if (timer.current !== null) window.clearTimeout(timer.current)
+    timer.current = null
+  }
+
+  useEffect(() => clearResetTimer, [])
 
   const reveal = () => {
     if (state !== 'Confirmed' && state !== 'Revealed') {
@@ -29,11 +32,16 @@ export function IntentDemo({ onEvent }: DemoProps) {
       return
     }
     if (state === 'Revealed') {
+      clearResetTimer()
       setState('Confirmed')
       onEvent('Intent', 'action committed', 'Saved to Journal')
-      timer.current = window.setTimeout(() => setState('Rest'), 1800)
+      timer.current = window.setTimeout(() => {
+        timer.current = null
+        setState('Rest')
+      }, 1800)
       return
     }
+    clearResetTimer()
     setState('Rest')
   }
 
