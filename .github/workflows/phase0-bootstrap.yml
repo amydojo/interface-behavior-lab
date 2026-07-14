@@ -1,0 +1,32 @@
+name: Phase 0 Bootstrap
+
+on:
+  push:
+    branches:
+      - quality/v1-2-release-hardening
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package.json
+      - name: Generate deterministic lockfile
+        run: npm install --package-lock-only --ignore-scripts
+      - name: Create repository snapshot
+        run: git archive --format=zip --output=repository-snapshot.zip HEAD
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phase0-bootstrap
+          path: |
+            repository-snapshot.zip
+            package-lock.json
+          if-no-files-found: error
+          retention-days: 1
