@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -25,6 +27,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
+      - name: Verify diff integrity
+        run: git diff --check origin/main...HEAD
       - name: Run unit and component tests
         run: npm run test -- --reporter=verbose 2>&1 | tee unit-test.log
       - name: Upload unit-test diagnostics
