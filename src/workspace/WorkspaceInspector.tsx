@@ -28,7 +28,7 @@ function InspectorDisclosure({
       className="inspector-disclosure"
       open={open}
       onToggle={event => {
-        if (event.currentTarget.open) onExpand(label)
+        if (event.currentTarget.open && event.nativeEvent.isTrusted) onExpand(label)
       }}
     >
       <summary>{label}</summary>
