@@ -16,7 +16,7 @@ async function expectNoAxeViolations(page: Page, label: string) {
 test.describe('V1.2 workspace accessibility contract @a11y', () => {
   test('initial workspace, rail, active stage, and inspector', async ({ page }) => {
     await page.goto('/#lab/intent')
-    await expect(page.getByRole('navigation', { name: 'Experiment families' })).toBeVisible()
+    await expect(page.getByRole('navigation', { name: 'Experiment families', exact: true })).toBeVisible()
     await expect(page.getByRole('heading', { name: 'Intent', exact: true })).toBeVisible()
     await expect(page.getByLabel('Intent inspector')).toBeVisible()
     await expectNoAxeViolations(page, 'initial active workspace')
@@ -32,6 +32,7 @@ test.describe('V1.2 workspace accessibility contract @a11y', () => {
     await page.goto('/#lab/intent')
     const card = specimen(page, 'Intent')
     const button = card.locator('.adaptive-button')
+    await button.scrollIntoViewIfNeeded()
     const before = await button.boundingBox()
     await button.hover()
     const after = await button.boundingBox()
@@ -117,7 +118,7 @@ test.describe('V1.2 workspace accessibility contract @a11y', () => {
     await page.setViewportSize({ width: 320, height: 800 })
     await page.goto('/#lab/ethical')
     await page.getByText('Success signal', { exact: true }).click()
-    await expect(page.getByText(/consequence is revealed/i)).toBeVisible()
+    await expect(page.getByText(/Audience consequences appear before final commitment/i)).toBeVisible()
     await expectNoAxeViolations(page, 'mobile expanded inspector')
   })
 })
