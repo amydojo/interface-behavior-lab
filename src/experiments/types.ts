@@ -62,6 +62,9 @@ export type ExperimentMetadata = {
   id: ExperimentId
   family: ExperimentFamily
   order: number
+  lifecycleOrder: number
+  lifecycleStage: string
+  lifecycleVerb: string
   value: string
   description: string
   hypothesis: string
