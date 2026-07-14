@@ -35,6 +35,7 @@ describe('ethicalComparisonTrial', () => {
     ])
     expect(ethicalComparisonTrial.debriefQuestions.map(question => question.id)).toEqual([
       'prediction',
+      'accidental-publish',
       'confidence',
       'coercion',
     ])
