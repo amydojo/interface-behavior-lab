@@ -2,6 +2,10 @@
   gap: 20px;
 }
 
+.reversible-results > header p {
+  color: var(--text-primary);
+}
+
 .reversible-comparison .comparison-trial-header > button,
 .reversible-comparison .comparison-primary-action {
   min-height: 48px;
