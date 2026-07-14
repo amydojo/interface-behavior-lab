@@ -57,10 +57,11 @@ Supported effects are:
 
 `experimentRegistry` is the only workspace source for:
 
-- stable ID and display order
-- family and value proposition
+- stable ID, family, and explicit display name
+- display and lifecycle order
+- value proposition
 - hypothesis
-- success and failure conditions
+- success signal and failure condition
 - supported input contexts
 - required alternative paths
 - scenario IDs
@@ -73,19 +74,21 @@ Supported effects are:
 
 ## Scenarios
 
-Scenario modules hold task-specific consequence and outcome copy separately from rendering. A scenario can be reused by a later conventional comparison without copying task semantics into both views.
+Scenario modules hold task-specific consequence, item, audience, and outcome data separately from rendering. A scenario can be reused by a later conventional comparison without copying task semantics into both views.
 
 ## Model invariants
 
-The model tests protect these rules:
+The model and integration tests protect these rules:
 
 - destructive commitment cannot bypass its documented consequence stage
 - recovery remains on the originating action and stale expiry ticks cannot reopen it
 - every reset returns one documented initial state
 - reduced motion does not change semantic state order
-- visual material mode is absent from transition rules
+- visual material mode changes presentation without changing current behavior state
 - cancelled high-consequence actions produce no committed outcome
 - timers are named, replaceable, and generation guarded
+- invalid or repeated actions are explicit and deterministic
+- initial state and reset state remain JSON serializable
 
 ## Family notes
 
