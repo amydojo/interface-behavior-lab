@@ -13,5 +13,5 @@ export const visualBaseline: Record<string, string> = {
   'magnetic-comparison-brief': '15da3db84a94529d903df66eb1b9f356ab2d153e252d7d64cc7b883ce07ac2f5',
   'magnetic-comparison-results': 'df9cfefd038cbc868d879c1a16f0fc5d64378129f7b33a985c8cc3b6b3d5fcd5',
   'ethical-comparison-brief': 'e08264e132d3023f2317d9d6fb103acb5219b51c619fc2e50b9cefb71a359da0',
-  'ethical-comparison-results': '',
+  'ethical-comparison-results': 'ad645f5646966c389382625d32e0db4b9ac28a35612ef2e3f51f008027da7dc1',
 }
