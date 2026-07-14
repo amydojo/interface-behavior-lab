@@ -12,7 +12,10 @@ const states: ReversibleState[] = [
 describe('reversibleExperiment', () => {
   it('starts and resets to Idle from every state', () => {
     expect(reversibleExperiment.initialState).toEqual(states[0])
-    for (const _state of states) expect(reversibleExperiment.reset()).toEqual(states[0])
+    for (const state of states) {
+      expect(reversibleExperiment.getPresentation(state).stateName).toBe(state.id)
+      expect(reversibleExperiment.reset()).toEqual(states[0])
+    }
   })
 
   it('opens one documented recovery window and makes Undo immediate', () => {
