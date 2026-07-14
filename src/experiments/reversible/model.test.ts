@@ -18,14 +18,16 @@ describe('reversibleExperiment', () => {
     }
   })
 
-  it('opens one documented recovery window and makes Undo immediate', () => {
+  it('opens one documented recovery window and makes Undo immediate from every recoverable state', () => {
     const archived = reversibleExperiment.transition(states[0], { type: 'activate' }, transitionContext({ now: 1000 }))
     expect(archived.state).toEqual({ id: 'Window', remaining: RECOVERY_WINDOW_SECONDS, endAt: 9000 })
     expect(archived.effects.filter(effect => effect.type === 'repeat')).toHaveLength(1)
 
-    const undone = reversibleExperiment.transition(archived.state, { type: 'activate' }, transitionContext({ now: 1200 }))
-    expect(undone.state).toEqual(states[0])
-    expect(undone.effects.some(effect => effect.type === 'emit' && effect.action === 'action reversed')).toBe(true)
+    for (const recoverable of [archived.state, states[2]]) {
+      const undone = reversibleExperiment.transition(recoverable, { type: 'activate' }, transitionContext({ now: 1200 }))
+      expect(undone.state).toEqual(states[0])
+      expect(undone.effects.some(effect => effect.type === 'emit' && effect.action === 'action reversed')).toBe(true)
+    }
   })
 
   it('uses exact expiring and expiry boundaries', () => {
@@ -42,12 +44,19 @@ describe('reversibleExperiment', () => {
     expect(expired.effects.some(effect => effect.type === 'cancel')).toBe(true)
   })
 
-  it('cannot be reopened or reversed by a stale tick after expiry', () => {
-    const stale = reversibleExperiment.transition(states[3], { type: 'tick' }, transitionContext({ now: 9000 }))
-    expect(stale.state).toEqual(states[3])
-    expect(stale.effects).toEqual([])
+  it('ignores stale ticks outside recovery and starts a clean replacement trial after expiry', () => {
+    for (const state of [states[0], states[3]]) {
+      expect(reversibleExperiment.transition(state, { type: 'tick' }, transitionContext({ now: 9000 }))).toEqual({
+        state,
+        effects: [],
+      })
+    }
 
     const nextArchive = reversibleExperiment.transition(states[3], { type: 'activate' }, transitionContext({ now: 9000 }))
     expect(nextArchive.state).toEqual({ id: 'Window', remaining: 8, endAt: 17000 })
+    expect(nextArchive.effects).toEqual(expect.arrayContaining([
+      { type: 'cancel', timerId: 'reversible-recovery-window' },
+      expect.objectContaining({ type: 'repeat', timerId: 'reversible-recovery-window' }),
+    ]))
   })
 })
