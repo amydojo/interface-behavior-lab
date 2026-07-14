@@ -77,6 +77,12 @@ export const ethicalComparisonTrial = assertTrialFairness({
       ],
     },
     {
+      id: 'accidental-publish',
+      prompt: 'Did the post publish before you intended?',
+      response: 'choice',
+      choices: ['No', 'Yes'],
+    },
+    {
       id: 'confidence',
       prompt: 'How confident were you in the final outcome?',
       response: 'rating-5',
