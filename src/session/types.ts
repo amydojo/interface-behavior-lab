@@ -25,6 +25,7 @@ export type LabEventAction =
   | 'trial_completed'
   | 'trial_reset'
   | 'state_transitioned'
+  | 'observation_recorded'
   | 'consequence_revealed'
   | 'commit_started'
   | 'commit_cancelled'

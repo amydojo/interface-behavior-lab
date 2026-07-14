@@ -1,0 +1,217 @@
+.breathing-condition {
+  gap: 18px;
+}
+
+.breathing-control-stage {
+  align-content: center;
+  gap: 24px;
+}
+
+.breathing-comparison .condition-boundary {
+  color: var(--text-primary);
+}
+
+.breathing-state-display {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: center;
+  width: min(100%, 560px);
+  min-height: 220px;
+  gap: 26px;
+  padding: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: 24px;
+  background: var(--surface-stage);
+}
+
+.breathing-state-copy {
+  display: grid;
+  gap: 7px;
+}
+
+.breathing-state-copy > span {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+.breathing-state-copy > strong {
+  color: var(--text-primary);
+  font-size: clamp(27px, 5vw, 48px);
+  letter-spacing: -.05em;
+}
+
+.breathing-state-copy > small {
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.conventional-status-indicator,
+.breathing-rhythm {
+  position: relative;
+  display: grid;
+  width: 96px;
+  height: 96px;
+  place-items: center;
+  border-radius: 999px;
+}
+
+.conventional-status-indicator {
+  border: 1px solid var(--border-strong);
+  background: var(--surface-interactive);
+}
+
+.conventional-status-indicator > i {
+  position: absolute;
+  inset: 13px;
+  border: 2px solid var(--border-soft);
+  border-radius: 999px;
+}
+
+.conventional-status-indicator > b,
+.breathing-rhythm > b {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-card);
+  color: var(--text-primary);
+  font-size: 18px;
+}
+
+.breathing-state-display.is-conventional[data-state="processing"] .conventional-status-indicator > i {
+  border-top-color: var(--signal-primary);
+  animation: conventional-status-spin 1.2s linear infinite;
+}
+
+.breathing-state-display.is-conventional[data-state="listening"] .conventional-status-indicator > b {
+  animation: conventional-status-pulse 1.5s ease-in-out infinite;
+}
+
+.breathing-state-display.is-conventional[data-state="complete"] .conventional-status-indicator {
+  box-shadow: inset 0 0 0 1px var(--signal-primary);
+}
+
+.breathing-rhythm {
+  isolation: isolate;
+}
+
+.breathing-rhythm > i {
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  opacity: .42;
+  animation: breathing-comparison-ring 2.8s ease-in-out infinite;
+}
+
+.breathing-rhythm > i:nth-child(2) {
+  animation-delay: -.8s;
+}
+
+.breathing-rhythm > i:nth-child(3) {
+  animation-delay: -1.6s;
+}
+
+.breathing-rhythm[data-rings="0"] > i {
+  animation: none;
+  opacity: 0;
+}
+
+.breathing-rhythm[data-rings="1"] > i:nth-child(n+2),
+.breathing-rhythm[data-rings="2"] > i:nth-child(3) {
+  display: none;
+}
+
+.breathing-state-display[data-state="listening"] .breathing-rhythm > i {
+  animation-duration: 2.1s;
+}
+
+.breathing-state-display[data-state="processing"] .breathing-rhythm > i {
+  animation-duration: 1.7s;
+}
+
+.breathing-state-display[data-reduced-motion="true"] .conventional-status-indicator > i,
+.breathing-state-display[data-reduced-motion="true"] .conventional-status-indicator > b,
+.breathing-state-display[data-reduced-motion="true"] .breathing-rhythm > i {
+  animation: none;
+}
+
+.breathing-answer-set {
+  display: grid;
+  width: min(100%, 560px);
+  gap: 12px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+}
+
+.breathing-answer-set legend {
+  padding: 0 7px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.breathing-answer-set > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.breathing-answer-set button {
+  min-height: 48px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface-interactive);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.breathing-answer-set button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 62%, transparent);
+  outline-offset: 4px;
+}
+
+@keyframes conventional-status-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes conventional-status-pulse {
+  50% { transform: scale(.88); opacity: .65; }
+}
+
+@keyframes breathing-comparison-ring {
+  0%, 100% { transform: scale(.58); opacity: .2; }
+  50% { transform: scale(1.08); opacity: .72; }
+}
+
+@media (max-width: 620px) {
+  .breathing-state-display {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    min-height: 280px;
+    padding: 24px 18px;
+    text-align: center;
+  }
+
+  .breathing-answer-set > div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conventional-status-indicator > i,
+  .conventional-status-indicator > b,
+  .breathing-rhythm > i {
+    animation: none !important;
+  }
+}

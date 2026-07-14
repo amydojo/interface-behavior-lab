@@ -42,7 +42,7 @@ export const breathingExperiment = {
   supportedInputContexts: ['voice', 'touch', 'gaze'],
   requiredAlternativePaths: ['native button activation', 'literal state labels'],
   scenarioIds: [assistantRequestScenario.id],
-  conventionalComparisonAvailable: false,
+  conventionalComparisonAvailable: true,
   documentationPath: 'docs/experiments/README.md#breathing',
   implementationNote: 'Reduce Motion freezes expansion while preserving the same exact label, contrast, and state symbol.',
   states: [

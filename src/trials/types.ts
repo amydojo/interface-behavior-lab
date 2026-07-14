@@ -62,6 +62,7 @@ export type DebriefQuestionId =
   | 'clarity-effort'
   | 'coercion'
   | 'distraction'
+  | 'motion-preference'
 
 export type DebriefQuestion = {
   id: DebriefQuestionId
