@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { experimentRegistry } from '../experiments/registry'
 import type { InputModality, LabEvent } from '../types'
 
@@ -18,7 +19,7 @@ function InspectorDisclosure({
   onExpand,
 }: {
   label: string
-  children: React.ReactNode
+  children: ReactNode
   open?: boolean
   onExpand: (section: string) => void
 }) {
