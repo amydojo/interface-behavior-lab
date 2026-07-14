@@ -6,4 +6,6 @@ export const visualBaseline: Record<string, string> = {
   'workspace-inspector-mobile-expanded': 'eeaf03943e5ea70757eff19d9107d5b1254e4ca8c38f46288101a0c88833489b',
   'intent-comparison-brief': 'ac11775e1cdc9edf526080e28e5b98be6c38cb0347f413a719298bd6704cfddd',
   'intent-comparison-results': 'be673a5fcf6943945b970a08babc8f178040fc3c6f2c9ed6ee11b7827362fc67',
+  'pressure-comparison-brief': 'c221f177f601a12125e33e2783524982c06848684a2ca21bb88cb1b68043a6af',
+  'pressure-comparison-results': '0e0aa05a9d32136f4ac50de43e9144046cadc2cc9d07366296e6db8a8f34224d',
 }

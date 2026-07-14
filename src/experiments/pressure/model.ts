@@ -130,7 +130,7 @@ export const pressureExperiment = {
   supportedInputContexts: ['pressure', 'hold', 'voice'],
   requiredAlternativePaths: ['explicit stage controls', 'native button activation'],
   scenarioIds: [destructiveDeleteScenario.id],
-  conventionalComparisonAvailable: false,
+  conventionalComparisonAvailable: true,
   documentationPath: 'docs/experiments/README.md#pressure',
   implementationNote: 'Browser demo: explicit thresholds and elapsed hold simulate stages. They do not claim physical pressure sensing.',
   states: [
