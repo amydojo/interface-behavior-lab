@@ -5,9 +5,10 @@ import type { ExperimentMetadata } from './types'
 type Props = {
   definition: ExperimentMetadata
   children: ReactNode
+  footer?: string
 }
 
-export function ExperimentCard({ definition, children }: Props) {
+export function ExperimentCard({ definition, children, footer = definition.implementationNote }: Props) {
   return (
     <DemoCard
       number={String(definition.order).padStart(2, '0')}
@@ -15,7 +16,7 @@ export function ExperimentCard({ definition, children }: Props) {
       value={definition.value}
       description={definition.description}
       modalities={definition.supportedInputContexts.map(context => context.toUpperCase())}
-      footer={definition.implementationNote}
+      footer={footer}
     >
       {children}
     </DemoCard>
