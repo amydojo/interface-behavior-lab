@@ -4,19 +4,16 @@ import './hardening.css'
 import type { Family, InputModality, LabEvent, LabMode } from './types'
 import { LabControls } from './components/LabControls'
 import { EventLog } from './components/EventLog'
-import { IntentDemo } from './components/IntentDemo'
-import { PressureDemo } from './components/PressureDemo'
-import { BreathingDemo } from './components/BreathingDemo'
-import { MagneticDemo } from './components/MagneticDemo'
-import { EthicalDemo } from './components/EthicalDemo'
-import { ReversibleDemo } from './components/ReversibleDemo'
 import { SpecimenBoundary } from './components/SpecimenBoundary'
+import { experimentRegistry } from './experiments/registry'
 
 function timeLabel() {
   return new Intl.DateTimeFormat(undefined, {
     hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
   }).format(new Date())
 }
+
+const lifecycleExperiments = [...experimentRegistry].sort((left, right) => left.lifecycleOrder - right.lifecycleOrder)
 
 export default function App() {
   const [mode, setMode] = useState<LabMode>('spatial')
@@ -127,12 +124,11 @@ export default function App() {
             <p>Each specimen uses a native button, a stable target, named states, and a non-novel path when the enhanced input is unavailable.</p>
           </header>
           <div className="demo-grid" key={session}>
-            <SpecimenBoundary name="Intent"><IntentDemo {...demoProps} /></SpecimenBoundary>
-            <SpecimenBoundary name="Pressure"><PressureDemo {...demoProps} /></SpecimenBoundary>
-            <SpecimenBoundary name="Breathing"><BreathingDemo {...demoProps} /></SpecimenBoundary>
-            <SpecimenBoundary name="Magnetic"><MagneticDemo {...demoProps} /></SpecimenBoundary>
-            <SpecimenBoundary name="Ethical"><EthicalDemo {...demoProps} /></SpecimenBoundary>
-            <SpecimenBoundary name="Reversible"><ReversibleDemo {...demoProps} /></SpecimenBoundary>
+            {experimentRegistry.map(experiment => (
+              <SpecimenBoundary name={experiment.family} key={experiment.id}>
+                <experiment.Renderer {...demoProps} />
+              </SpecimenBoundary>
+            ))}
           </div>
         </section>
 
@@ -141,16 +137,12 @@ export default function App() {
             <span>ACTION LIFECYCLE</span>
             <h2>One action can move through several behaviors without becoming several interfaces.</h2>
             <div className="lifecycle-steps">
-              {[
-                ['01', 'APPROACH', 'Magnetic', 'assist'],
-                ['02', 'CLARIFY', 'Intent', 'name'],
-                ['03', 'WEIGH', 'Ethical', 'inform'],
-                ['04', 'COMMIT', 'Pressure', 'act'],
-                ['05', 'RESOLVE', 'Breathing', 'confirm'],
-                ['06', 'RECOVER', 'Reversible', 'undo'],
-              ].map(([number, stage, family, verb]) => (
-                <article key={number}>
-                  <small>{number}</small><span>{stage}</span><strong>{family}</strong><em>{verb}</em>
+              {lifecycleExperiments.map(experiment => (
+                <article key={experiment.id}>
+                  <small>{String(experiment.lifecycleOrder).padStart(2, '0')}</small>
+                  <span>{experiment.lifecycleStage}</span>
+                  <strong>{experiment.family}</strong>
+                  <em>{experiment.lifecycleVerb}</em>
                 </article>
               ))}
             </div>

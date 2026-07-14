@@ -1,12 +1,12 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import type { DemoProps } from '../types'
-import { BreathingDemo } from './BreathingDemo'
-import { EthicalDemo } from './EthicalDemo'
-import { IntentDemo } from './IntentDemo'
-import { MagneticDemo } from './MagneticDemo'
-import { PressureDemo } from './PressureDemo'
-import { ReversibleDemo } from './ReversibleDemo'
+import { BreathingDemo } from '../experiments/breathing/view'
+import { EthicalDemo } from '../experiments/ethical/view'
+import { IntentDemo } from '../experiments/intent/view'
+import { MagneticDemo } from '../experiments/magnetic/view'
+import { PressureDemo } from '../experiments/pressure/view'
+import { ReversibleDemo } from '../experiments/reversible/view'
 
 function props(overrides: Partial<DemoProps> = {}): DemoProps {
   return {
