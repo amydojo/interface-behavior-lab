@@ -14,7 +14,10 @@ const states: PressureState[] = [
 describe('pressureExperiment', () => {
   it('starts and resets to Preview from every state', () => {
     expect(pressureExperiment.initialState).toEqual(states[0])
-    for (const _state of states) expect(pressureExperiment.reset()).toEqual(states[0])
+    for (const state of states) {
+      expect(pressureExperiment.getPresentation(state).stateName).toBeDefined()
+      expect(pressureExperiment.reset()).toEqual(states[0])
+    }
   })
 
   it('keeps explicit stage transitions and deterministic hold thresholds', () => {
