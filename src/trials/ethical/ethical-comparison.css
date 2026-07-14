@@ -45,9 +45,15 @@
 
 .ethical-fact-grid span,
 .ethical-confirmation-dialog > span,
-.ethical-consequence-card > span,
 .ethical-outcome-summary + span {
   color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+
+.ethical-consequence-card > span {
+  color: var(--text-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: .14em;
