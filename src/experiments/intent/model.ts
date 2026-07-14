@@ -64,6 +64,7 @@ function transition(
 export const intentExperiment = {
   id: 'intent',
   family: 'Intent',
+  displayName: 'Intent',
   order: 1,
   lifecycleOrder: 2,
   lifecycleStage: 'CLARIFY',
