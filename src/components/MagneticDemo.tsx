@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { DemoProps } from '../types'
 import { AdaptiveButton, DemoCard } from './ControlPrimitives'
 
@@ -8,6 +8,14 @@ export function MagneticDemo({ assistance, onEvent }: DemoProps) {
   const [state, setState] = useState<FieldState>('Far')
   const [distance, setDistance] = useState(240)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const resetTimer = useRef<number | null>(null)
+
+  const clearResetTimer = () => {
+    if (resetTimer.current !== null) window.clearTimeout(resetTimer.current)
+    resetTimer.current = null
+  }
+
+  useEffect(() => clearResetTimer, [])
 
   const updateDistance = (clientX: number, clientY: number) => {
     if (!buttonRef.current || state === 'Released') return
@@ -26,9 +34,11 @@ export function MagneticDemo({ assistance, onEvent }: DemoProps) {
   }
 
   const release = () => {
+    clearResetTimer()
     setState('Released')
     onEvent('Magnetic', 'action committed', 'Sent to Maya')
-    window.setTimeout(() => {
+    resetTimer.current = window.setTimeout(() => {
+      resetTimer.current = null
       setState('Far')
       setDistance(240)
     }, 1800)
