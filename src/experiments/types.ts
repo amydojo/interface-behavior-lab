@@ -97,6 +97,7 @@ export type ExperimentRegistryEntry = ExperimentMetadata & {
 export type WorkspaceExperimentEntry = ExperimentRegistryEntry & {
   states: readonly ExperimentStateDescriptor[]
   initialState: ExperimentState
+  reset: () => ExperimentState
 }
 
 export function registerExperiment<
