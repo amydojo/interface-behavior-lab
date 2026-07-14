@@ -10,6 +10,7 @@ type Action = { type: 'start' } | { type: 'finish' }
 const definition = {
   id: 'intent',
   family: 'Intent',
+  displayName: 'Timer safety fixture',
   order: 1,
   lifecycleOrder: 1,
   lifecycleStage: 'TEST',
