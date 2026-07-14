@@ -77,7 +77,7 @@ export const intentExperiment = {
   supportedInputContexts: ['touch', 'gaze', 'voice'],
   requiredAlternativePaths: ['keyboard focus reveal', 'first activation reveal'],
   scenarioIds: [journalSaveScenario.id],
-  conventionalComparisonAvailable: false,
+  conventionalComparisonAvailable: true,
   documentationPath: 'docs/experiments/README.md#intent',
   implementationNote: 'Focus, hover, or first tap reveals. Activation commits without moving the target.',
   states: [

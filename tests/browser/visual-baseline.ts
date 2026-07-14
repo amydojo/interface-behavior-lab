@@ -1,7 +1,9 @@
 export const visualBaseline: Record<string, string> = {
-  'workspace-intent-desktop-spatial': '27b3756b6e228f6e8084919cc80b2bdc93c17ec9c1f15fa28ae80ee951eaa390',
-  'workspace-ethical-desktop-light': 'a20d12a613ed9b2c0750bd2be986accf4513444e1e7a5e97a4e91412629fff35',
-  'workspace-magnetic-tablet-dark': 'f29c3ffd7a5f4f855939064b45617dfc787a32c01099987985a2f4123f959f79',
-  'workspace-reversible-mobile-expiring': '92dc46408bcfb38f9cd8f5a31ad149c982e0ee8a1cfe3bba13eb3ed60c5aaca8',
-  'workspace-inspector-mobile-expanded': 'fb08a72e4c42efddcfe62b01fd731e226702a12a9bca3aafe6687e1584cb47be',
+  'workspace-intent-desktop-spatial': '299b6661c27b181c669c69a48806f7079207e742ef7358ea7b695430fa74308e',
+  'workspace-ethical-desktop-light': 'afe109605a5fa4276c761c7e6261c23537d88c044b1e76c1effd9a208ada8fee',
+  'workspace-magnetic-tablet-dark': 'c1a0509b7e745d8b7da288dbd06a681dc13ab5f9bf3d73f3425a1030bcf28ce3',
+  'workspace-reversible-mobile-expiring': 'f0dc2ad73de62090d4fe05bd501b5fa09c6472c70b4c3b3e3f75d9995abf4274',
+  'workspace-inspector-mobile-expanded': 'eeaf03943e5ea70757eff19d9107d5b1254e4ca8c38f46288101a0c88833489b',
+  'intent-comparison-brief': 'ac11775e1cdc9edf526080e28e5b98be6c38cb0347f413a719298bd6704cfddd',
+  'intent-comparison-results': 'be673a5fcf6943945b970a08babc8f178040fc3c6f2c9ed6ee11b7827362fc67',
 }

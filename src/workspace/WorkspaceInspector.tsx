@@ -9,6 +9,7 @@ type Props = {
   currentState: string
   modality: InputModality
   events: LabEvent[]
+  conditionLabel?: string
   onExpand: (section: string) => void
 }
 
@@ -43,7 +44,14 @@ function InspectorDisclosure({
   )
 }
 
-export function WorkspaceInspector({ experiment, currentState, modality, events, onExpand }: Props) {
+export function WorkspaceInspector({
+  experiment,
+  currentState,
+  modality,
+  events,
+  conditionLabel = 'Adaptive',
+  onExpand,
+}: Props) {
   const stateDescriptor = experiment.states.find(state => state.id === currentState)
   const transitionEvents = events
     .filter(event => event.family === experiment.family || event.family === 'System')
@@ -69,7 +77,7 @@ export function WorkspaceInspector({ experiment, currentState, modality, events,
         </div>
         <div>
           <span>CONDITION</span>
-          <strong>Adaptive</strong>
+          <strong>{conditionLabel}</strong>
         </div>
       </section>
 

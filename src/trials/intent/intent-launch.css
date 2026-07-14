@@ -1,0 +1,18 @@
+.comparison-launch {
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 0 14px;
+  border: 1px solid color-mix(in srgb, var(--signal-primary) 48%, var(--border-strong));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--signal-primary) 12%, var(--surface-stage));
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.comparison-launch:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 62%, transparent);
+  outline-offset: 4px;
+}

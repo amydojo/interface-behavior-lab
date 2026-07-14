@@ -232,11 +232,13 @@ export default function App() {
 
         {location.view === 'workspace' ? (
           <ActiveWorkspace
+            key={`${activeExperiment.id}-${specimenEpoch}`}
             experiment={activeExperiment}
             currentState={activeState}
             completedIds={completedIds}
             events={events}
             modality={modality}
+            mode={mode}
             demoProps={demoProps}
             specimenKey={`${activeExperiment.id}-${specimenEpoch}`}
             headingRef={activeHeadingRef}

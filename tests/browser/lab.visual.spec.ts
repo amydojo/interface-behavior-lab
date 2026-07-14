@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname } from 'node:path'
 import { inflateSync } from 'node:zlib'
-import { expect, test, type Locator, type TestInfo } from '@playwright/test'
+import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test'
 import { disableNonessentialMotion, specimen } from './helpers'
 import { visualBaseline } from './visual-baseline'
 
@@ -113,6 +113,13 @@ async function expectVisual(
   expect(hash, `${name} visual fingerprint`).toBe(expected)
 }
 
+async function answerComparisonDebrief(page: Page, confidence: number, clarity: 'Clearer' | 'Unchanged') {
+  await page.getByRole('radio', { name: 'Save the two changes to Journal' }).check()
+  await page.getByRole('radio', { name: `Confidence ${confidence} of 5` }).check()
+  await page.getByRole('radio', { name: clarity }).check()
+  await page.getByRole('button', { name: 'Record trial observation' }).click()
+}
+
 test.describe('V1.2 active workspace visual contract @visual', () => {
   test('desktop spatial mode, Intent', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1440, height: 1100 })
@@ -163,6 +170,35 @@ test.describe('V1.2 active workspace visual contract @visual', () => {
     await disableNonessentialMotion(page)
     await expectVisual(page.locator('.workspace-inspector'), 'workspace-inspector-mobile-expanded', testInfo, {
       mask: [page.locator('.inspector-history time')],
+    })
+  })
+
+  test('Intent comparison brief', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1100, height: 1000 })
+    await page.goto('/#lab/intent')
+    await page.getByRole('button', { name: 'Run controlled comparison' }).click()
+    await disableNonessentialMotion(page)
+    await expectVisual(page.locator('.comparison-trial'), 'intent-comparison-brief', testInfo)
+  })
+
+  test('Intent comparison completed results', async ({ page }, testInfo) => {
+    await page.clock.install()
+    await page.setViewportSize({ width: 1100, height: 1000 })
+    await page.goto('/#lab/intent')
+    await page.getByRole('button', { name: 'Run controlled comparison' }).click()
+    await page.getByRole('radio', { name: 'Conventional first' }).check()
+    await page.getByRole('button', { name: 'Begin two-condition trial' }).click()
+    await page.locator('.comparison-control-stage .adaptive-button').click()
+    await answerComparisonDebrief(page, 3, 'Unchanged')
+    await page.getByRole('button', { name: 'Continue to Trial B' }).click()
+    const adaptiveControl = page.locator('.comparison-control-stage .adaptive-button')
+    await adaptiveControl.focus()
+    await page.keyboard.press('Enter')
+    await answerComparisonDebrief(page, 5, 'Clearer')
+    await disableNonessentialMotion(page)
+    const resultValues = page.locator('.comparison-result-grid dd')
+    await expectVisual(page.locator('.comparison-trial'), 'intent-comparison-results', testInfo, {
+      mask: [resultValues.nth(0), resultValues.nth(4)],
     })
   })
 })
