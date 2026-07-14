@@ -13,7 +13,9 @@ export function IntentDemo({ onEvent }: DemoProps) {
     timer.current = null
   }
 
-  useEffect(() => clearResetTimer, [])
+  useEffect(() => () => {
+    if (timer.current !== null) window.clearTimeout(timer.current)
+  }, [])
 
   const reveal = () => {
     if (state !== 'Confirmed' && state !== 'Revealed') {
