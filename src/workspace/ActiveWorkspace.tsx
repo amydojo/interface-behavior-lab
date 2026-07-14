@@ -10,6 +10,7 @@ import { IntentComparisonTrial } from '../trials/intent/IntentComparisonTrial'
 import '../trials/intent/intent-launch.css'
 import { MagneticComparisonTrial } from '../trials/magnetic/MagneticComparisonTrial'
 import { PressureComparisonTrial } from '../trials/pressure/PressureComparisonTrial'
+import { ReversibleComparisonTrial } from '../trials/reversible/ReversibleComparisonTrial'
 import type { DemoProps, InputModality, LabEvent, LabMode } from '../types'
 import { FamilyRail } from './FamilyRail'
 import { WorkspaceInspector } from './WorkspaceInspector'
@@ -57,6 +58,7 @@ export function ActiveWorkspace({
     || experiment.id === 'breathing'
     || experiment.id === 'magnetic'
     || experiment.id === 'ethical'
+    || experiment.id === 'reversible'
 
   useEffect(() => {
     setComparisonActive(false)
@@ -153,6 +155,13 @@ export function ActiveWorkspace({
             />
           ) : comparisonActive && experiment.id === 'ethical' ? (
             <EthicalComparisonTrial
+              demoProps={demoProps}
+              mode={mode}
+              onExit={exitComparison}
+              onStateChange={demoProps.onStateChange}
+            />
+          ) : comparisonActive && experiment.id === 'reversible' ? (
+            <ReversibleComparisonTrial
               demoProps={demoProps}
               mode={mode}
               onExit={exitComparison}
