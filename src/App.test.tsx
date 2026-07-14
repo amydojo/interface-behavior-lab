@@ -16,16 +16,22 @@ describe('App', () => {
     expect(screen.getByRole('slider', { name: /Assistance/i })).toBeInTheDocument()
   })
 
-  it('switches material modes and reduced motion without changing the specimen catalog', async () => {
+  it('changes material and motion presentation without changing behavior state', async () => {
     const { container } = render(<App />)
     const shell = container.querySelector('.app-shell')
 
-    fireEvent.click(screen.getByRole('button', { name: 'light' }))
-    expect(shell).toHaveAttribute('data-mode', 'light')
+    fireEvent.click(screen.getByRole('button', { name: /Ask anything/i }))
+    expect(screen.getByText('State: Listening')).toBeInTheDocument()
+
+    for (const mode of ['light', 'dark', 'spatial']) {
+      fireEvent.click(screen.getByRole('button', { name: mode }))
+      expect(shell).toHaveAttribute('data-mode', mode)
+      expect(screen.getByText('State: Listening')).toBeInTheDocument()
+    }
 
     fireEvent.click(screen.getByRole('checkbox', { name: /Reduce Motion/i }))
     await waitFor(() => expect(shell).toHaveAttribute('data-reduced-motion', 'true'))
-    expect(screen.getByRole('heading', { name: 'Breathing' })).toBeInTheDocument()
+    expect(screen.getByText('State: Listening')).toBeInTheDocument()
   })
 
   it('resets specimen state and clears prior instrumentation safely', () => {
