@@ -127,6 +127,22 @@ async function answerPressureComparisonDebrief(page: Page, confidence: number, e
   await page.getByRole('button', { name: 'Record trial observation' }).click()
 }
 
+async function completeBreathingSequence(page: Page) {
+  for (const state of ['Processing', 'Ready', 'Complete', 'Listening'] as const) {
+    await page.getByRole('button', { name: state, exact: true }).click()
+  }
+}
+
+async function answerBreathingDebrief(
+  page: Page,
+  preference: 'Keep the motion' | 'No preference',
+  distraction: number,
+) {
+  await page.getByRole('radio', { name: preference }).check()
+  await page.getByRole('radio', { name: `Distraction ${distraction} of 5` }).check()
+  await page.getByRole('button', { name: 'Record trial observation' }).click()
+}
+
 test.describe('V1.2 active workspace visual contract @visual', () => {
   test('desktop spatial mode, Intent', async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 1440, height: 1100 })
@@ -234,6 +250,33 @@ test.describe('V1.2 active workspace visual contract @visual', () => {
     const resultValues = page.locator('.comparison-result-grid dd')
     await expectVisual(page.locator('.pressure-comparison'), 'pressure-comparison-results', testInfo, {
       mask: [resultValues.nth(0), resultValues.nth(7)],
+    })
+  })
+
+  test('Breathing comparison brief', async ({ page }, testInfo) => {
+    await page.setViewportSize({ width: 1100, height: 1000 })
+    await page.goto('/#lab/breathing')
+    await page.getByRole('button', { name: 'Run controlled comparison' }).click()
+    await disableNonessentialMotion(page)
+    await expectVisual(page.locator('.breathing-comparison'), 'breathing-comparison-brief', testInfo)
+  })
+
+  test('Breathing comparison completed results', async ({ page }, testInfo) => {
+    await page.clock.install()
+    await page.setViewportSize({ width: 1100, height: 1100 })
+    await page.goto('/#lab/breathing')
+    await page.getByRole('button', { name: 'Run controlled comparison' }).click()
+    await page.getByRole('radio', { name: 'Conventional first' }).check()
+    await page.getByRole('button', { name: 'Begin two-condition trial' }).click()
+    await completeBreathingSequence(page)
+    await answerBreathingDebrief(page, 'No preference', 2)
+    await page.getByRole('button', { name: 'Continue to Trial B' }).click()
+    await completeBreathingSequence(page)
+    await answerBreathingDebrief(page, 'Keep the motion', 1)
+    await disableNonessentialMotion(page)
+    const resultValues = page.locator('.breathing-result-grid dd')
+    await expectVisual(page.locator('.breathing-comparison'), 'breathing-comparison-results', testInfo, {
+      mask: [resultValues.nth(1), resultValues.nth(5)],
     })
   })
 })
