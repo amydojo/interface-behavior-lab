@@ -25,7 +25,16 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run lint
-      - run: npm run test
+      - name: Run unit and component tests
+        run: npm run test -- --reporter=verbose 2>&1 | tee unit-test.log
+      - name: Upload unit-test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-diagnostics
+          path: unit-test.log
+          if-no-files-found: error
+          retention-days: 7
 
   build:
     name: Production build
