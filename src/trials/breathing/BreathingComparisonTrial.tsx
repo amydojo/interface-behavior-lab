@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { breathingExperiment, type BreathingStateId } from '../../experiments/breathing/model'
 import { clearStoredSession, saveSession } from '../../session/persistence'
 import { TrialSessionRecorder } from '../../session/recorder'
@@ -88,7 +88,7 @@ export function BreathingComparisonTrial({ demoProps, mode, onExit, onStateChang
   const activeState = breathingStateSequence[observationIndex] ?? breathingStateSequence[0]
   const presentation = breathingExperiment.getPresentation({ id: activeState })
 
-  const refreshSession = (recorder = recorderRef.current) => {
+  const refreshSession = useCallback((recorder = recorderRef.current) => {
     if (!recorder) return null
     const snapshot = recorder.getSnapshot()
     setSession(snapshot)
@@ -97,7 +97,7 @@ export function BreathingComparisonTrial({ demoProps, mode, onExit, onStateChang
       setStorageMessage(saved.ok ? 'Session saved locally for up to 24 hours.' : 'Local storage is unavailable.')
     }
     return snapshot
-  }
+  }, [persistLocally])
 
   useEffect(() => {
     onStateChange?.(`Comparison · ${phase}`)
@@ -119,7 +119,7 @@ export function BreathingComparisonTrial({ demoProps, mode, onExit, onStateChang
     })
     previousModeRef.current = mode
     refreshSession()
-  }, [activeTrialId, mode])
+  }, [activeTrialId, mode, refreshSession])
 
   useEffect(() => {
     if (previousMotionRef.current === demoProps.reducedMotion) return
@@ -131,7 +131,7 @@ export function BreathingComparisonTrial({ demoProps, mode, onExit, onStateChang
     })
     previousMotionRef.current = demoProps.reducedMotion
     refreshSession()
-  }, [activeTrialId, demoProps.reducedMotion])
+  }, [activeTrialId, demoProps.reducedMotion, refreshSession])
 
   useEffect(() => {
     if (previousInputRef.current === demoProps.modality) return
@@ -143,7 +143,7 @@ export function BreathingComparisonTrial({ demoProps, mode, onExit, onStateChang
     })
     previousInputRef.current = demoProps.modality
     refreshSession()
-  }, [activeTrialId, demoProps.modality])
+  }, [activeTrialId, demoProps.modality, refreshSession])
 
   const changePersistence = (next: boolean) => {
     setPersistLocally(next)
