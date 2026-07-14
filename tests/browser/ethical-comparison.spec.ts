@@ -75,7 +75,7 @@ test.describe('Ethical controlled comparison', () => {
     await expect(page.getByRole('heading', { name: 'Raw commitment observations, not a winner.' })).toBeVisible()
     await expect(comparison.getByText('Conventional', { exact: true })).toBeVisible()
     await expect(comparison.getByText('Adaptive', { exact: true })).toBeVisible()
-    await expect(page.getByText('Non-hold confirmation')).toBeVisible()
+    await expect(page.getByText('Non-hold confirmation', { exact: true })).toBeVisible()
     await expect(page.getByText(/order Conventional → Adaptive/i)).toBeVisible()
     await expect(page.getByText(/cannot prove that either confirmation pattern is safer/i)).toBeVisible()
     expect(outboundWrites).toEqual([])
