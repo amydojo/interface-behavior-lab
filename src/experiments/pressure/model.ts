@@ -117,6 +117,7 @@ function transition(
 export const pressureExperiment = {
   id: 'pressure',
   family: 'Pressure',
+  displayName: 'Pressure',
   order: 2,
   lifecycleOrder: 4,
   lifecycleStage: 'COMMIT',
