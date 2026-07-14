@@ -45,7 +45,7 @@
 }
 
 .magnetic-trial-target small {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: 11px;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .magnetic-target-stage.is-assisted[data-field-state="near"] .magnetic-assistance-field > i {
-  border-color: color-mix(in srgb, var(--signal-primary) calc(38% + var(--magnetic-assistance) * .2), var(--border-soft));
+  border-color: color-mix(in srgb, var(--signal-primary) 62%, var(--border-soft));
   opacity: .46;
 }
 
