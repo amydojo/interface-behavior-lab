@@ -63,6 +63,7 @@ export type DebriefQuestionId =
   | 'coercion'
   | 'distraction'
   | 'motion-preference'
+  | 'accidental-publish'
 
 export type DebriefQuestion = {
   id: DebriefQuestionId
