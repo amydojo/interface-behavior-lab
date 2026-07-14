@@ -39,7 +39,9 @@ function InspectorDisclosure({
 
 export function WorkspaceInspector({ experiment, currentState, modality, events, onExpand }: Props) {
   const stateDescriptor = experiment.states.find(state => state.id === currentState)
-  const transitionEvents = events.filter(event => event.family === experiment.family).slice(0, 8)
+  const transitionEvents = events
+    .filter(event => event.family === experiment.family || event.family === 'System')
+    .slice(0, 8)
 
   return (
     <aside className="workspace-inspector" aria-label={`${experiment.displayName} inspector`}>
