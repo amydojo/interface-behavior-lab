@@ -6,6 +6,7 @@ import type { ExperimentId } from '../experiments/types'
 import { scenarioRegistry } from '../scenarios/registry'
 import { IntentComparisonTrial } from '../trials/intent/IntentComparisonTrial'
 import '../trials/intent/intent-launch.css'
+import { PressureComparisonTrial } from '../trials/pressure/PressureComparisonTrial'
 import type { DemoProps, InputModality, LabEvent, LabMode } from '../types'
 import { FamilyRail } from './FamilyRail'
 import { WorkspaceInspector } from './WorkspaceInspector'
@@ -48,6 +49,7 @@ export function ActiveWorkspace({
   const activeIndex = experimentRegistry.findIndex(item => item.id === experiment.id)
   const previous = experimentRegistry[(activeIndex - 1 + experimentRegistry.length) % experimentRegistry.length]
   const next = experimentRegistry[(activeIndex + 1) % experimentRegistry.length]
+  const comparisonAvailable = experiment.id === 'intent' || experiment.id === 'pressure'
 
   useEffect(() => {
     setComparisonActive(false)
@@ -104,7 +106,7 @@ export function ActiveWorkspace({
             <div className="condition-slot" aria-label="Experiment condition">
               <span>CONDITION</span>
               <strong>Adaptive</strong>
-              {experiment.id === 'intent' ? (
+              {comparisonAvailable ? (
                 <button type="button" className="comparison-launch" onClick={() => setComparisonActive(true)}>
                   Run controlled comparison
                 </button>
@@ -116,6 +118,13 @@ export function ActiveWorkspace({
 
           {comparisonActive && experiment.id === 'intent' ? (
             <IntentComparisonTrial
+              demoProps={demoProps}
+              mode={mode}
+              onExit={exitComparison}
+              onStateChange={demoProps.onStateChange}
+            />
+          ) : comparisonActive && experiment.id === 'pressure' ? (
+            <PressureComparisonTrial
               demoProps={demoProps}
               mode={mode}
               onExit={exitComparison}
