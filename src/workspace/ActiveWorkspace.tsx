@@ -7,6 +7,7 @@ import { scenarioRegistry } from '../scenarios/registry'
 import { BreathingComparisonTrial } from '../trials/breathing/BreathingComparisonTrial'
 import { IntentComparisonTrial } from '../trials/intent/IntentComparisonTrial'
 import '../trials/intent/intent-launch.css'
+import { MagneticComparisonTrial } from '../trials/magnetic/MagneticComparisonTrial'
 import { PressureComparisonTrial } from '../trials/pressure/PressureComparisonTrial'
 import type { DemoProps, InputModality, LabEvent, LabMode } from '../types'
 import { FamilyRail } from './FamilyRail'
@@ -50,7 +51,10 @@ export function ActiveWorkspace({
   const activeIndex = experimentRegistry.findIndex(item => item.id === experiment.id)
   const previous = experimentRegistry[(activeIndex - 1 + experimentRegistry.length) % experimentRegistry.length]
   const next = experimentRegistry[(activeIndex + 1) % experimentRegistry.length]
-  const comparisonAvailable = experiment.id === 'intent' || experiment.id === 'pressure' || experiment.id === 'breathing'
+  const comparisonAvailable = experiment.id === 'intent'
+    || experiment.id === 'pressure'
+    || experiment.id === 'breathing'
+    || experiment.id === 'magnetic'
 
   useEffect(() => {
     setComparisonActive(false)
@@ -133,6 +137,13 @@ export function ActiveWorkspace({
             />
           ) : comparisonActive && experiment.id === 'breathing' ? (
             <BreathingComparisonTrial
+              demoProps={demoProps}
+              mode={mode}
+              onExit={exitComparison}
+              onStateChange={demoProps.onStateChange}
+            />
+          ) : comparisonActive && experiment.id === 'magnetic' ? (
+            <MagneticComparisonTrial
               demoProps={demoProps}
               mode={mode}
               onExit={exitComparison}
