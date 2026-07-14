@@ -5,6 +5,7 @@ import { experimentRegistry } from '../experiments/registry'
 import type { ExperimentId } from '../experiments/types'
 import { scenarioRegistry } from '../scenarios/registry'
 import { BreathingComparisonTrial } from '../trials/breathing/BreathingComparisonTrial'
+import { EthicalComparisonTrial } from '../trials/ethical/EthicalComparisonTrial'
 import { IntentComparisonTrial } from '../trials/intent/IntentComparisonTrial'
 import '../trials/intent/intent-launch.css'
 import { MagneticComparisonTrial } from '../trials/magnetic/MagneticComparisonTrial'
@@ -55,6 +56,7 @@ export function ActiveWorkspace({
     || experiment.id === 'pressure'
     || experiment.id === 'breathing'
     || experiment.id === 'magnetic'
+    || experiment.id === 'ethical'
 
   useEffect(() => {
     setComparisonActive(false)
@@ -144,6 +146,13 @@ export function ActiveWorkspace({
             />
           ) : comparisonActive && experiment.id === 'magnetic' ? (
             <MagneticComparisonTrial
+              demoProps={demoProps}
+              mode={mode}
+              onExit={exitComparison}
+              onStateChange={demoProps.onStateChange}
+            />
+          ) : comparisonActive && experiment.id === 'ethical' ? (
+            <EthicalComparisonTrial
               demoProps={demoProps}
               mode={mode}
               onExit={exitComparison}
