@@ -79,6 +79,7 @@ function transition(
 export const magneticExperiment = {
   id: 'magnetic',
   family: 'Magnetic',
+  displayName: 'Magnetic',
   order: 4,
   lifecycleOrder: 1,
   lifecycleStage: 'APPROACH',
