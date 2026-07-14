@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './styles.css'
+import './hardening.css'
 import type { Family, InputModality, LabEvent, LabMode } from './types'
 import { LabControls } from './components/LabControls'
 import { EventLog } from './components/EventLog'
@@ -9,6 +10,7 @@ import { BreathingDemo } from './components/BreathingDemo'
 import { MagneticDemo } from './components/MagneticDemo'
 import { EthicalDemo } from './components/EthicalDemo'
 import { ReversibleDemo } from './components/ReversibleDemo'
+import { SpecimenBoundary } from './components/SpecimenBoundary'
 
 function timeLabel() {
   return new Intl.DateTimeFormat(undefined, {
@@ -20,13 +22,16 @@ export default function App() {
   const [mode, setMode] = useState<LabMode>('spatial')
   const [modality, setModality] = useState<InputModality>('pointer')
   const [reducedMotion, setReducedMotion] = useState(false)
+  const [lowEffects, setLowEffects] = useState(false)
   const [assistance, setAssistance] = useState(62)
   const [events, setEvents] = useState<LabEvent[]>([])
   const [session, setSession] = useState(1)
 
   useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(media.matches)
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const transparency = window.matchMedia('(prefers-reduced-transparency: reduce)')
+    setReducedMotion(motion.matches)
+    setLowEffects(transparency.matches)
   }, [])
 
   const onEvent = useCallback((family: Family, action: string, detail?: string) => {
@@ -49,7 +54,12 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell" data-mode={mode} data-reduced-motion={reducedMotion ? 'true' : 'false'}>
+    <div
+      className="app-shell"
+      data-mode={mode}
+      data-reduced-motion={reducedMotion ? 'true' : 'false'}
+      data-low-effects={lowEffects ? 'true' : 'false'}
+    >
       <div className="ambient-field" aria-hidden="true"><i /><i /></div>
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Interface Behavior Lab home">
@@ -117,12 +127,12 @@ export default function App() {
             <p>Each specimen uses a native button, a stable target, named states, and a non-novel path when the enhanced input is unavailable.</p>
           </header>
           <div className="demo-grid" key={session}>
-            <IntentDemo {...demoProps} />
-            <PressureDemo {...demoProps} />
-            <BreathingDemo {...demoProps} />
-            <MagneticDemo {...demoProps} />
-            <EthicalDemo {...demoProps} />
-            <ReversibleDemo {...demoProps} />
+            <SpecimenBoundary name="Intent"><IntentDemo {...demoProps} /></SpecimenBoundary>
+            <SpecimenBoundary name="Pressure"><PressureDemo {...demoProps} /></SpecimenBoundary>
+            <SpecimenBoundary name="Breathing"><BreathingDemo {...demoProps} /></SpecimenBoundary>
+            <SpecimenBoundary name="Magnetic"><MagneticDemo {...demoProps} /></SpecimenBoundary>
+            <SpecimenBoundary name="Ethical"><EthicalDemo {...demoProps} /></SpecimenBoundary>
+            <SpecimenBoundary name="Reversible"><ReversibleDemo {...demoProps} /></SpecimenBoundary>
           </div>
         </section>
 

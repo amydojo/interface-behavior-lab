@@ -13,7 +13,14 @@ export function PressureDemo({ onEvent }: DemoProps) {
   const [result, setResult] = useState<string | null>(null)
   const timers = useRef<number[]>([])
 
-  useEffect(() => () => timers.current.forEach(window.clearTimeout), [])
+  const clearTimers = () => {
+    timers.current.forEach(timer => window.clearTimeout(timer))
+    timers.current = []
+  }
+
+  useEffect(() => () => {
+    timers.current.forEach(timer => window.clearTimeout(timer))
+  }, [])
 
   const selectStage = (next: number, source = 'explicit stage control') => {
     setStage(next)
@@ -21,7 +28,7 @@ export function PressureDemo({ onEvent }: DemoProps) {
   }
 
   const startHold = () => {
-    timers.current.forEach(window.clearTimeout)
+    clearTimers()
     timers.current = [
       window.setTimeout(() => selectStage(1, 'simulated hold duration'), 450),
       window.setTimeout(() => selectStage(2, 'simulated hold duration'), 1200),
@@ -29,7 +36,7 @@ export function PressureDemo({ onEvent }: DemoProps) {
     onEvent('Pressure', 'simulation started', 'Elapsed hold is not physical force')
   }
 
-  const stopHold = () => timers.current.forEach(window.clearTimeout)
+  const stopHold = () => clearTimers()
 
   const activate = () => {
     if (stage === 0) {
@@ -42,7 +49,7 @@ export function PressureDemo({ onEvent }: DemoProps) {
       onEvent('Pressure', 'action committed', 'Deleted permanently')
       setResult('Deleted permanently')
     }
-    window.setTimeout(() => setResult(null), 2300)
+    timers.current.push(window.setTimeout(() => setResult(null), 2300))
   }
 
   const active = stages[stage]

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "projectVersion": "1.1.0",
+  "generatedBy": "npm run build && node scripts/report-bundle.mjs",
+  "reviewThresholds": {
+    "javascriptPercent": 15,
+    "cssPercent": 20
+  },
+  "totals": {
+    "js": {
+      "bytes": 214392,
+      "gzipBytes": 67442
+    },
+    "css": {
+      "bytes": 26371,
+      "gzipBytes": 5680
+    }
+  },
+  "files": [
+    {
+      "path": "dist/assets/index-PwssxzzX.js",
+      "type": "js",
+      "bytes": 214392,
+      "gzipBytes": 67442
+    },
+    {
+      "path": "dist/assets/index-ne2iY3uR.css",
+      "type": "css",
+      "bytes": 26371,
+      "gzipBytes": 5680
+    }
+  ]
+}

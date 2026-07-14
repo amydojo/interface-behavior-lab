@@ -1,0 +1,168 @@
+.app-shell {
+  --text-tertiary: rgba(235, 239, 247, .68);
+}
+
+.app-shell[data-mode="light"] {
+  --text-tertiary: rgba(43, 50, 62, .68);
+}
+
+.toggle-control input:focus-visible + i {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 62%, transparent);
+  outline-offset: 4px;
+}
+
+.specimen-error {
+  display: flex;
+  min-height: 320px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px;
+  border: 1px solid var(--border-strong);
+  border-radius: 32px;
+  background: var(--surface-card);
+  box-shadow: var(--shadow-rest);
+}
+
+.specimen-error > span {
+  color: var(--signal-attention);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .14em;
+}
+
+.specimen-error h2,
+.specimen-error p {
+  margin: 0;
+}
+
+.specimen-error h2 {
+  font-size: clamp(22px, 3vw, 34px);
+  letter-spacing: -.04em;
+}
+
+.specimen-error p {
+  max-width: 560px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.specimen-error button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: var(--surface-stage);
+  cursor: pointer;
+}
+
+.specimen-error button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--signal-primary) 62%, transparent);
+  outline-offset: 4px;
+}
+
+.app-shell[data-low-effects="true"] {
+  --surface-elevated: rgba(27, 30, 38, .98);
+  --surface-interactive: rgba(38, 42, 52, .98);
+  --surface-stage: rgba(8, 10, 14, .98);
+  --surface-card: rgba(23, 26, 33, .98);
+  --surface-control: rgba(8, 10, 14, 1);
+}
+
+.app-shell[data-mode="light"][data-low-effects="true"] {
+  --surface-elevated: rgba(255, 255, 255, 1);
+  --surface-interactive: rgba(249, 250, 252, 1);
+  --surface-stage: rgba(238, 241, 246, 1);
+  --surface-card: rgba(255, 255, 255, 1);
+  --surface-control: rgba(255, 255, 255, 1);
+}
+
+.app-shell[data-low-effects="true"] .ambient-field {
+  opacity: .12;
+}
+
+.app-shell[data-low-effects="true"] .ambient-field i {
+  filter: none;
+  transform: scale(.66);
+}
+
+.app-shell[data-low-effects="true"] .hero-button,
+.app-shell[data-low-effects="true"] .lab-controls,
+.app-shell[data-low-effects="true"] .demo-card,
+.app-shell[data-low-effects="true"] .lifecycle-panel,
+.app-shell[data-low-effects="true"] .event-panel {
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .app-shell {
+    --surface-elevated: rgba(27, 30, 38, .98);
+    --surface-interactive: rgba(38, 42, 52, .98);
+    --surface-stage: rgba(8, 10, 14, .98);
+    --surface-card: rgba(23, 26, 33, .98);
+    --surface-control: rgba(8, 10, 14, 1);
+  }
+
+  .app-shell[data-mode="light"] {
+    --surface-elevated: rgba(255, 255, 255, 1);
+    --surface-interactive: rgba(249, 250, 252, 1);
+    --surface-stage: rgba(238, 241, 246, 1);
+    --surface-card: rgba(255, 255, 255, 1);
+    --surface-control: rgba(255, 255, 255, 1);
+  }
+
+  .ambient-field {
+    opacity: .12;
+  }
+
+  .ambient-field i {
+    filter: none;
+    transform: scale(.66);
+  }
+
+  .hero-button,
+  .lab-controls,
+  .demo-card,
+  .lifecycle-panel,
+  .event-panel {
+    backdrop-filter: none;
+  }
+}
+
+@media (max-width: 540px) {
+  .adaptive-copy {
+    overflow-wrap: anywhere;
+  }
+
+  .adaptive-label,
+  .adaptive-meta {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .adaptive-meta {
+    line-height: 1.35;
+  }
+
+  .ethical-alternatives {
+    width: min(420px, 100%);
+    flex-direction: column;
+  }
+
+  .ethical-alternatives button {
+    min-height: 44px;
+  }
+}
+
+@media (forced-colors: active) {
+  .adaptive-button,
+  .segmented-control button,
+  .reset-button,
+  .ethical-alternatives button,
+  .specimen-error button {
+    forced-color-adjust: auto;
+  }
+}
