@@ -12,7 +12,10 @@ const states: MagneticState[] = [
 describe('magneticExperiment', () => {
   it('starts and resets to the documented Far state', () => {
     expect(magneticExperiment.initialState).toEqual(states[0])
-    for (const _state of states) expect(magneticExperiment.reset()).toEqual(states[0])
+    for (const state of states) {
+      expect(magneticExperiment.getPresentation(state).stateName).toBe(state.id)
+      expect(magneticExperiment.reset()).toEqual(states[0])
+    }
   })
 
   it('bounds assistance calculations and pointer distance', () => {
