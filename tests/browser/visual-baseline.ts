@@ -8,6 +8,6 @@ export const visualBaseline: Record<string, string> = {
   'intent-comparison-results': 'be673a5fcf6943945b970a08babc8f178040fc3c6f2c9ed6ee11b7827362fc67',
   'pressure-comparison-brief': 'c221f177f601a12125e33e2783524982c06848684a2ca21bb88cb1b68043a6af',
   'pressure-comparison-results': '0e0aa05a9d32136f4ac50de43e9144046cadc2cc9d07366296e6db8a8f34224d',
-  'breathing-comparison-brief': '',
-  'breathing-comparison-results': '',
+  'breathing-comparison-brief': 'c07a6fbf152a19ee726af1f938944da8af47f2da875ab9b7a600b555f31156d6',
+  'breathing-comparison-results': 'e05d919d9590a03c59802b6290ea1c0a6ab125ef81cf89826d7ce07886db7ead',
 }
