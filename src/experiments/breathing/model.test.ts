@@ -1,12 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { transitionContext } from '../../test/experiment'
-import { breathingExperiment, type BreathingState } from './model'
+import { breathingExperiment } from './model'
 
 describe('breathingExperiment', () => {
   it('starts and resets to Ready from every documented state', () => {
     expect(breathingExperiment.initialState).toEqual({ id: 'Ready' })
     for (const descriptor of breathingExperiment.states) {
-      const _state: BreathingState = { id: descriptor.id }
+      const state = { id: descriptor.id }
+      expect(breathingExperiment.transition(state, { type: 'advance' }, transitionContext()).state.id).toBeDefined()
       expect(breathingExperiment.reset()).toEqual({ id: 'Ready' })
     }
   })
