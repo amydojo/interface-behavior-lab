@@ -110,11 +110,17 @@
 .comparison-principles p,
 .comparison-task-inline p,
 .comparison-session-note p,
-.comparison-disclaimer,
 .condition-boundary,
 .comparison-results > header p,
 .comparison-between p {
   color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.comparison-disclaimer,
+.comparison-retention small {
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1.55;
 }
@@ -171,7 +177,6 @@
 }
 
 .comparison-retention small {
-  color: var(--text-secondary);
   line-height: 1.45;
 }
 
