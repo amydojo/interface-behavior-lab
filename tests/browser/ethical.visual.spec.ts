@@ -95,7 +95,7 @@ async function expectVisual(locator: Locator, name: string, testInfo: TestInfo, 
 
 async function answerDebrief(page: Page, confidence: number, coercion: number) {
   await page.getByRole('radio', { name: '384 people, location, and tagged people' }).check()
-  await page.getByRole('radio', { name: 'No' }).check()
+  await page.getByRole('radio', { name: 'No', exact: true }).check()
   await page.getByRole('radio', { name: `Outcome confidence ${confidence} of 5` }).check()
   await page.getByRole('radio', { name: `Coercion ${coercion} of 5` }).check()
   await page.getByRole('button', { name: 'Record trial observation' }).click()
