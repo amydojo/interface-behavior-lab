@@ -15,5 +15,5 @@ export const visualBaseline: Record<string, string> = {
   'ethical-comparison-brief': '2d26a64c376a6e343e455b2b0aeffc2eccd414a2949d017d055cd1a9962ec95d',
   'ethical-comparison-results': '55256c69cb4cd00b5c6bedba579232da5034453ed0082f912bf8baa35def6512',
   'reversible-comparison-brief': 'c8405ccc1d24f9981b12fe12610bb643088c387bd31ee7b52a58e4a3effb59f7',
-  'reversible-comparison-results': 'f98d60a25a77360d3ea2476a3ca9bad2716fddb02fb2cb9b57712973d3b16b76',
+  'reversible-comparison-results': '18a6d8e2639fb654c2159232adfc60e393dad67393faa3ccbe8daf8cf403f9d1',
 }
