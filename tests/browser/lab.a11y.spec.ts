@@ -25,6 +25,7 @@ test.describe('V1.1 accessibility contract @a11y', () => {
   test('Intent revealed state retains a named, stable target', async ({ page }) => {
     const card = specimen(page, 'Intent')
     const button = card.locator('.adaptive-button')
+    await button.scrollIntoViewIfNeeded()
     const before = await button.boundingBox()
     await button.hover()
     const after = await button.boundingBox()
