@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page } from '@playwright/test'
 
 export function specimen(page: Page, family: string): Locator {
-  return page.locator('article.demo-card').filter({ has: page.getByRole('heading', { name: family, exact: true }) })
+  return page.locator(`article.family-${family.toLowerCase()}`)
 }
 
 export async function disableNonessentialMotion(page: Page) {
