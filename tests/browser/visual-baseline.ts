@@ -1,7 +1,7 @@
 export const visualBaseline: Record<string, string> = {
-  'workspace-intent-desktop-spatial': 'fef7ab6d0821fe08ba89f7e605f2f7559c4ef40e00291143d4f059598e9be969',
-  'workspace-ethical-desktop-light': '',
-  'workspace-magnetic-tablet-dark': '',
-  'workspace-reversible-mobile-expiring': '',
-  'workspace-inspector-mobile-expanded': '',
+  'workspace-intent-desktop-spatial': '27b3756b6e228f6e8084919cc80b2bdc93c17ec9c1f15fa28ae80ee951eaa390',
+  'workspace-ethical-desktop-light': 'a20d12a613ed9b2c0750bd2be986accf4513444e1e7a5e97a4e91412629fff35',
+  'workspace-magnetic-tablet-dark': 'f29c3ffd7a5f4f855939064b45617dfc787a32c01099987985a2f4123f959f79',
+  'workspace-reversible-mobile-expiring': '92dc46408bcfb38f9cd8f5a31ad149c982e0ee8a1cfe3bba13eb3ed60c5aaca8',
+  'workspace-inspector-mobile-expanded': 'fb08a72e4c42efddcfe62b01fd731e226702a12a9bca3aafe6687e1584cb47be',
 }
