@@ -8,7 +8,7 @@ import { EthicalComparisonTrial } from './EthicalComparisonTrial'
 function props(overrides: Partial<DemoProps> = {}): DemoProps {
   return {
     reducedMotion: false,
-    modality: 'hold',
+    modality: 'pointer',
     assistance: 62,
     onEvent: vi.fn(),
     onStateChange: vi.fn(),
