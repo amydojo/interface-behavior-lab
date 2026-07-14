@@ -1,5 +1,5 @@
 import { assistantRequestScenario } from '../../scenarios/assistant-request'
-import type { ExperimentDefinition, TransitionResult } from '../types'
+import type { ExperimentDefinition, TransitionContext, TransitionResult } from '../types'
 
 export type BreathingStateId = 'Ready' | 'Listening' | 'Processing' | 'Complete'
 export type BreathingState = { id: BreathingStateId }
@@ -17,6 +17,7 @@ const presentation = {
 function transition(
   state: BreathingState,
   _action: BreathingAction,
+  _context: TransitionContext,
 ): TransitionResult<BreathingState, BreathingAction> {
   const next = order[(order.indexOf(state.id) + 1) % order.length]
   return {
