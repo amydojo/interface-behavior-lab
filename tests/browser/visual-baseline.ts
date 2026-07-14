@@ -1,8 +1,8 @@
 export const visualBaseline: Record<string, string> = {
   'workspace-intent-desktop-spatial': '299b6661c27b181c669c69a48806f7079207e742ef7358ea7b695430fa74308e',
   'workspace-ethical-desktop-light': '092c5b0b64b5c28a141790bfc2ceac3faf443cbef752e079e6722b331bca06ad',
-  'workspace-magnetic-tablet-dark': '99afc7147ba50e7d49a0fabe6bd9d7b20e47e327c3b94b6ed49063e967e6394b',
-  'workspace-reversible-mobile-expiring': 'f0dc2ad73de62090d4fe05bd501b5fa09c6472c70b4c3b3e3f75d9995abf4274',
+  'workspace-magnetic-tablet-dark': 'cf28a3ae9bf5dddf997cb5501470e614a4f75cad633fb3d852b89f94009762f2',
+  'workspace-reversible-mobile-expiring': 'db40cbda47cf57a902a8fe40aba3abc8538e2883fd606c8c0226eb4c6b005ede',
   'workspace-inspector-mobile-expanded': '4a997c5204e64202f88feee026ed3fde74beec7484bceafee344152e89c802ac',
   'intent-comparison-brief': 'ac11775e1cdc9edf526080e28e5b98be6c38cb0347f413a719298bd6704cfddd',
   'intent-comparison-results': 'be673a5fcf6943945b970a08babc8f178040fc3c6f2c9ed6ee11b7827362fc67',
@@ -14,6 +14,6 @@ export const visualBaseline: Record<string, string> = {
   'magnetic-comparison-results': 'df9cfefd038cbc868d879c1a16f0fc5d64378129f7b33a985c8cc3b6b3d5fcd5',
   'ethical-comparison-brief': '2d26a64c376a6e343e455b2b0aeffc2eccd414a2949d017d055cd1a9962ec95d',
   'ethical-comparison-results': '55256c69cb4cd00b5c6bedba579232da5034453ed0082f912bf8baa35def6512',
-  'reversible-comparison-brief': '',
-  'reversible-comparison-results': '',
+  'reversible-comparison-brief': 'c8405ccc1d24f9981b12fe12610bb643088c387bd31ee7b52a58e4a3effb59f7',
+  'reversible-comparison-results': 'f98d60a25a77360d3ea2476a3ca9bad2716fddb02fb2cb9b57712973d3b16b76',
 }
