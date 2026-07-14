@@ -13,15 +13,27 @@ import { ReversibleDemo } from './reversible/view'
 import { registerExperiment } from './types'
 import type { ExperimentId, ExperimentRegistryEntry } from './types'
 
+const intent = registerExperiment(intentExperiment, IntentDemo)
+const pressure = registerExperiment(pressureExperiment, PressureDemo)
+const breathing = registerExperiment(breathingExperiment, BreathingDemo)
+const magnetic = registerExperiment(magneticExperiment, MagneticDemo)
+const ethical = registerExperiment(ethicalExperiment, EthicalDemo)
+const reversible = registerExperiment(reversibleExperiment, ReversibleDemo)
+
 export const experimentRegistry = [
-  registerExperiment(intentExperiment, IntentDemo),
-  registerExperiment(pressureExperiment, PressureDemo),
-  registerExperiment(breathingExperiment, BreathingDemo),
-  registerExperiment(magneticExperiment, MagneticDemo),
-  registerExperiment(ethicalExperiment, EthicalDemo),
-  registerExperiment(reversibleExperiment, ReversibleDemo),
+  intent,
+  pressure,
+  breathing,
+  magnetic,
+  ethical,
+  reversible,
 ] as const satisfies readonly ExperimentRegistryEntry[]
 
-export const experimentById = Object.fromEntries(
-  experimentRegistry.map(experiment => [experiment.id, experiment]),
-) as Record<ExperimentId, ExperimentRegistryEntry>
+export const experimentById = {
+  intent,
+  pressure,
+  breathing,
+  magnetic,
+  ethical,
+  reversible,
+} satisfies Record<ExperimentId, ExperimentRegistryEntry>
