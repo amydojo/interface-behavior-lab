@@ -2,14 +2,15 @@ import AxeBuilder from '@axe-core/playwright'
 import { expect, test, type Locator, type Page } from '@playwright/test'
 import { expectMinimumTarget, expectNoHorizontalOverflow } from './helpers'
 
+type TargetBox = { x: number; y: number; width: number; height: number }
+
 async function answerDebrief(page: Page, confidence = 4) {
   await page.getByRole('radio', { name: 'All Mail' }).check()
   await page.getByRole('radio', { name: `Recovery confidence ${confidence} of 5` }).check()
   await page.getByRole('button', { name: 'Record trial observation' }).click()
 }
 
-async function expectSameBox(before: Locator, after: Locator) {
-  const beforeBox = await before.boundingBox()
+async function expectSameBox(beforeBox: TargetBox | null, after: Locator) {
   const afterBox = await after.boundingBox()
   expect(beforeBox).not.toBeNull()
   expect(afterBox).not.toBeNull()
@@ -51,10 +52,11 @@ test.describe('Reversible controlled comparison', () => {
     await expect(inspector.getByText('Masked during trial', { exact: true })).toBeVisible()
 
     const conventionalArchive = page.getByRole('button', { name: /Archive Action available/i })
+    const conventionalArchiveBox = await conventionalArchive.boundingBox()
     await expectMinimumTarget(conventionalArchive)
     await conventionalArchive.click()
     const completedOrigin = page.getByRole('button', { name: /Archived Completed action/i })
-    await expectSameBox(conventionalArchive, completedOrigin)
+    await expectSameBox(conventionalArchiveBox, completedOrigin)
     const detachedUndo = page.getByRole('button', { name: 'Undo Archive' })
     await expectMinimumTarget(detachedUndo)
     await detachedUndo.click()
@@ -65,9 +67,7 @@ test.describe('Reversible controlled comparison', () => {
     const adaptiveArchiveBox = await adaptiveArchive.boundingBox()
     await adaptiveArchive.click()
     const inPlaceUndo = page.getByRole('button', { name: /Undo Archive 8 seconds remaining/i })
-    const inPlaceUndoBox = await inPlaceUndo.boundingBox()
-    expect(adaptiveArchiveBox).not.toBeNull()
-    expect(inPlaceUndoBox).toEqual(adaptiveArchiveBox)
+    await expectSameBox(adaptiveArchiveBox, inPlaceUndo)
     await expectMinimumTarget(inPlaceUndo)
     await inPlaceUndo.focus()
     await page.keyboard.press('Enter')
