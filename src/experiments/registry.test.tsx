@@ -35,20 +35,28 @@ function expectInitialParity<
   expect(button).not.toBeNull()
   expect(button).toHaveAttribute('data-state', expected.stateName)
   expect(button).toHaveClass(`tone-${expected.tone}`)
+  expect(view.container.querySelector('.demo-header h2')).toHaveTextContent(definition.displayName)
   expect(view.container.querySelector('.adaptive-label')).toHaveTextContent(expected.label)
   expect(view.container.querySelector('.adaptive-meta')).toHaveTextContent(expected.metadata)
   view.unmount()
 }
 
 describe('experimentRegistry', () => {
-  it('registers every family once with stable order and resolvable scenarios', () => {
+  it('registers every family once with stable order and complete metadata', () => {
     expect(experimentRegistry.map(experiment => experiment.id)).toEqual([
       'intent', 'pressure', 'breathing', 'magnetic', 'ethical', 'reversible',
     ])
     expect(new Set(experimentRegistry.map(experiment => experiment.id)).size).toBe(experimentRegistry.length)
     expect(new Set(experimentRegistry.map(experiment => experiment.order)).size).toBe(experimentRegistry.length)
+    expect(new Set(experimentRegistry.map(experiment => experiment.lifecycleOrder)).size).toBe(experimentRegistry.length)
 
     for (const experiment of experimentRegistry) {
+      expect(experiment.displayName).not.toHaveLength(0)
+      expect(experiment.hypothesis).not.toHaveLength(0)
+      expect(experiment.successSignal).not.toHaveLength(0)
+      expect(experiment.failureCondition).not.toHaveLength(0)
+      expect(experiment.supportedInputContexts.length).toBeGreaterThan(0)
+      expect(experiment.requiredAlternativePaths.length).toBeGreaterThan(0)
       expect(experiment.documentationPath).toMatch(/^docs\/experiments\//)
       expect(experiment.states.length).toBeGreaterThan(0)
       for (const scenarioId of experiment.scenarioIds) expect(scenarioRegistry[scenarioId]).toBeDefined()
