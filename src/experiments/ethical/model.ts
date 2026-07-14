@@ -102,6 +102,7 @@ function transition(
 export const ethicalExperiment = {
   id: 'ethical',
   family: 'Ethical',
+  displayName: 'Ethical',
   order: 5,
   lifecycleOrder: 3,
   lifecycleStage: 'WEIGH',
