@@ -8,4 +8,7 @@ export const archiveRecoveryScenario = {
   successResult: 'Archived · recovery window opened',
   recoveryResult: 'Archive undone',
   expiredResult: 'Archive remains available in All Mail',
+  itemTitle: 'Design review notes',
+  itemSource: 'From Maya',
+  expiredLocation: 'All Mail',
 } as const satisfies ScenarioDefinition & Record<string, string>
