@@ -156,6 +156,7 @@ export function ActiveWorkspace({
           currentState={currentState}
           modality={modality}
           events={events}
+          conditionLabel={comparisonActive ? 'Masked during trial' : 'Adaptive'}
           onExpand={onInspectorExpand}
         />
       </div>
