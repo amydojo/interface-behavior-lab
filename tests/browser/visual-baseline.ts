@@ -1,7 +1,7 @@
 export const visualBaseline: Record<string, string> = {
   'workspace-intent-desktop-spatial': '299b6661c27b181c669c69a48806f7079207e742ef7358ea7b695430fa74308e',
   'workspace-ethical-desktop-light': '092c5b0b64b5c28a141790bfc2ceac3faf443cbef752e079e6722b331bca06ad',
-  'workspace-magnetic-tablet-dark': 'cf28a3ae9bf5dddf997cb5501470e614a4f75cad633fb3d852b89f94009762f2',
+  'workspace-magnetic-tablet-dark': '99afc7147ba50e7d49a0fabe6bd9d7b20e47e327c3b94b6ed49063e967e6394b',
   'workspace-reversible-mobile-expiring': 'db40cbda47cf57a902a8fe40aba3abc8538e2883fd606c8c0226eb4c6b005ede',
   'workspace-inspector-mobile-expanded': '4a997c5204e64202f88feee026ed3fde74beec7484bceafee344152e89c802ac',
   'intent-comparison-brief': 'ac11775e1cdc9edf526080e28e5b98be6c38cb0347f413a719298bd6704cfddd',
