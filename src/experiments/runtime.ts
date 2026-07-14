@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { DemoProps } from '../types'
-import type { ExperimentAction, ExperimentDefinition, ExperimentState } from './types'
+import type { ExperimentAction, ExperimentDefinition, ExperimentEffect, ExperimentState } from './types'
 
 export type ExperimentClock = {
   now: () => number
@@ -57,7 +57,7 @@ export function useExperimentController<
     for (const timerId of timersRef.current.keys()) cancelTimer(timerId)
   }, [cancelTimer])
 
-  const processEffects = useCallback((effects: ReturnType<typeof definition.transition>['effects']) => {
+  const processEffects = useCallback((effects: ExperimentEffect<A>[]) => {
     for (const effect of effects) {
       if (effect.type === 'emit') {
         propsRef.current.onEvent(definitionRef.current.family, effect.action, effect.detail)
@@ -87,7 +87,7 @@ export function useExperimentController<
       }, effect.intervalMs)
       timersRef.current.set(effect.timerId, { kind: 'interval', handle })
     }
-  }, [cancelTimer, definition.transition])
+  }, [cancelTimer])
 
   const dispatch = useCallback((action: A) => {
     if (!mountedRef.current) return
