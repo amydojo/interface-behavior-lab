@@ -1,0 +1,19 @@
+/* Final WCAG AA overrides for legacy trial notation rendered inside the V1.3 shell. */
+.comparison-debrief > header > span,
+.condition-neutral-label > span,
+.comparison-task-inline > span,
+.comparison-results > header > div > span,
+.pressure-permanent-confirmation > span {
+  color: #9f2415 !important;
+}
+
+.scale-labels > span,
+.breathing-state-copy > span,
+.comparison-result-grid > article > span,
+.breathing-result-grid > article > span {
+  color: #4b463f !important;
+}
+
+#transition-history-title {
+  color: #aaa39a !important;
+}
