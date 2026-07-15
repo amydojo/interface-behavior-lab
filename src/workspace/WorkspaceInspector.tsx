@@ -25,6 +25,7 @@ export function WorkspaceInspector({
   const transitionEvents = events
     .filter(event => event.family === experiment.family || event.family === 'System')
     .slice(0, 8)
+  const latestEvent = transitionEvents[0]
   const signal = signalForExperiment(experiment.id)
 
   return (
@@ -58,6 +59,14 @@ export function WorkspaceInspector({
         <span id="accessibility-path-title">ACCESSIBILITY PATH</span>
         <p>{experiment.requiredAlternativePaths.join(' / ')}</p>
       </section>
+
+      {latestEvent ? (
+        <section className="inspector-latest-event" aria-label="Latest laboratory event">
+          <span>LATEST EVENT</span>
+          <strong>{latestEvent.action}</strong>
+          {latestEvent.detail ? <small>{latestEvent.detail}</small> : null}
+        </section>
+      ) : null}
 
       <details
         className="inspector-disclosure"
