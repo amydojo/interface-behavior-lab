@@ -5,6 +5,8 @@ import type { Family, InputModality, LabEvent, LabMode } from './types'
 import { LabControls } from './components/LabControls'
 import { experimentById, experimentRegistry } from './experiments/registry'
 import type { ExperimentId } from './experiments/types'
+import { LabDojoEntry } from './lab-dojo/LabDojoEntry'
+import { SpecimenTag } from './lab-dojo/primitives'
 import { ActiveWorkspace } from './workspace/ActiveWorkspace'
 import { CatalogView } from './workspace/CatalogView'
 import {
@@ -153,6 +155,13 @@ export default function App() {
     onStateChange: setActiveState,
   }), [reducedMotion, modality, assistance, onEvent])
 
+  const enterLaboratory = () => {
+    if (location.view === 'catalog') selectFamily(location.experimentId, 'pointer')
+    window.requestAnimationFrame(() => {
+      document.getElementById('laboratory')?.scrollIntoView({ block: 'start', behavior: reducedMotion ? 'auto' : 'smooth' })
+    })
+  }
+
   return (
     <div
       className="app-shell"
@@ -160,54 +169,20 @@ export default function App() {
       data-reduced-motion={reducedMotion ? 'true' : 'false'}
       data-low-effects={lowEffects ? 'true' : 'false'}
       data-workspace-view={location.view}
+      data-design-version="lab-dojo-v1.3"
     >
-      <div className="ambient-field" aria-hidden="true"><i /><i /></div>
       <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Interface Behavior Lab home">
-          <span>IBL</span>
-          <strong>Interface Behavior Lab</strong>
+        <a className="wordmark" href="#top" aria-label="Lab Dojo home">
+          <SpecimenTag label="LAB DOJO / INTERFACE BEHAVIOR LAB / V1.3" />
         </a>
         <nav aria-label="Project links">
-          <a href="https://www.figma.com/design/4jIfeqwhalMPugSAuVtvSi" target="_blank" rel="noreferrer">Figma</a>
+          <a href="https://www.figma.com/design/4jIfeqwhalMPugSAuVtvSi?node-id=64-2" target="_blank" rel="noreferrer">Figma</a>
           <a href="https://github.com/amydojo/interface-behavior-lab" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </header>
 
       <main id="top">
-        <section className="hero">
-          <div className="hero-copy">
-            <span className="eyebrow">UNDONE FUTURES · INTERACTION SYSTEM 01</span>
-            <h1>Adaptive<br />Controls</h1>
-            <p>A coded interaction laboratory for controls that understand intention, pressure, attention, consequence, and recovery.</p>
-            <div className="hero-actions">
-              <a
-                href={workspaceHash({ view: 'workspace', experimentId: location.experimentId })}
-                onClick={event => {
-                  event.preventDefault()
-                  if (location.view === 'catalog') selectFamily(location.experimentId, 'pointer')
-                  else document.getElementById('laboratory')?.scrollIntoView({ block: 'start' })
-                }}
-              >
-                Enter laboratory
-              </a>
-              <span>V1.2 · FOCUSED WORKSPACE</span>
-            </div>
-          </div>
-          <div className="hero-object" aria-hidden="true">
-            <i /><i /><i /><i />
-            <div className="hero-button">
-              <span><strong>Continue with intent</strong><small>PRESSURE · 0.66</small></span>
-              <b>→</b>
-            </div>
-            <em className="approach">APPROACH</em>
-            <em className="commit">COMMIT</em>
-          </div>
-        </section>
-
-        <section className="manifesto-strip" aria-label="System manifesto">
-          <span>THE BUTTON IS NO LONGER A SHAPE.</span>
-          <strong>It is a negotiation between your intention, the system’s intelligence, and what happens next.</strong>
-        </section>
+        <LabDojoEntry onEnterLaboratory={enterLaboratory} onOpenCatalog={() => openCatalog('pointer')} />
 
         <LabControls
           mode={mode}
@@ -239,6 +214,7 @@ export default function App() {
             events={events}
             modality={modality}
             mode={mode}
+            reducedMotion={reducedMotion}
             demoProps={demoProps}
             specimenKey={`${activeExperiment.id}-${specimenEpoch}`}
             headingRef={activeHeadingRef}
@@ -254,17 +230,11 @@ export default function App() {
             onOpenWorkspace={selectFamily}
           />
         )}
-
-        <section className="system-note">
-          <span>SYSTEM NOTE</span>
-          <strong>Adaptive behavior should appear only when it reduces ambiguity, accidental activation, motor effort, or recovery cost.</strong>
-          <p>The conventional control remains the comparison condition. The future is selective, not noisy.</p>
-        </section>
       </main>
 
       <footer className="site-footer">
+        <span>DESIGN → PROTOTYPE → TEST → THEN REFACTOR</span>
         <span>Independent speculative research by Amy Do / UNDONE by design.</span>
-        <span>Not affiliated with Apple.</span>
       </footer>
     </div>
   )
