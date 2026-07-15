@@ -8,13 +8,13 @@ type Props = {
 export function LabDojoEntry({ onEnterLaboratory, onOpenCatalog }: Props) {
   return (
     <section className="ld-entry" aria-labelledby="lab-dojo-title">
+      <h2 className="sr-only">Adaptive Controls</h2>
       <div className="ld-entry-copy">
         <span className="ld-kicker">INTERACTION SYSTEM / 01</span>
         <h1 id="lab-dojo-title">
           <span>THE BUTTON IS</span>
           <span>NO LONGER</span>
           <span>A SHAPE.</span>
-          <span className="sr-only">Adaptive Controls</span>
         </h1>
         <p>
           A coded laboratory for controls that communicate intention, consequence, commitment,
