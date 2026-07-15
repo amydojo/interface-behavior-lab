@@ -1,0 +1,69 @@
+.active-specimen-stage .adaptive-button .adaptive-label {
+  color: var(--ld-text-on-lab);
+}
+
+.inspector-latest-event {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ld-border-on-lab);
+}
+
+.inspector-latest-event > span,
+.inspector-latest-event > strong,
+.inspector-latest-event > small {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  line-height: 13px;
+}
+
+.inspector-latest-event > span {
+  color: var(--ld-text-on-lab-muted);
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.inspector-latest-event > strong {
+  color: var(--ld-evidence-signal);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.inspector-latest-event > small {
+  color: var(--ld-text-on-lab-muted);
+  font-size: 9px;
+}
+
+@media (max-width: 540px) {
+  .site-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wordmark {
+    width: 100%;
+  }
+
+  .site-header .ld-specimen-tag {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  .site-header nav {
+    align-self: flex-end;
+  }
+
+  .ld-entry h1 {
+    font-size: clamp(36px, 10.5vw, 44px);
+  }
+
+  .ld-entry h1 > span {
+    white-space: nowrap;
+  }
+}
