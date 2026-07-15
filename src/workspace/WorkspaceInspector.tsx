@@ -26,6 +26,7 @@ export function WorkspaceInspector({
     .filter(event => event.family === experiment.family || event.family === 'System')
     .slice(0, 8)
   const latestEvent = transitionEvents[0]
+  const historyEvents = transitionEvents.slice(1)
   const signal = signalForExperiment(experiment.id)
 
   return (
@@ -90,14 +91,14 @@ export function WorkspaceInspector({
           </section>
           <section className="inspector-history" aria-labelledby="transition-history-title">
             <header>
-              <span id="transition-history-title">TRANSITION HISTORY</span>
-              <output>{transitionEvents.length}</output>
+              <span id="transition-history-title">EARLIER TRANSITIONS</span>
+              <output>{historyEvents.length}</output>
             </header>
-            {transitionEvents.length === 0 ? (
-              <p>No transitions yet. Use the active control to begin the trace.</p>
+            {historyEvents.length === 0 ? (
+              <p>No earlier transitions in this local trace.</p>
             ) : (
               <ol>
-                {transitionEvents.map(event => (
+                {historyEvents.map(event => (
                   <li key={event.id}>
                     <time>{event.at}</time>
                     <strong>{event.action}</strong>
