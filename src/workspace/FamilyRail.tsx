@@ -1,5 +1,14 @@
-import { experimentRegistry } from '../experiments/registry'
+import { experimentById } from '../experiments/registry'
 import type { ExperimentId } from '../experiments/types'
+
+const lifecycle: readonly { id: ExperimentId; label: string }[] = [
+  { id: 'magnetic', label: 'APPROACH' },
+  { id: 'intent', label: 'CLARIFY' },
+  { id: 'pressure', label: 'WEIGH' },
+  { id: 'ethical', label: 'COMMIT' },
+  { id: 'breathing', label: 'RESOLVE' },
+  { id: 'reversible', label: 'RECOVER' },
+]
 
 type Props = {
   activeId: ExperimentId
@@ -11,34 +20,28 @@ type Props = {
 export function FamilyRail({ activeId, activeState, completedIds, onSelect }: Props) {
   return (
     <nav className="family-rail" aria-label="Experiment families">
-      <header className="family-rail-heading">
-        <span>FAMILY INDEX</span>
-        <strong>Choose one behavior to examine.</strong>
-      </header>
+      <span className="sr-only">Action lifecycle and specimen index</span>
       <ol className="family-list">
-        {experimentRegistry.map(experiment => {
-          const active = experiment.id === activeId
-          const completed = completedIds.has(experiment.id)
-          const status = active ? activeState : completed ? 'Trial run' : experiment.initialState.id
+        {lifecycle.map((stage, index) => {
+          const experiment = experimentById[stage.id]
+          const active = stage.id === activeId
+          const completed = completedIds.has(stage.id)
 
           return (
-            <li key={experiment.id}>
+            <li key={stage.id}>
               <button
                 type="button"
                 className="family-item"
+                data-signal={stage.id}
                 aria-current={active ? 'page' : undefined}
-                onClick={event => onSelect(experiment.id, event.detail === 0 ? 'keyboard' : 'pointer')}
+                onClick={event => onSelect(stage.id, event.detail === 0 ? 'keyboard' : 'pointer')}
               >
-                <span className="family-sequence">{String(experiment.order).padStart(2, '0')}</span>
-                <span className="family-copy">
-                  <strong>{experiment.displayName}</strong>
-                  <small>{experiment.value}</small>
+                <i className={completed ? 'is-complete' : ''} aria-hidden="true" />
+                <span>{String(index + 1).padStart(2, '0')} {stage.label}</span>
+                <small>{experiment.displayName}</small>
+                <span className="sr-only">
+                  {active ? `Current state ${activeState}.` : completed ? 'Trial has been run.' : 'Trial not yet run.'}
                 </span>
-                <span className="family-status">
-                  <i className={completed ? 'is-complete' : ''} aria-hidden="true" />
-                  <small>{status}</small>
-                </span>
-                <span className="sr-only">{completed ? 'Trial has been run.' : 'Trial not yet run.'}</span>
               </button>
             </li>
           )
