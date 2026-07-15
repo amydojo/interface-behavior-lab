@@ -37,6 +37,20 @@
   font-size: 9px;
 }
 
+.inspector-disclosure summary {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.inspector-disclosure summary > span:first-child {
+  color: var(--ld-signal-exploratory);
+}
+
+.inspector-disclosure summary > span:last-child {
+  color: var(--ld-text-on-lab);
+  text-align: right;
+}
+
 @media (max-width: 540px) {
   .site-header {
     flex-direction: column;
