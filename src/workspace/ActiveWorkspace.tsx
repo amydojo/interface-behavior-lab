@@ -3,6 +3,7 @@ import type { RefObject } from 'react'
 import { SpecimenBoundary } from '../components/SpecimenBoundary'
 import { experimentRegistry } from '../experiments/registry'
 import type { ExperimentId } from '../experiments/types'
+import { SpecimenTag, StateReadout, signalForExperiment } from '../lab-dojo/primitives'
 import { scenarioRegistry } from '../scenarios/registry'
 import { BreathingComparisonTrial } from '../trials/breathing/BreathingComparisonTrial'
 import { EthicalComparisonTrial } from '../trials/ethical/EthicalComparisonTrial'
@@ -24,6 +25,7 @@ type Props = {
   events: LabEvent[]
   modality: InputModality
   mode: LabMode
+  reducedMotion: boolean
   demoProps: DemoProps
   specimenKey: string
   headingRef: RefObject<HTMLHeadingElement | null>
@@ -40,6 +42,7 @@ export function ActiveWorkspace({
   events,
   modality,
   mode,
+  reducedMotion,
   demoProps,
   specimenKey,
   headingRef,
@@ -59,6 +62,7 @@ export function ActiveWorkspace({
     || experiment.id === 'magnetic'
     || experiment.id === 'ethical'
     || experiment.id === 'reversible'
+  const signal = signalForExperiment(experiment.id)
 
   useEffect(() => {
     setComparisonActive(false)
@@ -72,129 +76,122 @@ export function ActiveWorkspace({
   return (
     <section id="laboratory" className="workspace-shell" aria-labelledby="workspace-title">
       <header className="workspace-intro">
-        <div>
-          <span>ACTIVE LABORATORY</span>
-          <h2 id="workspace-title">One behavior. Its evidence beside it.</h2>
-        </div>
+        <h2 id="workspace-title" className="sr-only">One behavior. Its evidence beside it.</h2>
+        <SpecimenTag label={`LAB DOJO / ACTIVE SPECIMEN / ${experiment.displayName.toUpperCase()}`} surface="ink" />
         <button
           type="button"
           className="catalog-toggle"
           onClick={event => onOpenCatalog(event.detail === 0 ? 'keyboard' : 'pointer')}
         >
-          View all specimens
+          VIEW ALL SPECIMENS <span aria-hidden="true">→</span>
         </button>
       </header>
 
       <div className="workspace-grid">
-        <FamilyRail
-          activeId={experiment.id}
-          activeState={currentState}
-          completedIds={completedIds}
-          onSelect={onSelectFamily}
-        />
+        <article className={`active-workspace${comparisonActive ? ' is-comparison' : ''}`} aria-labelledby="active-experiment-title">
+          <aside className="specimen-intro">
+            <span className="active-heading-index">{String(experiment.order).padStart(2, '0')} / 06</span>
+            <h2 id="active-experiment-title" ref={headingRef} tabIndex={-1}>{experiment.displayName}</h2>
+            <p className="specimen-value">{experiment.value}</p>
+            <div className="specimen-intro-rule" aria-hidden="true" />
+            <span className="specimen-meta-label">SCENARIO</span>
+            <strong>{scenario.title}</strong>
+            <p>{scenario.summary}</p>
+            <dl className="specimen-context">
+              <div><dt>CONTEXT</dt><dd>{modality}</dd></div>
+              <div><dt>TARGET</dt><dd>STABLE</dd></div>
+              <div><dt>MOTION</dt><dd>{reducedMotion ? 'REDUCED' : 'STANDARD'}</dd></div>
+            </dl>
+          </aside>
 
-        <article className="active-workspace" aria-labelledby="active-experiment-title">
-          <header className="active-workspace-heading">
-            <div className="active-heading-index">{String(experiment.order).padStart(2, '0')}</div>
-            <div>
-              <span>{experiment.value}</span>
-              <h2 id="active-experiment-title" ref={headingRef} tabIndex={-1}>{experiment.displayName}</h2>
-              <p>{experiment.description}</p>
-            </div>
-          </header>
-
-          <section className="scenario-statement" aria-labelledby="scenario-title">
-            <span>SCENARIO</span>
-            <div>
-              <strong id="scenario-title">{scenario.title}</strong>
-              <p>{scenario.summary}</p>
-            </div>
-          </section>
-
-          {!comparisonActive && (
-            <div className="condition-slot" aria-label="Experiment condition">
-              <span>CONDITION</span>
-              <strong>Adaptive</strong>
-              {comparisonAvailable ? (
-                <button type="button" className="comparison-launch" onClick={() => setComparisonActive(true)}>
-                  Run controlled comparison
-                </button>
-              ) : (
-                <small>Conventional comparison is not implemented for this family yet.</small>
-              )}
-            </div>
-          )}
-
-          {comparisonActive && experiment.id === 'intent' ? (
-            <IntentComparisonTrial
-              demoProps={demoProps}
-              mode={mode}
-              onExit={exitComparison}
-              onStateChange={demoProps.onStateChange}
-            />
-          ) : comparisonActive && experiment.id === 'pressure' ? (
-            <PressureComparisonTrial
-              demoProps={demoProps}
-              mode={mode}
-              onExit={exitComparison}
-              onStateChange={demoProps.onStateChange}
-            />
-          ) : comparisonActive && experiment.id === 'breathing' ? (
-            <BreathingComparisonTrial
-              demoProps={demoProps}
-              mode={mode}
-              onExit={exitComparison}
-              onStateChange={demoProps.onStateChange}
-            />
-          ) : comparisonActive && experiment.id === 'magnetic' ? (
-            <MagneticComparisonTrial
-              demoProps={demoProps}
-              mode={mode}
-              onExit={exitComparison}
-              onStateChange={demoProps.onStateChange}
-            />
-          ) : comparisonActive && experiment.id === 'ethical' ? (
-            <EthicalComparisonTrial
-              demoProps={demoProps}
-              mode={mode}
-              onExit={exitComparison}
-              onStateChange={demoProps.onStateChange}
-            />
-          ) : comparisonActive && experiment.id === 'reversible' ? (
-            <ReversibleComparisonTrial
-              demoProps={demoProps}
-              mode={mode}
-              onExit={exitComparison}
-              onStateChange={demoProps.onStateChange}
-            />
-          ) : (
-            <>
-              <div className="active-specimen-stage" key={specimenKey}>
-                <SpecimenBoundary name={experiment.family}>
-                  <experiment.Renderer {...demoProps} />
-                </SpecimenBoundary>
+          <div className="specimen-stage-column">
+            {!comparisonActive && (
+              <div className="condition-slot" aria-label="Experiment condition">
+                <span>CONDITION</span>
+                <strong>ADAPTIVE</strong>
+                {comparisonAvailable ? (
+                  <button type="button" className="comparison-launch" onClick={() => setComparisonActive(true)}>
+                    RUN CONTROLLED COMPARISON
+                  </button>
+                ) : (
+                  <small>CONVENTIONAL COMPARISON NOT IMPLEMENTED</small>
+                )}
               </div>
+            )}
 
-              <footer className="workspace-stage-footer">
-                <div>
-                  <span>LIVE STATE</span>
-                  <output>{currentState}</output>
+            {comparisonActive && experiment.id === 'intent' ? (
+              <IntentComparisonTrial
+                demoProps={demoProps}
+                mode={mode}
+                onExit={exitComparison}
+                onStateChange={demoProps.onStateChange}
+              />
+            ) : comparisonActive && experiment.id === 'pressure' ? (
+              <PressureComparisonTrial
+                demoProps={demoProps}
+                mode={mode}
+                onExit={exitComparison}
+                onStateChange={demoProps.onStateChange}
+              />
+            ) : comparisonActive && experiment.id === 'breathing' ? (
+              <BreathingComparisonTrial
+                demoProps={demoProps}
+                mode={mode}
+                onExit={exitComparison}
+                onStateChange={demoProps.onStateChange}
+              />
+            ) : comparisonActive && experiment.id === 'magnetic' ? (
+              <MagneticComparisonTrial
+                demoProps={demoProps}
+                mode={mode}
+                onExit={exitComparison}
+                onStateChange={demoProps.onStateChange}
+              />
+            ) : comparisonActive && experiment.id === 'ethical' ? (
+              <EthicalComparisonTrial
+                demoProps={demoProps}
+                mode={mode}
+                onExit={exitComparison}
+                onStateChange={demoProps.onStateChange}
+              />
+            ) : comparisonActive && experiment.id === 'reversible' ? (
+              <ReversibleComparisonTrial
+                demoProps={demoProps}
+                mode={mode}
+                onExit={exitComparison}
+                onStateChange={demoProps.onStateChange}
+              />
+            ) : (
+              <>
+                <div className="active-specimen-stage" key={specimenKey}>
+                  <span className="stage-label">ACTIVE SPECIMEN</span>
+                  <SpecimenBoundary name={experiment.family}>
+                    <experiment.Renderer {...demoProps} />
+                  </SpecimenBoundary>
                 </div>
-                <button type="button" onClick={onResetSpecimen}>Reset specimen</button>
-              </footer>
 
-              <nav className="workspace-pagination" aria-label="Adjacent experiment families">
-                <button type="button" onClick={event => onSelectFamily(previous.id, event.detail === 0 ? 'keyboard' : 'pointer')}>
-                  <span>Previous</span>
-                  <strong>{previous.displayName}</strong>
-                </button>
-                <button type="button" onClick={event => onSelectFamily(next.id, event.detail === 0 ? 'keyboard' : 'pointer')}>
-                  <span>Next</span>
-                  <strong>{next.displayName}</strong>
-                </button>
-              </nav>
-            </>
-          )}
+                <footer className="workspace-stage-footer">
+                  <StateReadout
+                    value={currentState.toUpperCase()}
+                    signal={signal}
+                    surface="paper"
+                  />
+                  <button type="button" onClick={onResetSpecimen}>RESET SPECIMEN</button>
+                </footer>
+
+                <nav className="workspace-pagination" aria-label="Adjacent experiment families">
+                  <button type="button" onClick={event => onSelectFamily(previous.id, event.detail === 0 ? 'keyboard' : 'pointer')}>
+                    <span>PREVIOUS</span>
+                    <strong>{previous.displayName}</strong>
+                  </button>
+                  <button type="button" onClick={event => onSelectFamily(next.id, event.detail === 0 ? 'keyboard' : 'pointer')}>
+                    <span>NEXT</span>
+                    <strong>{next.displayName}</strong>
+                  </button>
+                </nav>
+              </>
+            )}
+          </div>
         </article>
 
         <WorkspaceInspector
@@ -205,8 +202,16 @@ export function ActiveWorkspace({
           conditionLabel={comparisonActive ? 'Masked during trial' : 'Adaptive'}
           onExpand={onInspectorExpand}
         />
+
+        <FamilyRail
+          activeId={experiment.id}
+          activeState={currentState}
+          completedIds={completedIds}
+          onSelect={onSelectFamily}
+        />
       </div>
 
+      <p className="workspace-rule">THE STAGE PERFORMS. THE SCORE ORIENTS. EVIDENCE WAITS UNTIL ASKED.</p>
       <p className="sr-only" role="status" aria-live="polite">
         Active experiment: {experiment.displayName}. Current state: {currentState}.
       </p>
