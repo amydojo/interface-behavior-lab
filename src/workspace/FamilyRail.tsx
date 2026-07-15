@@ -26,6 +26,11 @@ export function FamilyRail({ activeId, activeState, completedIds, onSelect }: Pr
           const experiment = experimentById[stage.id]
           const active = stage.id === activeId
           const completed = completedIds.has(stage.id)
+          const status = active
+            ? `Current state ${activeState}`
+            : completed
+              ? 'Trial has been run'
+              : 'Trial not yet run'
 
           return (
             <li key={stage.id}>
@@ -33,15 +38,13 @@ export function FamilyRail({ activeId, activeState, completedIds, onSelect }: Pr
                 type="button"
                 className="family-item"
                 data-signal={stage.id}
+                aria-label={`${String(experiment.order).padStart(2, '0')} ${experiment.displayName}. ${stage.label} stage. ${status}.`}
                 aria-current={active ? 'page' : undefined}
                 onClick={event => onSelect(stage.id, event.detail === 0 ? 'keyboard' : 'pointer')}
               >
                 <i className={completed ? 'is-complete' : ''} aria-hidden="true" />
                 <span>{String(index + 1).padStart(2, '0')} {stage.label}</span>
                 <small>{experiment.displayName}</small>
-                <span className="sr-only">
-                  {active ? `Current state ${activeState}.` : completed ? 'Trial has been run.' : 'Trial not yet run.'}
-                </span>
               </button>
             </li>
           )
