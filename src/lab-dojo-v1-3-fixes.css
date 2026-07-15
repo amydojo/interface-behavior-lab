@@ -2,6 +2,101 @@
   color: var(--ld-text-on-lab);
 }
 
+/* Signal fills keep the locked palette. Small notation uses contrast-safe relatives. */
+.ld-kicker,
+.ld-text-action,
+.comparison-trial-header > div > span,
+.comparison-task-card > span,
+.comparison-principles > span,
+.catalog-heading > div > span {
+  color: #b52a18;
+}
+
+.control-heading > span,
+.toggle-control > span > small,
+.catalog-card header > span,
+.catalog-card ul li,
+.catalog-card footer small,
+.state-readout {
+  color: #4b463f;
+}
+
+.ld-action-control[data-tone="intent"] .ld-action-copy small,
+.ld-state-readout[data-surface="ink"][data-signal="intent"] strong,
+.active-heading-index,
+.condition-slot > strong,
+.workspace-inspector[data-signal="intent"] .inspector-state > output,
+.workspace-inspector[data-signal="intent"] .inspector-latest-event > strong {
+  color: #7fa0ff;
+}
+
+.ld-action-control[data-tone="exploratory"] .ld-action-copy small,
+.ld-state-readout[data-surface="ink"][data-signal="exploratory"] strong,
+.workspace-inspector[data-signal="exploratory"] .inspector-state > output,
+.workspace-inspector[data-signal="exploratory"] .inspector-latest-event > strong {
+  color: #a998ff;
+}
+
+.ld-action-control[data-tone="consequence"] .ld-action-copy small,
+.ld-state-readout[data-surface="ink"][data-signal="consequence"] strong,
+.workspace-inspector[data-signal="consequence"] .inspector-state > output,
+.workspace-inspector[data-signal="consequence"] .inspector-latest-event > strong {
+  color: #ffbe5c;
+}
+
+.ld-action-control[data-tone="commit"] .ld-action-copy small,
+.ld-state-readout[data-surface="ink"][data-signal="commit"] strong,
+.workspace-inspector[data-signal="commit"] .inspector-state > output,
+.workspace-inspector[data-signal="commit"] .inspector-latest-event > strong {
+  color: #ff8068;
+}
+
+.ld-action-control[data-tone="recover"] .ld-action-copy small,
+.ld-state-readout[data-surface="ink"][data-signal="recover"] strong,
+.workspace-inspector[data-signal="recover"] .inspector-state > output,
+.workspace-inspector[data-signal="recover"] .inspector-latest-event > strong {
+  color: #8fe8b3;
+}
+
+.ld-state-readout[data-surface="paper"][data-signal="intent"] strong { color: #1746cf; }
+.ld-state-readout[data-surface="paper"][data-signal="exploratory"] strong { color: #4b3bb8; }
+.ld-state-readout[data-surface="paper"][data-signal="consequence"] strong { color: #7a4a00; }
+.ld-state-readout[data-surface="paper"][data-signal="commit"] strong { color: #b52a18; }
+.ld-state-readout[data-surface="paper"][data-signal="recover"] strong { color: #13603a; }
+
+.active-specimen-stage .adaptive-meta {
+  color: #b6b0a7;
+}
+
+.workspace-pagination button span,
+#inspector-state-title,
+#accessibility-path-title,
+.workspace-inspector section > span,
+.inspector-context span,
+.inspector-disclosure summary > span:last-child {
+  color: #aaa39a;
+}
+
+.family-item[data-signal="intent"],
+.family-item[data-signal="magnetic"] { --ld-family-signal: #7fa0ff; }
+.family-item[data-signal="pressure"] { --ld-family-signal: #ffbe5c; }
+.family-item[data-signal="ethical"] { --ld-family-signal: #ff8068; }
+.family-item[data-signal="breathing"] { --ld-family-signal: #a998ff; }
+.family-item[data-signal="reversible"] { --ld-family-signal: #8fe8b3; }
+
+.comparison-result-grid article header span,
+.comparison-result-grid article ul li,
+.comparison-result-grid article footer small,
+.breathing-result-grid article header span,
+.breathing-result-grid article ul li,
+.breathing-result-grid article footer small {
+  color: #4b463f;
+}
+
+.hold-surface {
+  color: #4b463f;
+}
+
 .inspector-latest-event {
   display: grid;
   gap: 7px;
@@ -18,7 +113,7 @@
 }
 
 .inspector-latest-event > span {
-  color: var(--ld-text-on-lab-muted);
+  color: #aaa39a;
   font-size: 9px;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -33,7 +128,7 @@
 }
 
 .inspector-latest-event > small {
-  color: var(--ld-text-on-lab-muted);
+  color: #aaa39a;
   font-size: 9px;
 }
 
@@ -43,11 +138,10 @@
 }
 
 .inspector-disclosure summary > span:first-child {
-  color: var(--ld-signal-exploratory);
+  color: #a998ff;
 }
 
 .inspector-disclosure summary > span:last-child {
-  color: var(--ld-text-on-lab);
   text-align: right;
 }
 
