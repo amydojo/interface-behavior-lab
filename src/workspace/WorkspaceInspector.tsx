@@ -75,7 +75,10 @@ export function WorkspaceInspector({
           if (event.currentTarget.open) onExpand('Full evidence')
         }}
       >
-        <summary>INSPECT FULL EVIDENCE</summary>
+        <summary>
+          <span>Success signal</span>
+          <span>Inspect full evidence</span>
+        </summary>
         <div className="inspector-evidence-body">
           <section>
             <span>SUCCESS SIGNAL</span>
