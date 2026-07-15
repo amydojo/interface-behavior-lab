@@ -1,0 +1,1499 @@
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
+
+:root {
+  --ld-surface-lab: #0e0d0c;
+  --ld-surface-lab-soft: #1b1916;
+  --ld-surface-stage: #f3f0e6;
+  --ld-surface-support: #e9e4d7;
+  --ld-surface-receipt: #e5dfd1;
+  --ld-text-on-lab: #f3f0e6;
+  --ld-text-on-lab-muted: #8e887e;
+  --ld-text-on-stage: #0e0d0c;
+  --ld-text-on-stage-muted: #5e5951;
+  --ld-border-on-lab: #2b2823;
+  --ld-border-on-stage: #c8c1b4;
+  --ld-border-quiet: #ddd7ca;
+  --ld-border-focus: #9cb1ff;
+  --ld-signal-intent: #2959f2;
+  --ld-signal-exploratory: #6b57db;
+  --ld-signal-consequence: #f2a838;
+  --ld-signal-commit: #ff5c3d;
+  --ld-signal-recover: #8fe8b3;
+  --ld-radius-2: 2px;
+  --ld-radius-8: 8px;
+  --ld-radius-full: 999px;
+  --ld-paper-lift: 0 8px 24px rgba(14, 13, 12, .14);
+  --ld-intent-field: 0 0 18px rgba(41, 89, 242, .16);
+  --ld-page-pad: clamp(24px, 5vw, 72px);
+}
+
+html {
+  background: var(--ld-surface-stage);
+}
+
+body {
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+}
+
+.app-shell {
+  min-height: 100vh;
+  overflow: clip;
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+.app-shell::before,
+.ambient-field {
+  display: none !important;
+}
+
+.app-shell,
+.app-shell[data-mode="light"],
+.app-shell[data-mode="dark"],
+.app-shell[data-mode="spatial"] {
+  --surface-base: var(--ld-surface-stage);
+  --surface-elevated: var(--ld-surface-support);
+  --surface-interactive: #fffdf7;
+  --surface-pressed: #ded7c9;
+  --surface-stage: var(--ld-surface-stage);
+  --surface-card: var(--ld-surface-stage);
+  --surface-control: var(--ld-surface-support);
+  --text-primary: var(--ld-text-on-stage);
+  --text-secondary: var(--ld-text-on-stage-muted);
+  --text-tertiary: #7b756b;
+  --border-subtle: var(--ld-border-quiet);
+  --border-strong: var(--ld-border-on-stage);
+  --signal-primary: var(--ld-signal-intent);
+  --signal-blue: var(--ld-signal-intent);
+  --signal-success: var(--ld-signal-recover);
+  --signal-attention: var(--ld-signal-consequence);
+  --signal-ethical: var(--ld-signal-commit);
+  --signal-exploratory: var(--ld-signal-exploratory);
+  --shadow-rest: none;
+  --shadow-lifted: var(--ld-paper-lift);
+  --radius-full: var(--ld-radius-full);
+  --page-pad: var(--ld-page-pad);
+}
+
+button,
+a,
+input,
+summary {
+  font: inherit;
+}
+
+.site-header {
+  position: relative;
+  z-index: 20;
+  width: min(1440px, 100%);
+  min-height: 112px;
+  margin: 0 auto;
+  padding: 40px var(--ld-page-pad) 28px;
+  border: 0;
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+}
+
+.wordmark {
+  display: block;
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 22px;
+}
+
+.site-header nav a {
+  min-height: 44px;
+  padding: 14px 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-text-on-stage-muted);
+  background: transparent;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-header nav a:hover {
+  color: var(--ld-signal-commit);
+}
+
+.ld-specimen-tag {
+  display: inline-flex;
+  min-width: 300px;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border: 1px solid var(--ld-border-on-stage);
+  border-radius: var(--ld-radius-2);
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  line-height: 14px;
+  text-transform: uppercase;
+}
+
+.ld-specimen-tag[data-surface="ink"] {
+  border-color: var(--ld-border-on-lab);
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab);
+}
+
+.ld-action-control {
+  --ld-control-signal: var(--ld-text-on-lab-muted);
+  display: flex;
+  width: min(420px, 100%);
+  min-height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 10px 16px;
+  border: 2px solid var(--ld-control-signal);
+  border-radius: var(--ld-radius-full);
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab);
+  text-align: left;
+}
+
+button.ld-action-control {
+  cursor: pointer;
+}
+
+.ld-action-control[data-tone="intent"] { --ld-control-signal: var(--ld-signal-intent); }
+.ld-action-control[data-tone="exploratory"] { --ld-control-signal: var(--ld-signal-exploratory); }
+.ld-action-control[data-tone="consequence"] { --ld-control-signal: var(--ld-signal-consequence); }
+.ld-action-control[data-tone="commit"] { --ld-control-signal: var(--ld-signal-commit); }
+.ld-action-control[data-tone="recover"] { --ld-control-signal: var(--ld-signal-recover); }
+.ld-action-control[data-state="active"] { box-shadow: 0 0 18px color-mix(in srgb, var(--ld-control-signal) 16%, transparent); }
+.ld-action-control[data-state="complete"] { border-width: 1px; }
+
+.ld-action-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ld-action-copy strong {
+  color: var(--ld-text-on-lab);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.ld-action-copy small {
+  color: var(--ld-control-signal);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  line-height: 13px;
+  letter-spacing: .04em;
+}
+
+.ld-action-signal {
+  display: block;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ld-control-signal);
+}
+
+.ld-state-readout {
+  --ld-state-signal: var(--ld-text-on-stage-muted);
+  display: flex;
+  width: min(300px, 100%);
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border: 1px solid var(--ld-border-on-stage);
+  border-radius: var(--ld-radius-2);
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+}
+
+.ld-state-readout[data-surface="ink"] {
+  border-color: var(--ld-border-on-lab);
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab-soft);
+}
+
+.ld-state-readout[data-signal="intent"] { --ld-state-signal: var(--ld-signal-intent); }
+.ld-state-readout[data-signal="exploratory"] { --ld-state-signal: var(--ld-signal-exploratory); }
+.ld-state-readout[data-signal="consequence"] { --ld-state-signal: var(--ld-signal-consequence); }
+.ld-state-readout[data-signal="commit"] { --ld-state-signal: var(--ld-signal-commit); }
+.ld-state-readout[data-signal="recover"] { --ld-state-signal: var(--ld-signal-recover); }
+
+.ld-state-readout > span {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
+
+.ld-state-readout small,
+.ld-state-readout strong {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.ld-state-readout small {
+  color: var(--ld-text-on-stage-muted);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+
+.ld-state-readout[data-surface="ink"] small {
+  color: var(--ld-text-on-lab-muted);
+}
+
+.ld-state-readout strong {
+  color: var(--ld-state-signal);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  overflow-wrap: anywhere;
+}
+
+.ld-state-readout > i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--ld-state-signal);
+}
+
+.ld-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 590px) minmax(460px, 570px);
+  gap: clamp(48px, 7vw, 110px);
+  align-items: center;
+  width: min(1440px, 100%);
+  min-height: 880px;
+  margin: 0 auto;
+  padding: 44px var(--ld-page-pad) 104px;
+}
+
+.ld-entry-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.ld-kicker,
+.ld-entry-rule,
+.ld-text-action,
+.workspace-rule {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  line-height: 14px;
+}
+
+.ld-kicker,
+.ld-text-action {
+  color: var(--ld-signal-commit);
+}
+
+.ld-entry h1 {
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+  color: var(--ld-text-on-stage);
+  font-size: clamp(58px, 5vw, 72px);
+  font-weight: 700;
+  letter-spacing: -.045em;
+  line-height: .95;
+}
+
+.ld-entry-copy > p:not(.ld-entry-rule) {
+  max-width: 520px;
+  margin: 0;
+  color: var(--ld-text-on-stage-muted);
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.ld-text-action {
+  min-height: 44px;
+  padding: 12px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ld-living-specimen {
+  position: relative;
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ld-border-on-stage);
+  border-radius: var(--ld-radius-8);
+  background: var(--ld-surface-lab);
+  box-shadow: var(--ld-paper-lift);
+  overflow: hidden;
+}
+
+.ld-living-specimen > .ld-specimen-tag {
+  position: absolute;
+  top: 38px;
+  left: 42px;
+}
+
+.ld-living-specimen > .ld-action-control {
+  position: relative;
+  z-index: 2;
+  width: min(360px, calc(100% - 80px));
+}
+
+.ld-living-specimen > .ld-state-readout {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ld-intent-field {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.ld-intent-field i {
+  position: absolute;
+  display: block;
+  width: min(420px, 78%);
+  height: 250px;
+  border: 1px solid color-mix(in srgb, var(--ld-signal-intent) 36%, transparent);
+  border-radius: 50%;
+}
+
+.ld-intent-field i:last-child {
+  width: min(340px, 64%);
+  height: 190px;
+  border-color: var(--ld-signal-intent);
+}
+
+.ld-entry-rule {
+  position: absolute;
+  bottom: 52px;
+  left: var(--ld-page-pad);
+  margin: 0;
+  color: var(--ld-text-on-stage-muted);
+}
+
+.lab-controls {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.2fr) 1fr 1.25fr .85fr 1fr auto;
+  gap: 14px;
+  align-items: end;
+  width: min(1296px, calc(100% - 2 * var(--ld-page-pad)));
+  margin: 0 auto 72px;
+  padding: 18px 0;
+  border: 0;
+  border-top: 1px solid var(--ld-border-on-stage);
+  border-bottom: 1px solid var(--ld-border-on-stage);
+  border-radius: 0;
+  color: var(--ld-text-on-stage);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.control-heading > span,
+.lab-controls legend,
+.range-control > span:first-child,
+.toggle-control strong {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.control-heading h2 {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.segmented-control {
+  gap: 1px;
+  padding: 2px;
+  border: 1px solid var(--ld-border-on-stage);
+  border-radius: var(--ld-radius-2);
+  background: var(--ld-surface-support);
+}
+
+.segmented-control button {
+  min-height: 40px;
+  border-radius: 0;
+  color: var(--ld-text-on-stage-muted);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.segmented-control button[aria-pressed="true"] {
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab);
+  box-shadow: none;
+}
+
+.reset-button {
+  min-height: 44px;
+  padding: 0 15px;
+  border: 1px solid var(--ld-border-on-stage);
+  border-radius: var(--ld-radius-2);
+  color: var(--ld-text-on-stage);
+  background: transparent;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+}
+
+.workspace-shell {
+  --surface-base: var(--ld-surface-lab);
+  --surface-elevated: var(--ld-surface-lab-soft);
+  --surface-interactive: #24211d;
+  --surface-pressed: #2f2b25;
+  --surface-stage: var(--ld-surface-lab-soft);
+  --surface-card: var(--ld-surface-lab);
+  --surface-control: var(--ld-surface-lab-soft);
+  --text-primary: var(--ld-text-on-lab);
+  --text-secondary: var(--ld-text-on-lab-muted);
+  --text-tertiary: #777168;
+  --border-subtle: var(--ld-border-on-lab);
+  --border-strong: #4c4740;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 48px var(--ld-page-pad) 64px;
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab);
+  scroll-margin-top: 0;
+}
+
+.workspace-intro {
+  display: flex;
+  width: min(1296px, 100%);
+  min-height: 44px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto 48px;
+}
+
+.workspace-intro .catalog-toggle {
+  min-height: 44px;
+  padding: 13px 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-text-on-lab-muted);
+  background: transparent;
+  box-shadow: none;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: 32px;
+  width: min(1296px, 100%);
+  margin: 0 auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.active-workspace {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 650px);
+  gap: 32px;
+  padding: 0;
+}
+
+.active-workspace.is-comparison {
+  display: block;
+}
+
+.active-workspace.is-comparison .specimen-intro {
+  display: none;
+}
+
+.specimen-intro {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: var(--ld-text-on-lab);
+}
+
+.active-heading-index,
+.specimen-meta-label,
+.specimen-context,
+.stage-label {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.active-heading-index {
+  display: block;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-signal-intent);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+}
+
+.specimen-intro h2 {
+  margin: 0;
+  color: var(--ld-text-on-lab);
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -.055em;
+  line-height: 35px;
+  text-transform: uppercase;
+}
+
+.specimen-intro h2:focus {
+  outline: none;
+}
+
+.specimen-value,
+.specimen-intro > p {
+  margin: 0;
+  color: var(--ld-text-on-lab-muted);
+  font-size: 15px;
+  line-height: 23px;
+}
+
+.specimen-intro-rule {
+  width: 100%;
+  height: 1px;
+  background: var(--ld-border-on-lab);
+}
+
+.specimen-meta-label {
+  color: var(--ld-text-on-lab-muted);
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+
+.specimen-intro > strong {
+  color: var(--ld-text-on-lab);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 23px;
+}
+
+.specimen-context {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  color: var(--ld-text-on-lab-muted);
+  font-size: 9px;
+  letter-spacing: .04em;
+  line-height: 13px;
+}
+
+.specimen-context div {
+  display: flex;
+  gap: 6px;
+}
+
+.specimen-context dt::after {
+  content: " /";
+}
+
+.specimen-context dd {
+  margin: 0;
+}
+
+.specimen-stage-column {
+  min-width: 0;
+}
+
+.condition-slot {
+  display: grid;
+  grid-template-columns: 80px auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  margin: 0 0 14px;
+  padding: 0 0 14px;
+  border: 0;
+  border-bottom: 1px solid var(--ld-border-on-lab);
+  border-radius: 0;
+  background: transparent;
+}
+
+.condition-slot > span,
+.condition-slot > strong,
+.condition-slot small,
+.comparison-launch {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.condition-slot > span,
+.condition-slot small {
+  color: var(--ld-text-on-lab-muted);
+}
+
+.condition-slot > strong {
+  color: var(--ld-signal-intent);
+}
+
+.comparison-launch {
+  min-height: 44px;
+  justify-self: end;
+  padding: 0 14px;
+  border: 1px solid var(--ld-border-on-lab);
+  border-radius: var(--ld-radius-2);
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab-soft);
+}
+
+.active-specimen-stage {
+  position: relative;
+  min-height: 600px;
+  margin: 0;
+  padding-top: 34px;
+  border: 0;
+  border-radius: var(--ld-radius-8);
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+  box-shadow: var(--ld-paper-lift);
+  overflow: hidden;
+  --surface-stage: var(--ld-surface-stage);
+  --surface-card: var(--ld-surface-stage);
+  --surface-control: var(--ld-surface-support);
+  --surface-interactive: #fffdf7;
+  --text-primary: var(--ld-text-on-stage);
+  --text-secondary: var(--ld-text-on-stage-muted);
+  --text-tertiary: #7b756b;
+  --border-subtle: var(--ld-border-on-stage);
+  --border-strong: #8e887e;
+}
+
+.stage-label {
+  position: absolute;
+  z-index: 4;
+  top: 24px;
+  left: 28px;
+  color: var(--ld-text-on-stage-muted);
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+
+.active-specimen-stage .demo-card {
+  min-height: 560px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-text-on-stage);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.active-specimen-stage .demo-header,
+.active-specimen-stage .demo-description,
+.active-specimen-stage .modality-tags,
+.active-specimen-stage .demo-footer {
+  display: none;
+}
+
+.active-specimen-stage .demo-stage {
+  min-height: 540px;
+  margin: 0;
+  padding: 72px clamp(20px, 8vw, 92px) 48px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.active-specimen-stage .adaptive-button {
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab);
+}
+
+.workspace-stage-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.workspace-stage-footer > button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-text-on-lab-muted);
+  background: transparent;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+
+.workspace-pagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ld-border-on-lab);
+}
+
+.workspace-pagination button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-text-on-lab-muted);
+  background: transparent;
+}
+
+.workspace-pagination span,
+.workspace-pagination strong {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.workspace-inspector {
+  --ld-evidence-signal: var(--ld-signal-intent);
+  position: static;
+  align-self: start;
+  max-height: none;
+  padding: 24px;
+  border: 1px solid var(--ld-border-on-lab);
+  border-radius: var(--ld-radius-8);
+  color: var(--ld-text-on-lab);
+  background: var(--ld-surface-lab-soft);
+  overflow: visible;
+}
+
+.workspace-inspector[data-signal="exploratory"] { --ld-evidence-signal: var(--ld-signal-exploratory); }
+.workspace-inspector[data-signal="consequence"] { --ld-evidence-signal: var(--ld-signal-consequence); }
+.workspace-inspector[data-signal="commit"] { --ld-evidence-signal: var(--ld-signal-commit); }
+.workspace-inspector[data-signal="recover"] { --ld-evidence-signal: var(--ld-signal-recover); }
+
+.inspector-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  border: 0;
+}
+
+.inspector-heading strong,
+.inspector-heading span,
+.workspace-inspector section > span,
+.inspector-context span,
+.inspector-disclosure summary,
+.inspector-evidence-body section > span,
+.inspector-footer,
+.inspector-history header span {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.inspector-heading strong {
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.inspector-heading span {
+  color: var(--ld-evidence-signal);
+}
+
+.inspector-state,
+.inspector-hypothesis,
+.inspector-alternatives,
+.inspector-history,
+.inspector-context,
+.inspector-disclosure {
+  margin: 18px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.inspector-state output {
+  display: block;
+  margin-top: 9px;
+  color: var(--ld-evidence-signal);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.inspector-state p,
+.inspector-hypothesis p,
+.inspector-alternatives p,
+.inspector-evidence-body p,
+.inspector-history > p {
+  margin: 8px 0 0;
+  color: var(--ld-text-on-lab-muted);
+  font-size: 15px;
+  line-height: 23px;
+}
+
+.inspector-hypothesis p {
+  color: var(--ld-text-on-lab);
+}
+
+.inspector-context {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ld-border-on-lab);
+}
+
+.inspector-context > div {
+  min-width: 0;
+}
+
+.inspector-context strong {
+  display: block;
+  margin-top: 7px;
+  color: var(--ld-text-on-lab);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+  text-transform: uppercase;
+}
+
+.inspector-alternatives p {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  line-height: 16px;
+}
+
+.inspector-disclosure {
+  border-top: 1px solid var(--ld-border-on-lab);
+}
+
+.inspector-disclosure summary {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 14px 0 0;
+  color: var(--ld-text-on-lab);
+  cursor: pointer;
+  list-style: none;
+}
+
+.inspector-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.inspector-disclosure[open] summary {
+  border: 0;
+}
+
+.inspector-evidence-body {
+  display: grid;
+  gap: 20px;
+  padding: 18px 0 0;
+}
+
+.inspector-evidence-body section > span {
+  color: var(--ld-signal-exploratory);
+}
+
+.inspector-history ol {
+  display: grid;
+  gap: 7px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inspector-history li {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 3px 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--ld-border-on-lab);
+  border-radius: 0;
+  background: transparent;
+}
+
+.inspector-history time,
+.inspector-history small,
+.inspector-history strong {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 8px;
+  line-height: 13px;
+}
+
+.inspector-history time,
+.inspector-history small {
+  color: var(--ld-text-on-lab-muted);
+}
+
+.inspector-history small {
+  grid-column: 2;
+}
+
+.inspector-footer {
+  margin-top: 20px;
+  color: var(--ld-signal-recover);
+}
+
+.family-rail {
+  position: static;
+  grid-column: 1 / -1;
+  width: min(960px, 100%);
+  min-height: 64px;
+  margin: 32px auto 0;
+  padding: 8px 12px;
+  border: 1px solid var(--ld-border-on-lab);
+  border-radius: var(--ld-radius-2);
+  background: var(--ld-surface-lab-soft);
+  backdrop-filter: none;
+}
+
+.family-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  list-style: none;
+}
+
+.family-item {
+  --ld-family-signal: var(--ld-text-on-lab-muted);
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 0;
+  color: var(--ld-text-on-lab-muted);
+  background: transparent;
+  text-align: center;
+}
+
+.family-item[data-signal="intent"],
+.family-item[data-signal="magnetic"] { --ld-family-signal: var(--ld-signal-intent); }
+.family-item[data-signal="pressure"] { --ld-family-signal: var(--ld-signal-consequence); }
+.family-item[data-signal="ethical"] { --ld-family-signal: var(--ld-signal-commit); }
+.family-item[data-signal="breathing"] { --ld-family-signal: var(--ld-signal-exploratory); }
+.family-item[data-signal="reversible"] { --ld-family-signal: var(--ld-signal-recover); }
+
+.family-item:hover {
+  border: 0;
+  color: var(--ld-text-on-lab);
+  background: transparent;
+}
+
+.family-item[aria-current="page"] {
+  border: 0;
+  color: var(--ld-family-signal);
+  background: transparent;
+  box-shadow: none;
+}
+
+.family-item > i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: #5b5750;
+}
+
+.family-item[aria-current="page"] > i {
+  width: 14px;
+  height: 14px;
+  background: var(--ld-family-signal);
+}
+
+.family-item > i.is-complete:not(:first-child),
+.family-item > i.is-complete {
+  background: var(--ld-family-signal);
+}
+
+.family-item > span,
+.family-item > small {
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  line-height: 13px;
+  text-transform: uppercase;
+}
+
+.family-item > small {
+  display: none;
+}
+
+.workspace-rule {
+  width: min(1296px, 100%);
+  margin: 44px auto 0;
+  color: var(--ld-signal-recover);
+}
+
+.catalog-shell {
+  width: min(1296px, calc(100% - 2 * var(--ld-page-pad)));
+  margin: 0 auto 80px;
+}
+
+.catalog-card {
+  min-height: 340px;
+  padding: 24px;
+  border: 1px solid var(--ld-border-on-stage);
+  border-radius: var(--ld-radius-2);
+  background: var(--ld-surface-stage);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.catalog-card h3 {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.catalog-card button {
+  border-radius: var(--ld-radius-2);
+}
+
+.comparison-trial {
+  min-height: 600px;
+  padding: 28px;
+  border: 0;
+  border-radius: var(--ld-radius-8);
+  color: var(--ld-text-on-stage);
+  background: var(--ld-surface-stage);
+  box-shadow: var(--ld-paper-lift);
+  --surface-stage: var(--ld-surface-stage);
+  --surface-card: var(--ld-surface-stage);
+  --surface-control: var(--ld-surface-support);
+  --surface-interactive: #fffdf7;
+  --text-primary: var(--ld-text-on-stage);
+  --text-secondary: var(--ld-text-on-stage-muted);
+  --text-tertiary: #7b756b;
+  --border-subtle: var(--ld-border-on-stage);
+  --border-strong: #8e887e;
+}
+
+.comparison-trial-header,
+.comparison-results > header,
+.comparison-debrief > header {
+  border-bottom-color: var(--ld-border-on-stage);
+}
+
+.comparison-trial-header span,
+.comparison-task-card > span,
+.comparison-principles > span,
+.condition-neutral-label span,
+.comparison-task-inline span,
+.comparison-results > header span,
+.comparison-session-note span {
+  color: var(--ld-signal-commit);
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  letter-spacing: .04em;
+}
+
+.comparison-trial h3 {
+  color: var(--ld-text-on-stage);
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+.comparison-primary,
+.comparison-exit,
+.comparison-result-actions button {
+  min-height: 44px;
+  border-radius: var(--ld-radius-2) !important;
+}
+
+.comparison-primary {
+  color: var(--ld-text-on-lab) !important;
+  background: var(--ld-surface-lab) !important;
+}
+
+.comparison-task-card,
+.comparison-principles,
+.comparison-session-note,
+.comparison-result-grid article,
+.comparison-debrief fieldset,
+.condition-order-picker,
+.comparison-retention {
+  border-radius: var(--ld-radius-2) !important;
+  box-shadow: none !important;
+}
+
+.comparison-results {
+  padding: 8px 0 0;
+}
+
+.comparison-result-grid {
+  gap: 0 !important;
+  border: 1px solid var(--ld-border-on-stage);
+  background: var(--ld-surface-receipt);
+}
+
+.comparison-result-grid article {
+  border: 0 !important;
+  border-right: 1px solid var(--ld-border-on-stage) !important;
+  background: transparent !important;
+}
+
+.comparison-result-grid article:last-child {
+  border-right: 0 !important;
+}
+
+.site-footer {
+  display: flex;
+  width: min(1296px, calc(100% - 2 * var(--ld-page-pad)));
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 38px 0;
+  border: 0;
+  color: var(--ld-text-on-stage-muted);
+  background: transparent;
+  font-family: "Azeret Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.ld-action-control:focus-visible,
+.ld-text-action:focus-visible,
+.site-header a:focus-visible,
+.catalog-toggle:focus-visible,
+.comparison-launch:focus-visible,
+.workspace-stage-footer button:focus-visible,
+.workspace-pagination button:focus-visible,
+.family-item:focus-visible,
+.inspector-disclosure summary:focus-visible,
+.reset-button:focus-visible {
+  outline: 3px solid var(--ld-border-focus);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1180px) {
+  .ld-entry {
+    grid-template-columns: minmax(0, 1fr) minmax(400px, 500px);
+    gap: 48px;
+  }
+
+  .lab-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .active-workspace {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+
+  .workspace-inspector {
+    grid-column: 1;
+    width: min(650px, calc(100% - 212px));
+    margin-left: 212px;
+  }
+
+  .family-rail {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 840px) {
+  .site-header {
+    min-height: 88px;
+    padding-top: 24px;
+  }
+
+  .site-header .ld-specimen-tag {
+    min-width: 0;
+  }
+
+  .ld-entry {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding-top: 48px;
+  }
+
+  .ld-entry h1 {
+    font-size: clamp(52px, 12vw, 72px);
+  }
+
+  .ld-living-specimen {
+    width: min(570px, 100%);
+    justify-self: center;
+  }
+
+  .ld-entry-rule {
+    position: static;
+    grid-column: 1;
+    margin-top: 12px;
+  }
+
+  .lab-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 48px;
+  }
+
+  .control-heading {
+    grid-column: 1 / -1;
+  }
+
+  .workspace-shell {
+    padding-inline: 24px;
+  }
+
+  .workspace-intro {
+    margin-bottom: 32px;
+  }
+
+  .active-workspace,
+  .active-workspace.is-comparison {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .active-workspace.is-comparison .specimen-intro {
+    display: flex;
+  }
+
+  .specimen-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+  }
+
+  .specimen-intro-rule,
+  .specimen-context {
+    grid-column: 1 / -1;
+  }
+
+  .active-specimen-stage {
+    min-height: 560px;
+  }
+
+  .workspace-inspector {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .family-rail {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .family-list {
+    min-width: 720px;
+  }
+}
+
+@media (max-width: 540px) {
+  .site-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .site-header nav {
+    gap: 12px;
+  }
+
+  .site-header .ld-specimen-tag {
+    max-width: 240px;
+    justify-content: flex-start;
+    font-size: 8px;
+  }
+
+  .ld-entry {
+    gap: 40px;
+    padding-inline: 24px;
+    padding-bottom: 64px;
+  }
+
+  .ld-entry h1 {
+    font-size: 48px;
+  }
+
+  .ld-entry-copy > p:not(.ld-entry-rule) {
+    font-size: 16px;
+    line-height: 25px;
+  }
+
+  .ld-living-specimen {
+    aspect-ratio: auto;
+    min-height: 470px;
+  }
+
+  .ld-living-specimen > .ld-specimen-tag {
+    top: 24px;
+    left: 24px;
+    width: calc(100% - 48px);
+    min-width: 0;
+  }
+
+  .ld-living-specimen > .ld-action-control {
+    width: calc(100% - 44px);
+  }
+
+  .ld-living-specimen > .ld-state-readout {
+    bottom: 48px;
+    width: calc(100% - 44px);
+  }
+
+  .lab-controls {
+    grid-template-columns: 1fr;
+    width: calc(100% - 48px);
+  }
+
+  .workspace-shell {
+    padding: 32px 24px 48px;
+  }
+
+  .workspace-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .workspace-intro .ld-specimen-tag {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
+    font-size: 8px;
+  }
+
+  .specimen-intro {
+    display: flex;
+  }
+
+  .condition-slot {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .comparison-launch {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .active-specimen-stage {
+    min-height: 500px;
+  }
+
+  .active-specimen-stage .demo-stage {
+    min-height: 470px;
+    padding: 64px 10px 36px;
+  }
+
+  .workspace-stage-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .workspace-stage-footer .ld-state-readout {
+    width: 100%;
+  }
+
+  .workspace-pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .workspace-inspector {
+    padding: 20px;
+  }
+
+  .inspector-context {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-trial {
+    padding: 20px 16px;
+  }
+
+  .comparison-result-grid {
+    display: block !important;
+  }
+
+  .comparison-result-grid article {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--ld-border-on-stage) !important;
+  }
+
+  .comparison-result-grid article:last-child {
+    border-bottom: 0 !important;
+  }
+
+  .site-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ld-action-control,
+  .ld-action-signal,
+  .ld-intent-field i {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .ld-action-control,
+  .ld-state-readout,
+  .ld-specimen-tag,
+  .workspace-inspector,
+  .family-rail,
+  .active-specimen-stage {
+    forced-color-adjust: auto;
+  }
+}
