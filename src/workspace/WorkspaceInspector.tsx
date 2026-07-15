@@ -1,5 +1,5 @@
 import { experimentRegistry } from '../experiments/registry'
-import { signalForExperiment } from '../lab-dojo/primitives'
+import { signalForExperiment } from '../lab-dojo/signals'
 import type { InputModality, LabEvent } from '../types'
 
 type RegisteredExperiment = (typeof experimentRegistry)[number]
