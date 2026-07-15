@@ -1,5 +1,5 @@
-import { useRef, type ReactNode } from 'react'
 import { experimentRegistry } from '../experiments/registry'
+import { signalForExperiment } from '../lab-dojo/primitives'
 import type { InputModality, LabEvent } from '../types'
 
 type RegisteredExperiment = (typeof experimentRegistry)[number]
@@ -11,37 +11,6 @@ type Props = {
   events: LabEvent[]
   conditionLabel?: string
   onExpand: (section: string) => void
-}
-
-function InspectorDisclosure({
-  label,
-  children,
-  open = false,
-  onExpand,
-}: {
-  label: string
-  children: ReactNode
-  open?: boolean
-  onExpand: (section: string) => void
-}) {
-  const initialTogglePending = useRef(open)
-
-  return (
-    <details
-      className="inspector-disclosure"
-      open={open}
-      onToggle={event => {
-        if (initialTogglePending.current) {
-          initialTogglePending.current = false
-          return
-        }
-        if (event.currentTarget.open) onExpand(label)
-      }}
-    >
-      <summary>{label}</summary>
-      <div>{children}</div>
-    </details>
-  )
 }
 
 export function WorkspaceInspector({
@@ -56,12 +25,17 @@ export function WorkspaceInspector({
   const transitionEvents = events
     .filter(event => event.family === experiment.family || event.family === 'System')
     .slice(0, 8)
+  const signal = signalForExperiment(experiment.id)
 
   return (
-    <aside className="workspace-inspector" aria-label={`${experiment.displayName} inspector`}>
+    <aside
+      className="workspace-inspector"
+      data-signal={signal}
+      aria-label={`${experiment.displayName} inspector`}
+    >
       <header className="inspector-heading">
-        <span>INSPECTOR</span>
-        <strong>Behavior evidence</strong>
+        <strong>EVIDENCE</strong>
+        <span aria-hidden="true">+</span>
       </header>
 
       <section className="inspector-state" aria-labelledby="inspector-state-title">
@@ -70,59 +44,66 @@ export function WorkspaceInspector({
         <p>{stateDescriptor?.description ?? 'The model is reporting its current literal state.'}</p>
       </section>
 
-      <section className="inspector-compact-grid" aria-label="Trial context">
-        <div>
-          <span>INPUT CONTEXT</span>
-          <strong>{modality}</strong>
-        </div>
-        <div>
-          <span>CONDITION</span>
-          <strong>{conditionLabel}</strong>
-        </div>
+      <section className="inspector-hypothesis" aria-labelledby="inspector-hypothesis-title">
+        <span id="inspector-hypothesis-title">HYPOTHESIS</span>
+        <p>{experiment.hypothesis}</p>
+      </section>
+
+      <section className="inspector-context" aria-label="Trial context">
+        <div><span>INPUT CONTEXT</span><strong>{modality}</strong></div>
+        <div><span>CONDITION</span><strong>{conditionLabel}</strong></div>
       </section>
 
       <section className="inspector-alternatives" aria-labelledby="accessibility-path-title">
         <span id="accessibility-path-title">ACCESSIBILITY PATH</span>
-        <ul>
-          {experiment.requiredAlternativePaths.map(path => <li key={path}>{path}</li>)}
-        </ul>
+        <p>{experiment.requiredAlternativePaths.join(' / ')}</p>
       </section>
 
-      <InspectorDisclosure label="Hypothesis" open onExpand={onExpand}>
-        <p>{experiment.hypothesis}</p>
-      </InspectorDisclosure>
+      <details
+        className="inspector-disclosure"
+        onToggle={event => {
+          if (event.currentTarget.open) onExpand('Full evidence')
+        }}
+      >
+        <summary>INSPECT FULL EVIDENCE</summary>
+        <div className="inspector-evidence-body">
+          <section>
+            <span>SUCCESS SIGNAL</span>
+            <p>{experiment.successSignal}</p>
+          </section>
+          <section>
+            <span>FAILURE CONDITION</span>
+            <p>{experiment.failureCondition}</p>
+          </section>
+          <section>
+            <span>SIMULATION BOUNDARY</span>
+            <p>{experiment.implementationNote}</p>
+          </section>
+          <section className="inspector-history" aria-labelledby="transition-history-title">
+            <header>
+              <span id="transition-history-title">TRANSITION HISTORY</span>
+              <output>{transitionEvents.length}</output>
+            </header>
+            {transitionEvents.length === 0 ? (
+              <p>No transitions yet. Use the active control to begin the trace.</p>
+            ) : (
+              <ol>
+                {transitionEvents.map(event => (
+                  <li key={event.id}>
+                    <time>{event.at}</time>
+                    <strong>{event.action}</strong>
+                    {event.detail ? <small>{event.detail}</small> : null}
+                  </li>
+                ))}
+              </ol>
+            )}
+          </section>
+        </div>
+      </details>
 
-      <InspectorDisclosure label="Success signal" onExpand={onExpand}>
-        <p>{experiment.successSignal}</p>
-      </InspectorDisclosure>
-
-      <InspectorDisclosure label="Failure condition" onExpand={onExpand}>
-        <p>{experiment.failureCondition}</p>
-      </InspectorDisclosure>
-
-      <section className="inspector-history" aria-labelledby="transition-history-title">
-        <header>
-          <span id="transition-history-title">TRANSITION HISTORY</span>
-          <output>{transitionEvents.length}</output>
-        </header>
-        {transitionEvents.length === 0 ? (
-          <p>No transitions yet. Use the active control to begin the trace.</p>
-        ) : (
-          <ol>
-            {transitionEvents.map(event => (
-              <li key={event.id}>
-                <time>{event.at}</time>
-                <strong>{event.action}</strong>
-                {event.detail ? <small>{event.detail}</small> : null}
-              </li>
-            ))}
-          </ol>
-        )}
-      </section>
-
-      <InspectorDisclosure label="Simulation boundary" onExpand={onExpand}>
-        <p>{experiment.implementationNote}</p>
-      </InspectorDisclosure>
+      <footer className="inspector-footer">
+        <span>IMPLEMENTED / NOT VALIDATED</span>
+      </footer>
     </aside>
   )
 }
