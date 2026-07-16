@@ -17,6 +17,8 @@ export async function openFamily(page: Page, family: string): Promise<Locator> {
 }
 
 export async function disableNonessentialMotion(page: Page) {
+  await page.waitForFunction(() => document.fonts.status === 'loaded')
+
   await page.addStyleTag({
     content: `
       *, *::before, *::after {
