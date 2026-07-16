@@ -6,7 +6,7 @@ export function specimen(page: Page, family: string): Locator {
 
 export function familyRailButton(page: Page, family: string): Locator {
   return page.getByRole('navigation', { name: 'Experiment families' })
-    .getByRole('button', { name: new RegExp(`^\\d{2} ${family}\\b`, 'i') })
+    .getByRole('button', { name: new RegExp(`^\d{2} ${family}\b`, 'i') })
 }
 
 export async function openFamily(page: Page, family: string): Promise<Locator> {
@@ -17,6 +17,10 @@ export async function openFamily(page: Page, family: string): Promise<Locator> {
 }
 
 export async function disableNonessentialMotion(page: Page) {
+  await page.evaluate(async () => {
+    await document.fonts.ready
+  })
+
   await page.addStyleTag({
     content: `
       *, *::before, *::after {
