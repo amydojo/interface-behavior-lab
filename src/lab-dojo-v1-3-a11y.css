@@ -19,3 +19,34 @@
 #transition-history-title {
   color: #aaa39a !important;
 }
+
+/* Receipt values occupy a stable archival column so live measurements do not reflow the record. */
+.comparison-result-grid dl > div,
+.breathing-result-grid dl > div {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 180px !important;
+  align-items: start;
+  gap: 12px;
+}
+
+.comparison-result-grid dd,
+.breathing-result-grid dd {
+  width: 180px;
+  max-width: 180px;
+  margin: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 540px) {
+  .comparison-result-grid dl > div,
+  .breathing-result-grid dl > div {
+    grid-template-columns: minmax(0, 1fr) 132px !important;
+  }
+
+  .comparison-result-grid dd,
+  .breathing-result-grid dd {
+    width: 132px;
+    max-width: 132px;
+  }
+}
